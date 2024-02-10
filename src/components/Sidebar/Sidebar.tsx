@@ -30,8 +30,16 @@ const Sidebar = () => {
         >
             <button
                 onClick={toggleSidebar}
-                className='trigger'
-                data-test-id='sider-switch-mobile sider-switch'
+                className='trigger big'
+                data-test-id='sider-switch'
+            >
+                {isShowSidebar ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            </button>
+
+            <button
+                onClick={toggleSidebar}
+                className='trigger mobile'
+                data-test-id='sider-switch-mobile'
             >
                 {isShowSidebar ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </button>

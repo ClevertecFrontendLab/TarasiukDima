@@ -35,12 +35,18 @@
         z-index: -2;
         padding: 0;
         border: none;
-
         transform: translateY(-50%);
         filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
         cursor: pointer;
-        background: url("./switch_icon.svg") no-repeat center;
         background-size: 100% 100%;
+
+        &.big {
+            background: url("./switch_icon.svg") no-repeat center;
+        }
+
+        &.mobile {
+            display: none;
+        }
 
         svg {
             fill: $grey;
@@ -89,7 +95,15 @@
             width: 32px;
             height: 48px;
             transform: translateY(0);
-            background-image: url(./switch_icon_mobile.svg);
+
+            &.big {
+                display: none;
+            }
+
+            &.mobile {
+                display: block;
+                background-image: url(./switch_icon_mobile.svg);
+            }
         }
 
         a.exit {
