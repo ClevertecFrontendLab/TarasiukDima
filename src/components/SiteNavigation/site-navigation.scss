@@ -1,4 +1,4 @@
-@import '@assets/scss/variables';
+@import "@assets/scss/variables";
 
 ul.navigation {
     width: 100%;
@@ -9,7 +9,7 @@ ul.navigation {
     li.ant-menu-item {
         height: 42px;
         margin-top: 0;
-        padding-left: 18px!important;
+        padding-left: 18px !important;
 
         &:not(:last-child) {
             margin-bottom: 16px;
@@ -18,5 +18,13 @@ ul.navigation {
 
     svg {
         fill: $primary-light-9;
+    }
+}
+
+@media (max-width: 991px) {
+    ul.navigation {
+        li.ant-menu-item {
+            padding-left: 24px !important;
+        }
     }
 }

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { changeShowSidebar } from '@redux/app-reducer';
 import { Button } from 'antd';
@@ -28,7 +28,11 @@ const Sidebar = () => {
             className='sider'
             trigger={null}
         >
-            <button onClick={toggleSidebar} className='trigger'>
+            <button
+                onClick={toggleSidebar}
+                className='trigger'
+                data-test-id='sider-switch-mobile sider-switch'
+            >
                 {isShowSidebar ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </button>
 

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { AndroidFilled, AppleFilled, SettingOutlined } from '@ant-design/icons';
-import { Button, Card, Layout, List, Row } from 'antd';
+import { Button, Card, Layout, List, Row, Space } from 'antd';
 import { Content, Footer, Header } from 'antd/lib/layout/layout';
 import Paragraph from 'antd/lib/typography/Paragraph';
 import Title from 'antd/lib/typography/Title';
@@ -16,8 +16,7 @@ const HomeContent = () => {
                 <Paragraph className='page-layout__header_current-link'>Главная</Paragraph>
 
                 <Title className='page-layout__header_title'>
-                    Приветствуем тебя в CleverFit — приложении, которое поможет тебе добиться своей
-                    мечты!
+                    Приветствуем тебя в CleverFit — приложении, <Space/> которое поможет тебе добиться своей мечты!
                 </Title>
 
                 <Button className='page-layout__header_settings' type='link'>
