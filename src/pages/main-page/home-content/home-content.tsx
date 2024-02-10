@@ -40,7 +40,7 @@ const HomeContent = () => {
                 </Paragraph>
 
                 <List
-                    grid={{ gutter: 16, column: 3 }}
+                    grid={{ gutter: 16, column: 3, xs: 1, }}
                     dataSource={cardsData}
                     className='page-layout__content_cards'
                     renderItem={(item) => (
@@ -54,7 +54,7 @@ const HomeContent = () => {
             </Content>
 
             <Footer className='page-layout__footer'>
-                <Row justify='space-between' align='bottom'>
+                <Row justify='space-between' align='bottom' className='page-layout__footer_line'>
                     <Button type='link' className='page-layout__footer_reviews'>
                         Смотреть отзывы
                     </Button>

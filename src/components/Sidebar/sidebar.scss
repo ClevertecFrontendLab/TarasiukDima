@@ -18,7 +18,7 @@
             right: 0;
             bottom: 0;
             z-index: -1;
-            background-color: $character-light-primary-inverse;
+            background-color: $white;
         }
     }
 
@@ -43,7 +43,7 @@
         background-size: 100% 100%;
 
         svg {
-            fill: $character-light-secondary-45;
+            fill: $grey;
         }
     }
 
@@ -57,11 +57,49 @@
         border: none;
         box-shadow: inset 0 1px 0 0 $character-light-dividers;
         text-align: left;
-        color: $character-light-title-85;
+        color: $black;
         overflow: hidden;
 
         span:nth-child(2) {
             margin-left: 24px;
+        }
+    }
+}
+
+@media (max-width: 575px) {
+    aside.sider {
+       position: fixed;
+       top: 0;
+       left: 0;
+       width: 106px!important;
+       min-width: 106px!important;
+       height: 100%;
+
+       &.ant-layout-sider-collapsed {
+        left: -106px;
+       }
+
+        .sider__logo {
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+
+        .trigger {
+            top: 24px;
+            width: 32px;
+            height: 48px;
+            transform: translateY(0);
+            background-image: url(./switch_icon_mobile.svg);
+        }
+
+        a.exit {
+            svg {
+                display: none;
+            }
+
+            span:nth-child(2) {
+                margin-left: 16px;
+            }
         }
     }
 }

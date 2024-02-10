@@ -3,7 +3,7 @@
 ul.navigation {
     width: 100%;
     font-size: 14px;
-    color: $character-light-title-85;
+    color: $black;
     line-height: 1.3;
 
     li.ant-menu-item {
@@ -25,6 +25,29 @@ ul.navigation {
     ul.navigation {
         li.ant-menu-item {
             padding-left: 24px !important;
+        }
+    }
+}
+
+
+@media (max-width: 575px) {
+    ul.navigation {
+        li.ant-menu-item {
+            padding-left: 8px !important;
+            padding-right: 2px;
+
+            &:not(:last-child) {
+                margin-bottom: 8px;
+            }
+
+            svg {
+                display: none;
+            }
+
+            span {
+                margin: 0;
+                min-width: auto;
+            }
         }
     }
 }
