@@ -1,0 +1,14 @@
+body .home {
+    background: url("@public/img/home_bg.jpg") 50% / cover no-repeat;
+
+    position: relative;
+    z-index: 1;
+
+    &:before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background-image: linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, #fffdfd 100%);
+    }
+}

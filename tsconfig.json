@@ -25,6 +25,7 @@
             "@pages/*": ["./src/pages/*"],
             "@redux/*": ["./src/redux/*"],
             "@types/*": ["./src/types/*"],
+            "@assets/*": ["./src/assets/*"],
             "@utils/*": ["./src/utils/*"]
         },
         "plugins": [

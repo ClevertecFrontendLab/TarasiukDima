@@ -1,0 +1,119 @@
+@import "@assets/scss/variables";
+
+.sider {
+    z-index: 2;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+
+    .ant-layout-sider-children {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+
+        &:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            background-color: $white;
+        }
+    }
+
+    .sider__logo {
+        margin: 30px 0 50px;
+    }
+
+    .trigger {
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        width: 20px;
+        height: 66px;
+        z-index: -2;
+        padding: 0;
+        border: none;
+        transform: translateY(-50%);
+        filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+        cursor: pointer;
+        background-size: 100% 100%;
+
+        &.big {
+            background: url("@public/img/switch_icon.svg") no-repeat center;
+        }
+
+        &.mobile {
+            display: none;
+        }
+
+        svg {
+            fill: $grey;
+        }
+    }
+
+    a.exit {
+        width: 100%;
+        height: auto;
+        margin-top: auto;
+        padding: 12px 18px;
+        padding-top: 12px !important;
+        line-height: 1.3;
+        border: none;
+        box-shadow: inset 0 1px 0 0 $character-light-dividers;
+        text-align: left;
+        color: $black;
+        overflow: hidden;
+
+        span:nth-child(2) {
+            margin-left: 24px;
+        }
+    }
+}
+
+@media (max-width: 575px) {
+    aside.sider {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 106px !important;
+        min-width: 106px !important;
+        height: 100%;
+
+        &.ant-layout-sider-collapsed {
+            left: -106px;
+        }
+
+        .sider__logo {
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+
+        .trigger {
+            top: 24px;
+            width: 32px;
+            height: 48px;
+            transform: translateY(0);
+
+            &.big {
+                display: none;
+            }
+
+            &.mobile {
+                display: block;
+                background-image: url("@public/img/switch_icon_mobile.svg");
+            }
+        }
+
+        a.exit {
+            svg {
+                display: none;
+            }
+
+            span:nth-child(2) {
+                margin-left: 16px;
+            }
+        }
+    }
+}
