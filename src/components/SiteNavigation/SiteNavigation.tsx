@@ -1,16 +1,18 @@
 import { FC, useCallback } from 'react';
 import { Menu, MenuProps } from 'antd';
 import classNames from 'classnames';
-import { CalendarOutlined, ContactsOutlined, HeartFilled, TrophyFilled } from '@ant-design/icons';
+import { HeartFilled, TrophyFilled } from '@ant-design/icons';
 
 import { ROUTES_LINKS } from '@constants/index';
+import CalendarIcon from '@public/img/calendar.svg?react';
+import ProfileIcon from '@public/img/profile.svg?react';
 
 import './site-navigation.scss';
 
 const items: MenuProps['items'] = [
     {
         label: 'Календарь',
-        icon: <CalendarOutlined />,
+        icon: <CalendarIcon />,
         key: '1' + ROUTES_LINKS.calendar,
     },
     {
@@ -25,7 +27,7 @@ const items: MenuProps['items'] = [
     },
     {
         label: 'Профиль',
-        icon: <ContactsOutlined />,
+        icon: <ProfileIcon />,
         key: '4' + ROUTES_LINKS.profile,
     },
 ];

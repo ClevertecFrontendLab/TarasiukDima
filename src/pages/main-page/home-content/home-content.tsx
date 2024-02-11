@@ -16,7 +16,7 @@ const HomeContent = () => {
                 <Paragraph className='page-layout__header_current-link'>Главная</Paragraph>
 
                 <Title className='page-layout__header_title'>
-                    Приветствуем тебя в CleverFit — приложении, <Space/> которое поможет тебе добиться своей мечты!
+                    Приветствуем тебя <br/> в CleverFit — приложении, которое поможет тебе добиться своей мечты!
                 </Title>
 
                 <Button className='page-layout__header_settings' type='link'>
@@ -35,7 +35,7 @@ const HomeContent = () => {
                 </Paragraph>
 
                 <Paragraph className='page-layout__content_item about-item'>
-                    CleverFit — это не просто приложение, а твой личный помощник в мире фитнеса. Не
+                    CleverFit — это не просто приложение, а твой личный помощник<br/> в мире фитнеса. Не
                     откладывай на завтра — начни тренироваться уже сегодня!
                 </Paragraph>
 

@@ -41,7 +41,7 @@
         background-size: 100% 100%;
 
         &.big {
-            background: url("./switch_icon.svg") no-repeat center;
+            background: url("@public/img/switch_icon.svg") no-repeat center;
         }
 
         &.mobile {
@@ -74,16 +74,16 @@
 
 @media (max-width: 575px) {
     aside.sider {
-       position: fixed;
-       top: 0;
-       left: 0;
-       width: 106px!important;
-       min-width: 106px!important;
-       height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 106px !important;
+        min-width: 106px !important;
+        height: 100%;
 
-       &.ant-layout-sider-collapsed {
-        left: -106px;
-       }
+        &.ant-layout-sider-collapsed {
+            left: -106px;
+        }
 
         .sider__logo {
             margin-top: 0;
@@ -102,7 +102,7 @@
 
             &.mobile {
                 display: block;
-                background-image: url(./switch_icon_mobile.svg);
+                background-image: url("@public/img/switch_icon_mobile.svg");
             }
         }
 

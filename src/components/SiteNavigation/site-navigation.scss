@@ -23,7 +23,7 @@ ul.navigation {
 
 @media (max-width: 991px) {
     ul.navigation {
-        li.ant-menu-item {
+        &.ant-menu-inline-collapsed li.ant-menu-item{
             padding-left: 24px !important;
         }
     }
@@ -32,6 +32,10 @@ ul.navigation {
 
 @media (max-width: 575px) {
     ul.navigation {
+        &.ant-menu-inline-collapsed li.ant-menu-item{
+            padding-left: 8px !important;
+        }
+
         li.ant-menu-item {
             padding-left: 8px !important;
             padding-right: 2px;

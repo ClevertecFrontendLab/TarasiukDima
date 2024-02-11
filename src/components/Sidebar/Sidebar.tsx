@@ -3,7 +3,11 @@ import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { changeShowSidebar } from '@redux/app-reducer';
 import { Button } from 'antd';
 import Sider from 'antd/lib/layout/Sider';
-import { MenuFoldOutlined, MenuUnfoldOutlined, LogoutOutlined } from '@ant-design/icons';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+
+import ExitIcon from '@public/img/exit.svg?react';
+
+
 
 import { Logo, SiteNavigation } from '@components/index';
 import { ROUTES_LINKS } from '@constants/index';
@@ -49,7 +53,7 @@ const Sidebar = () => {
             <SiteNavigation inlineCollapsed={isShowSidebar} />
 
             <Button href={ROUTES_LINKS.logout} className='exit'>
-                <LogoutOutlined />
+                <ExitIcon />
 
                 {isShowSidebar ? '' : 'Выход'}
             </Button>

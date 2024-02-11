@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
-import { CalendarTwoTone, ContactsOutlined, CalendarOutlined } from '@ant-design/icons';
+import { HeartFilled } from '@ant-design/icons';
+import CalendarIcon from '@public/img/calendar.svg?react';
+import ProfileIcon from '@public/img/profile.svg?react';
 import { ROUTES_LINKS } from '@constants/index';
 
 export const listData = [
@@ -14,7 +16,7 @@ export const cardsData = [
         title: 'Расписать тренировки',
         link: (
             <Link to={ROUTES_LINKS.training}>
-                <CalendarOutlined /> Тренировки
+                <HeartFilled /> Тренировки
             </Link>
         ),
     },
@@ -22,7 +24,7 @@ export const cardsData = [
         title: 'Назначить календарь',
         link: (
             <Link to={ROUTES_LINKS.calendar}>
-                <CalendarTwoTone color='#061178' /> Календарь
+                <CalendarIcon /> Календарь
             </Link>
         ),
     },
@@ -31,7 +33,7 @@ export const cardsData = [
         title: 'Заполнить профиль',
         link: (
             <Link to={ROUTES_LINKS.profile}>
-                <ContactsOutlined /> Профиль
+                <ProfileIcon /> Профиль
             </Link>
         ),
     },
