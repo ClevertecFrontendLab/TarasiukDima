@@ -14,8 +14,6 @@ import './index.scss';
 ConfigProvider.config({
     theme: {
         primaryColor: '#262626',
-        // colorSecondary: '#10239E',
-        // colorLink: '#10239E',
     },
 });
 
