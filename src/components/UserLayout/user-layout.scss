@@ -11,4 +11,8 @@ body .user-layout {
         padding: 90px 16px;
         justify-content: center;
     }
+
+    .user-layout__content {
+        background-color: $white;
+    }
 }

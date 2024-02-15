@@ -5,7 +5,7 @@ interface IAppState {
 }
 
 const appStateInit: IAppState = {
-    isAuth: true,
+    isAuth: false,
 };
 
 const userSlice = createSlice({

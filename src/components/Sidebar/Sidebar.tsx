@@ -6,11 +6,7 @@ import Sider from 'antd/lib/layout/Sider';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 
 import ExitIcon from '@public/img/exit.svg?react';
-
-
-
 import { Logo, SiteNavigation } from '@components/index';
-import { ROUTES_LINKS } from '@constants/index';
 
 import './sidebar.scss';
 
@@ -32,11 +28,7 @@ const Sidebar = () => {
             className='sider'
             trigger={null}
         >
-            <button
-                onClick={toggleSidebar}
-                className='trigger big'
-                data-test-id='sider-switch'
-            >
+            <button onClick={toggleSidebar} className='trigger big' data-test-id='sider-switch'>
                 {isShowSidebar ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </button>
 

@@ -1,15 +1,19 @@
 @import "@assets/scss/variables";
 
-.content-block {
+.form-content {
     width: 539px;
     padding: 64px 85.5px;
-    background-color: $white;
 
     .content-block__logo {
         width: 100%;
         max-width: 309px;
         height: 76px;
         margin: 0 auto 48px;
+    }
+
+    .form-content__title {
+        text-align: center;
+        margin-bottom: 32px;
     }
 
     .auth-buttons {
@@ -48,6 +52,35 @@
         }
     }
 
+    .form__email{
+        margin-bottom: 32px;
+    }
+
+    .ant-form-item {
+        &:not(.password-item) {
+            .ant-form-item-extra {
+                opacity: 0;
+            }
+        }
+
+        &.ant-form-item-has-error {
+            .ant-form-item-extra {
+                color: $red;
+                opacity: 1;
+            }
+        }
+
+        .ant-input-lg {
+            font-size: 14px;
+        }
+
+        .ant-form-item-explain-error,
+        .ant-form-item-extra {
+            font-size: 12px;
+        }
+    }
+
+
     .remember-item {
         margin-bottom: 0;
     }
@@ -55,6 +88,7 @@
     .btn {
         width: 100%;
         height: 40px;
+        font-size: 16px;
     }
 
     form .ant-form-item {
@@ -62,7 +96,7 @@
     }
 
     .form__submit {
-        margin-top: 24px;
+        margin-top: 32px;
         margin-bottom: 16px;
         color: $white;
         background-color: $primary;
@@ -70,7 +104,7 @@
 }
 
 @media (max-width: 575px) {
-    .content-block {
+    .form-content {
         width: 100%;
         padding: 32px 16px;
 

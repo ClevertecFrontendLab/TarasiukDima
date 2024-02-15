@@ -9,6 +9,8 @@ export const ROUTES_LINKS = {
     changePassword: '/auth/change-password',
     confirmEmail: '/auth/confirm-email',
 
+    resultAll: '/result/:variant',
+
     resultSuccess: '/result/success',
     resultError: '/result/error',
 

@@ -28,9 +28,6 @@ ConfigProvider.config({
 
 const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
-{
-    /* <Router history={history}> */
-}
 
 root.render(
     <React.StrictMode>
@@ -47,7 +44,7 @@ root.render(
                             element={<ChangePasswordPage />}
                         />
                         <Route path={ROUTES_LINKS.confirmEmail} element={<ConfirmEmailPage />} />
-                        <Route path={ROUTES_LINKS.resultError} element={<ResultPage />} />
+                        <Route path={ROUTES_LINKS.resultAll} element={<ResultPage />} />
                     </Routes>
                 </Router>
             </ConfigProvider>

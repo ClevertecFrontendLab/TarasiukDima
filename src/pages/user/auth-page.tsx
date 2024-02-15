@@ -1,25 +1,88 @@
-import { Button, Checkbox, Col, Form, Input, Row } from 'antd';
-
-import { Logo } from '@components/index';
-import { UserContentBlock } from './UserContentBlock';
+import { useCallback, useState } from 'react';
+import { useAppSelector } from '@hooks/index';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { Button, Checkbox, Form, Input, Row } from 'antd';
+import { EyeInvisibleOutlined, EyeTwoTone, GooglePlusOutlined } from '@ant-design/icons';
+import { UserLayout, Logo } from '@components/index';
 import { AuthNavButtons } from './AuthNavButtons';
+import { ROUTES_LINKS } from '@constants/index';
+import { validateEmail, validatePassword } from '@utils/index';
 
 import './auth.scss';
-import { EyeInvisibleOutlined, EyeTwoTone, GooglePlusOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
-import { ROUTES_LINKS } from '@constants/index';
+
+interface IFormFields {
+    email: string;
+    password: string;
+    remember: string;
+}
 
 export const AuthPage: React.FC = () => {
-    const onFinish = (values: any) => {
+    const navigate = useNavigate();
+    const [submitDisabled, setSubmitDisabled] = useState<boolean>(false);
+    const [email, setEmail] = useState<string>('');
+    const [isEmailError, setIsEmailError] = useState<boolean>(false);
+
+    const [isPasswordError, setIsPasswordError] = useState<boolean>(false);
+
+    const { isAuth } = useAppSelector((state) => state.user);
+
+    const forgotPasswordHandler = useCallback(() => {
+        if (!email || isEmailError) {
+            setIsEmailError(true);
+            return;
+        }
+
+        navigate(ROUTES_LINKS.changePassword);
+    }, [email, isEmailError, navigate]);
+
+    const emailChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback(
+        (event) => {
+            const value = event?.target?.value || '';
+            const isValidEmail = validateEmail(value);
+
+            setEmail(value);
+            setIsEmailError(!isValidEmail);
+            setSubmitDisabled(!isValidEmail || isPasswordError);
+        },
+        [isPasswordError],
+    );
+
+    const passwordChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback(
+        (event) => {
+            const value = event?.target?.value || '';
+            const isValidPassword = validatePassword(value);
+
+            setIsPasswordError(!isValidPassword);
+            setSubmitDisabled(isEmailError || !isValidPassword);
+        },
+        [isEmailError],
+    );
+
+    if (isAuth) {
+        return <Navigate to={ROUTES_LINKS.home} replace={true} />;
+    }
+
+    const onSubmit = (values: IFormFields) => {
+        const email = values.email || '';
+        if (!validateEmail(email)) {
+            setIsEmailError(true);
+            setSubmitDisabled(true);
+            return;
+        }
+
+        const password = values.password || '';
+        if (!validatePassword(password)) {
+            setIsPasswordError(true);
+            setSubmitDisabled(true);
+            return;
+        }
+        const remember = values.remember || false;
+
         console.log('Success:', values);
     };
 
-    const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
-    };
-
     return (
-        <UserContentBlock>
+        <UserLayout className='form-content'>
             <Logo className='content-block__logo' variantIcon='sized' />
 
             <AuthNavButtons active='auth' />
@@ -27,23 +90,28 @@ export const AuthPage: React.FC = () => {
             <Form
                 name='auth'
                 initialValues={{ remember: true }}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
+                onFinish={onSubmit}
                 autoComplete='off'
+                size='large'
+                noValidate
             >
                 <Form.Item
+                    validateStatus={isEmailError ? 'error' : 'success'}
+                    className='form__email'
                     name='email'
-                    rules={[{ required: true, message: 'Почта невалидная!' }]}
                 >
-                    <Input addonBefore='e-mail:' defaultValue='' />
+                    <Input addonBefore='e-mail:' type='email' onChange={emailChangeHandler} />
                 </Form.Item>
 
                 <Form.Item
+                    validateStatus={isPasswordError ? 'error' : 'success'}
+                    extra='Пароль не менее 8 символов, с заглавной буквой и цифрой'
                     name='password'
-                    rules={[{ required: true, message: 'Пароль не менее 8 символов, с заглавной буквой и цифрой!' }]}
+                    className='password-item'
                 >
                     <Input.Password
                         placeholder='Пароль'
+                        onChange={passwordChangeHandler}
                         iconRender={(visible) =>
                             visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                         }
@@ -55,18 +123,22 @@ export const AuthPage: React.FC = () => {
                         <Checkbox>Запомнить меня</Checkbox>
                     </Form.Item>
 
-                    <Link to={ROUTES_LINKS.changePassword}>Забыли пароль?</Link>
+                    <Button onClick={forgotPasswordHandler} type='link' color='primaryColor'>
+                        Забыли пароль?
+                    </Button>
                 </Row>
 
-                <Button htmlType='submit' className='btn form__submit'>
+                <Button htmlType='submit' className='btn form__submit' disabled={submitDisabled}>
                     Войти
                 </Button>
             </Form>
 
             <Button type='default' className='btn'>
                 <GooglePlusOutlined />
-                Войти через Google
+                Регистрация через Google
             </Button>
-        </UserContentBlock>
+
+            {/* <Spin size="large" /> */}
+        </UserLayout>
     );
 };

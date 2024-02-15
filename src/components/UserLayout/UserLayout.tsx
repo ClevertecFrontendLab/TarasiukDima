@@ -1,12 +1,26 @@
 import { FC, ReactNode } from 'react';
+import classNames from 'classnames';
 import { Layout, Space } from 'antd';
 
 import './user-layout.scss';
 
-const UserLayout: FC<{ children: ReactNode }> = ({ children }) => {
+interface IUserLayoutProps {
+    children: ReactNode;
+    className?: string;
+}
+
+const UserLayout: FC<IUserLayoutProps> = ({ children, className = '' }) => {
     return (
-        <Layout className='user-layout'>
-            <Space align='center' direction="vertical" className='user-layout__wrapper'>{children}</Space>
+        <Layout className={'user-layout'}>
+            <Space align='center' direction='vertical' className='user-layout__wrapper'>
+                <div
+                    className={classNames('user-layout__content', {
+                        [className]: className,
+                    })}
+                >
+                    {children}
+                </div>
+            </Space>
         </Layout>
     );
 };
