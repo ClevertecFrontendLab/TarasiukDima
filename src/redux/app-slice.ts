@@ -9,7 +9,7 @@ const appStateInit: IAppState = {
 };
 
 const appSlice = createSlice({
-    name: 'test',
+    name: 'app',
     initialState: appStateInit,
     reducers: {
         changeShowSidebar: (state) => {

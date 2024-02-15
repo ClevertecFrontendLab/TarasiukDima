@@ -4,11 +4,12 @@ import classNames from 'classnames';
 import { ROUTES_LINKS } from '@constants/index';
 import LogoBig from './LogoBig.svg?react';
 import LogoSmall from './LogoSmall.svg?react';
+import LogoSized from './LogoSized.svg?react';
 
 import './logo.scss';
 
 interface ILogoProps {
-    variantIcon?: 'small' | 'big';
+    variantIcon?: 'small' | 'big' | 'sized';
     className?: string;
 }
 
@@ -22,7 +23,13 @@ const Logo: FC<ILogoProps> = memo(({ variantIcon = 'big', className = '' }) => {
             })}
             aria-label='Логотип фирмы Cleverfit.'
         >
-            {variantIcon === 'big' ? <LogoBig /> : <LogoSmall />}
+            {variantIcon === 'big' ? (
+                <LogoBig />
+            ) : variantIcon === 'small' ? (
+                <LogoSmall />
+            ) : (
+                <LogoSized />
+            )}
         </Link>
     );
 });

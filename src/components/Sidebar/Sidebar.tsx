@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
-import { changeShowSidebar } from '@redux/app-reducer';
+import { changeShowSidebar } from '@redux/app-slice';
 import { Button } from 'antd';
 import Sider from 'antd/lib/layout/Sider';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
@@ -52,7 +52,7 @@ const Sidebar = () => {
 
             <SiteNavigation inlineCollapsed={isShowSidebar} />
 
-            <Button href={ROUTES_LINKS.logout} className='exit'>
+            <Button className='exit'>
                 <ExitIcon />
 
                 {isShowSidebar ? '' : 'Выход'}

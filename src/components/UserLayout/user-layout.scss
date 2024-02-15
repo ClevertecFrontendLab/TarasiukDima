@@ -1,0 +1,14 @@
+@import "@assets/scss/variables";
+
+body .user-layout {
+    background-image: url("/public/img/user_bg.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+
+    .user-layout__wrapper {
+        min-height: 100vh;
+        padding: 90px 16px;
+        justify-content: center;
+    }
+}
