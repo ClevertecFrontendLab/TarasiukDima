@@ -13,7 +13,7 @@ interface ILogoProps {
     className?: string;
 }
 
-const Logo: FC<ILogoProps> = memo(({ variantIcon = 'big', className = '' }) => {
+export const Logo: FC<ILogoProps> = memo(({ variantIcon = 'big', className = '' }) => {
     return (
         <Link
             to={ROUTES_LINKS.home}
@@ -33,5 +33,3 @@ const Logo: FC<ILogoProps> = memo(({ variantIcon = 'big', className = '' }) => {
         </Link>
     );
 });
-
-export default Logo;

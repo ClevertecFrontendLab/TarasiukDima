@@ -3,9 +3,9 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import { HistoryRouter as Router } from 'redux-first-history/rr6';
+import { history, store } from '@redux/configure-store';
 import { ConfigProvider } from 'antd';
 
-import { history, store } from '@redux/configure-store';
 import {
     MainPage,
     AuthPage,
@@ -14,7 +14,8 @@ import {
     ConfirmEmailPage,
     ResultPage,
 } from './pages';
-import { ROUTES_LINKS } from './constants';
+import { NotAuth, RequiredAuth } from '@components/index';
+import { ROUTES_LINKS } from '@constants/index';
 
 import 'antd/dist/antd.min.css';
 import 'normalize.css';
@@ -35,10 +36,31 @@ root.render(
             <ConfigProvider>
                 <Router history={history}>
                     <Routes>
-                        <Route path={ROUTES_LINKS.home} element={<MainPage />} />
+                        <Route
+                            path={ROUTES_LINKS.home}
+                            element={
+                                <RequiredAuth redirect={ROUTES_LINKS.auth}>
+                                    <MainPage />
+                                </RequiredAuth>
+                            }
+                        />
 
-                        <Route path={ROUTES_LINKS.auth} element={<AuthPage />} />
-                        <Route path={ROUTES_LINKS.registration} element={<RegistrationPage />} />
+                        <Route
+                            path={ROUTES_LINKS.auth}
+                            element={
+                                <NotAuth>
+                                    <AuthPage />
+                                </NotAuth>
+                            }
+                        />
+                        <Route
+                            path={ROUTES_LINKS.registration}
+                            element={
+                                <NotAuth>
+                                    <RegistrationPage />
+                                </NotAuth>
+                            }
+                        />
                         <Route
                             path={ROUTES_LINKS.changePassword}
                             element={<ChangePasswordPage />}

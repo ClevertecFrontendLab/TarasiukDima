@@ -1,12 +1,12 @@
-import { useCallback, useState } from 'react';
-import { useAppSelector } from '@hooks/index';
-import { Navigate } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRegistrationMutation, IRequestAnswer } from '@services/index';
 import { Button, Form, Input } from 'antd';
+import { validateEmail, validatePassword } from '@utils/index';
 import { EyeInvisibleOutlined, EyeTwoTone, GooglePlusOutlined } from '@ant-design/icons';
-import {UserLayout, Logo} from '@components/index';
+import { UserLayout, Logo } from '@components/index';
 import { AuthNavButtons } from './AuthNavButtons';
 import { ROUTES_LINKS } from '@constants/index';
-import { validateEmail, validatePassword } from '@utils/index';
 
 import './auth.scss';
 
@@ -17,15 +17,45 @@ interface IFormFields {
 }
 
 export const RegistrationPage: React.FC = () => {
+    const navigate = useNavigate();
     const [submitDisabled, setSubmitDisabled] = useState<boolean>(false);
     const [isEmailError, setIsEmailError] = useState<boolean>(false);
-
     const [password, setPassword] = useState<string>('');
     const [isPasswordError, setIsPasswordError] = useState<boolean>(false);
-
     const [isPasswordRepeatError, setIsPasswordRepeatError] = useState<boolean>(false);
 
-    const { isAuth } = useAppSelector((state) => state.user);
+    const [
+        registrationUser,
+        {
+            isLoading: isRegistrationLoading,
+            isError: isRegistrationError,
+            isSuccess: isRegistrationSuccess,
+            data: regResponseData,
+            error: regResponseErrorData,
+        },
+    ] = useRegistrationMutation();
+
+    useEffect(() => {
+        if (isRegistrationSuccess) {
+            navigate(ROUTES_LINKS.resultSuccess, {
+                state: regResponseData,
+            });
+        }
+    }, [isRegistrationSuccess, navigate, regResponseData]);
+
+    useEffect(() => {
+        if (isRegistrationError) {
+            let linkToRedirect = ROUTES_LINKS.resultError;
+
+            if ((regResponseErrorData as IRequestAnswer)?.data?.statusCode === 409) {
+                linkToRedirect = ROUTES_LINKS.resultErrorUserExist;
+            }
+
+            navigate(linkToRedirect, {
+                state: regResponseErrorData,
+            });
+        }
+    }, [isRegistrationError, navigate, regResponseErrorData]);
 
     const emailChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback(
         (event) => {
@@ -59,37 +89,41 @@ export const RegistrationPage: React.FC = () => {
         [password, isEmailError, isPasswordError],
     );
 
-    if (isAuth) {
-        return <Navigate to={ROUTES_LINKS.home} replace={true} />;
-    }
-
-    const onSubmit = (values: IFormFields) => {
+    const onSubmit = async (values: IFormFields) => {
+        let errorExist = false;
         const email = values.email || '';
         if (!validateEmail(email)) {
+            errorExist = true;
             setIsEmailError(true);
             setSubmitDisabled(true);
-            return;
         }
 
         const password = values.password || '';
         if (!validatePassword(password)) {
+            errorExist = true;
             setIsPasswordError(true);
             setSubmitDisabled(true);
-            return;
         }
 
         const password2 = values.password2 || '';
-        if (password !== password2) {
+        if (!password2 || password !== password2) {
+            errorExist = true;
             setIsPasswordRepeatError(true);
             setSubmitDisabled(true);
+        }
+
+        if (errorExist) {
             return;
         }
 
-        console.log('Success:', values);
+        registrationUser({
+            email,
+            password,
+        });
     };
 
     return (
-        <UserLayout className='form-content'>
+        <UserLayout className='form-content' showSpinner={isRegistrationLoading}>
             <Logo className='content-block__logo' variantIcon='sized' />
 
             <AuthNavButtons active='register' />
@@ -98,7 +132,7 @@ export const RegistrationPage: React.FC = () => {
                 name='register'
                 initialValues={{ remember: true }}
                 onFinish={onSubmit}
-                autoComplete='off'
+                autoComplete='on'
                 size='large'
                 noValidate
             >
@@ -148,8 +182,6 @@ export const RegistrationPage: React.FC = () => {
                 <GooglePlusOutlined />
                 Регистрация через Google
             </Button>
-
-            {/* <Spin size="large" /> */}
         </UserLayout>
     );
 };

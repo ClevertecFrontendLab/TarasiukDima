@@ -20,6 +20,5 @@ const appSlice = createSlice({
 
 const { actions, reducer } = appSlice;
 
-export type TChangeShowSidebar = typeof actions.changeShowSidebar.type;
 export const { changeShowSidebar } = actions;
 export { reducer as appReducer };

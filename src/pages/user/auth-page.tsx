@@ -1,12 +1,15 @@
 import { useCallback, useState } from 'react';
-import { useAppSelector } from '@hooks/index';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useLoginMutation } from '@services/index';
+import { useAppDispatch } from '@hooks/index';
+import { setToken } from '@redux/user-slice';
 import { Button, Checkbox, Form, Input, Row } from 'antd';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { EyeInvisibleOutlined, EyeTwoTone, GooglePlusOutlined } from '@ant-design/icons';
 import { UserLayout, Logo } from '@components/index';
 import { AuthNavButtons } from './AuthNavButtons';
-import { ROUTES_LINKS } from '@constants/index';
-import { validateEmail, validatePassword } from '@utils/index';
+import { ROUTES_LINKS, TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
+import { setLocalStorageItem, validateEmail, validatePassword } from '@utils/index';
 
 import './auth.scss';
 
@@ -18,13 +21,14 @@ interface IFormFields {
 
 export const AuthPage: React.FC = () => {
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const [login, { isLoading: isLoginLoading }] = useLoginMutation();
+
     const [submitDisabled, setSubmitDisabled] = useState<boolean>(false);
     const [email, setEmail] = useState<string>('');
     const [isEmailError, setIsEmailError] = useState<boolean>(false);
-
     const [isPasswordError, setIsPasswordError] = useState<boolean>(false);
-
-    const { isAuth } = useAppSelector((state) => state.user);
+    const [rememberMe, setRememberMe] = useState<boolean>(false);
 
     const forgotPasswordHandler = useCallback(() => {
         if (!email || isEmailError) {
@@ -58,42 +62,93 @@ export const AuthPage: React.FC = () => {
         [isEmailError],
     );
 
-    if (isAuth) {
-        return <Navigate to={ROUTES_LINKS.home} replace={true} />;
-    }
+    const rememberChangeHandler = useCallback((event: CheckboxChangeEvent) => {
+        const value = !!event?.target?.value || false;
+        setRememberMe(value);
+    }, []);
 
-    const onSubmit = (values: IFormFields) => {
-        const email = values.email || '';
-        if (!validateEmail(email)) {
-            setIsEmailError(true);
-            setSubmitDisabled(true);
-            return;
-        }
+    const saveLoginUserData = useCallback(
+        (token: string) => {
+            dispatch(setToken(token));
 
-        const password = values.password || '';
-        if (!validatePassword(password)) {
-            setIsPasswordError(true);
-            setSubmitDisabled(true);
-            return;
-        }
-        const remember = values.remember || false;
+            if (rememberMe) {
+                setLocalStorageItem(TOKEN_AUTH_LOCALSTORAGE, token);
+            }
 
-        console.log('Success:', values);
-    };
+            navigate(ROUTES_LINKS.home);
+        },
+        [dispatch, rememberMe, navigate],
+    );
+
+    const loginUser = useCallback(
+        async (email: string, password: string, remember: boolean) => {
+            const loginResult = await login({ email, password });
+
+            console.log('loginResult', loginResult);
+
+            if ('error' in loginResult) {
+                navigate(ROUTES_LINKS.resultErrorLogin, {
+                    state: {
+                        from: 'auth',
+                    },
+                });
+
+                return;
+            }
+
+            const token = loginResult.data?.accessToken || '';
+
+            saveLoginUserData(token);
+        },
+        [login, navigate, saveLoginUserData],
+    );
+
+    const onSubmit = useCallback(
+        async (values: IFormFields) => {
+            let errorExist = false;
+
+            const email = values.email || '';
+            if (!validateEmail(email)) {
+                setIsEmailError(true);
+                setSubmitDisabled(true);
+                errorExist = true;
+            }
+
+            const password = values.password || '';
+            if (!validatePassword(password)) {
+                setIsPasswordError(true);
+                setSubmitDisabled(true);
+                errorExist = true;
+            }
+
+            if (errorExist) {
+                return;
+            }
+
+            const remember = !!values.remember || false;
+
+            await loginUser(email, password, remember);
+        },
+        [loginUser],
+    );
+
+    const googleLoginHandler = useCallback(async () => {
+        console.log('googleLoginHandler');
+    }, []);
 
     return (
-        <UserLayout className='form-content'>
+        <UserLayout className='form-content' showSpinner={isLoginLoading}>
             <Logo className='content-block__logo' variantIcon='sized' />
 
             <AuthNavButtons active='auth' />
 
             <Form
                 name='auth'
-                initialValues={{ remember: true }}
+                initialValues={{ remember: rememberMe }}
                 onFinish={onSubmit}
-                autoComplete='off'
+                autoComplete='on'
                 size='large'
-                noValidate
+                // noValidate
             >
                 <Form.Item
                     validateStatus={isEmailError ? 'error' : 'success'}
@@ -107,7 +162,6 @@ export const AuthPage: React.FC = () => {
                     validateStatus={isPasswordError ? 'error' : 'success'}
                     extra='Пароль не менее 8 символов, с заглавной буквой и цифрой'
                     name='password'
-                    className='password-item'
                 >
                     <Input.Password
                         placeholder='Пароль'
@@ -120,10 +174,15 @@ export const AuthPage: React.FC = () => {
 
                 <Row justify='space-between' align='middle'>
                     <Form.Item name='remember' valuePropName='checked' className='remember-item'>
-                        <Checkbox>Запомнить меня</Checkbox>
+                        <Checkbox onChange={rememberChangeHandler}>Запомнить меня</Checkbox>
                     </Form.Item>
 
-                    <Button onClick={forgotPasswordHandler} type='link' color='primaryColor'>
+                    <Button
+                        onClick={forgotPasswordHandler}
+                        type='link'
+                        color='primaryColor'
+                        className='forgot-btn'
+                    >
                         Забыли пароль?
                     </Button>
                 </Row>
@@ -133,12 +192,10 @@ export const AuthPage: React.FC = () => {
                 </Button>
             </Form>
 
-            <Button type='default' className='btn'>
+            <Button type='default' className='btn' onClick={googleLoginHandler}>
                 <GooglePlusOutlined />
                 Регистрация через Google
             </Button>
-
-            {/* <Spin size="large" /> */}
         </UserLayout>
     );
 };

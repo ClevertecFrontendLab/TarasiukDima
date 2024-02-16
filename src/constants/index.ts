@@ -23,3 +23,6 @@ export const ROUTES_LINKS = {
     resultErrorChangePassword: '/result/error-change-password',
     resultSuccessChangePassword: '/result/success-change-password',
 };
+
+export const serviceURL = 'https://marathon-api.clevertec.ru';
+export const TOKEN_AUTH_LOCALSTORAGE = 'agkdh';

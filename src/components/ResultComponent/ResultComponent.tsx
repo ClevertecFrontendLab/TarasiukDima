@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Result } from 'antd';
-import UserLayout from '@components/UserLayout';
 import { ResultStatusType } from 'antd/lib/result';
+import { UserLayout } from '@components/index';
 
 import './result.scss';
 
