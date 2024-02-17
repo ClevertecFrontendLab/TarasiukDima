@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@hooks/index';
+import { setEmail, setPassword } from '@redux/user-slice';
 import { useNavigate } from 'react-router-dom';
-import { useRegistrationMutation, IRequestAnswer } from '@services/index';
+import { useRegistrationMutation, IServerErrorResponse } from '@services/index';
 import { Button, Form, Input } from 'antd';
 import { validateEmail, validatePassword } from '@utils/index';
 import { EyeInvisibleOutlined, EyeTwoTone, GooglePlusOutlined } from '@ant-design/icons';
@@ -18,9 +20,12 @@ interface IFormFields {
 
 export const RegistrationPage: React.FC = () => {
     const navigate = useNavigate();
-    const [submitDisabled, setSubmitDisabled] = useState<boolean>(false);
+    const dispatch = useAppDispatch();
+    const { email, password } = useAppSelector((state) => state.user);
+    const { previousLocations } = useAppSelector((state) => state.router);
+
+    const [curPassword, setCurPassword] = useState<string>('');
     const [isEmailError, setIsEmailError] = useState<boolean>(false);
-    const [password, setPassword] = useState<string>('');
     const [isPasswordError, setIsPasswordError] = useState<boolean>(false);
     const [isPasswordRepeatError, setIsPasswordRepeatError] = useState<boolean>(false);
 
@@ -35,86 +40,99 @@ export const RegistrationPage: React.FC = () => {
         },
     ] = useRegistrationMutation();
 
+    // got success registration
     useEffect(() => {
-        if (isRegistrationSuccess) {
+        if (isRegistrationSuccess && regResponseData) {
             navigate(ROUTES_LINKS.resultSuccess, {
                 state: regResponseData,
             });
         }
     }, [isRegistrationSuccess, navigate, regResponseData]);
 
+    // get error registration
     useEffect(() => {
-        if (isRegistrationError) {
+        if (isRegistrationError && regResponseErrorData) {
             let linkToRedirect = ROUTES_LINKS.resultError;
 
-            if ((regResponseErrorData as IRequestAnswer)?.data?.statusCode === 409) {
+            if ((regResponseErrorData as IServerErrorResponse).status.toString() === '409') {
                 linkToRedirect = ROUTES_LINKS.resultErrorUserExist;
             }
 
             navigate(linkToRedirect, {
-                state: regResponseErrorData,
+                state: {
+                    ...(regResponseErrorData as IServerErrorResponse),
+                },
             });
         }
     }, [isRegistrationError, navigate, regResponseErrorData]);
 
-    const emailChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback(
-        (event) => {
-            const value = event?.target?.value || '';
-            const isValidEmail = validateEmail(value);
+    // got repeat registration
+    useEffect(() => {
+        if (!previousLocations || previousLocations.length === 0) {
+            return;
+        }
 
-            setIsEmailError(!isValidEmail);
-            setSubmitDisabled(!isValidEmail || isPasswordError || isPasswordRepeatError);
-        },
-        [isPasswordError, isPasswordRepeatError],
-    );
+        const previousPath = previousLocations[previousLocations.length - 1].location?.pathname;
+
+        if (previousPath === ROUTES_LINKS.resultError && email && password) {
+            registrationUser({
+                email,
+                password,
+            });
+        }
+    }, [registrationUser, email, password, previousLocations]);
+
+    const emailChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
+        const value = event?.target?.value || '';
+        const isValidEmail = validateEmail(value);
+        setIsEmailError(!isValidEmail);
+    }, []);
 
     const passwordChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback(
         (event) => {
             const value = event?.target?.value || '';
             const isValidPassword = validatePassword(value);
 
-            setPassword(value);
+            setCurPassword(value);
             setIsPasswordError(!isValidPassword);
-            setSubmitDisabled(isEmailError || !isValidPassword || isPasswordRepeatError);
         },
-        [isEmailError, isPasswordRepeatError],
+        [setCurPassword],
     );
 
     const passwordRepeatChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback(
         (event) => {
             const value = event?.target?.value || '';
-            setIsPasswordRepeatError(password !== value);
-            setSubmitDisabled(isEmailError || isPasswordError || password !== value);
+            setIsPasswordRepeatError(curPassword !== value);
         },
-        [password, isEmailError, isPasswordError],
+        [curPassword],
     );
 
-    const onSubmit = async (values: IFormFields) => {
+    const onSubmit = (values: IFormFields) => {
         let errorExist = false;
         const email = values.email || '';
         if (!validateEmail(email)) {
             errorExist = true;
             setIsEmailError(true);
-            setSubmitDisabled(true);
         }
 
         const password = values.password || '';
         if (!validatePassword(password)) {
             errorExist = true;
             setIsPasswordError(true);
-            setSubmitDisabled(true);
         }
 
         const password2 = values.password2 || '';
         if (!password2 || password !== password2) {
             errorExist = true;
             setIsPasswordRepeatError(true);
-            setSubmitDisabled(true);
         }
 
         if (errorExist) {
             return;
         }
+
+        dispatch(setEmail(email));
+        dispatch(setPassword(password));
 
         registrationUser({
             email,
@@ -141,7 +159,12 @@ export const RegistrationPage: React.FC = () => {
                     className='form__email'
                     name='email'
                 >
-                    <Input addonBefore='e-mail:' type='email' onChange={emailChangeHandler} />
+                    <Input
+                        addonBefore='e-mail:'
+                        type='email'
+                        onChange={emailChangeHandler}
+                        data-test-id='registration-email'
+                    />
                 </Form.Item>
 
                 <Form.Item
@@ -156,6 +179,7 @@ export const RegistrationPage: React.FC = () => {
                         iconRender={(visible) =>
                             visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                         }
+                        data-test-id='registration-password'
                     />
                 </Form.Item>
 
@@ -170,10 +194,15 @@ export const RegistrationPage: React.FC = () => {
                         iconRender={(visible) =>
                             visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                         }
+                        data-test-id='registration-confirm-password'
                     />
                 </Form.Item>
 
-                <Button htmlType='submit' className='btn form__submit' disabled={submitDisabled}>
+                <Button
+                    htmlType='submit'
+                    className='btn form__submit'
+                    data-test-id='registration-submit-button'
+                >
                     Войти
                 </Button>
             </Form>

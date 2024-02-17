@@ -6,4 +6,11 @@ export type {
     IRequestAnswer,
 } from './types';
 
-export { userApi, useLoginMutation, useRegistrationMutation } from './userApi';
+export {
+    userApi,
+    useLoginMutation,
+    useRegistrationMutation,
+    useChangePasswordMutation,
+    useCheckEmailMutation,
+    useConfirmEmailMutation,
+} from './userApi';

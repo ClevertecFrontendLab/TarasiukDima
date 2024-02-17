@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { serviceURL } from '@constants/index';
+import { SERVICE_API_URL } from '@constants/index';
 import { RootState } from '@redux/configure-store';
-import { IRequestAnswer, IServerErrorResponse, IUserRegistration } from './types';
+import { IRequestAnswer, IUserRegistration } from './types';
+import { getCookie } from '@utils/index';
 
 const queryEndpoints = {
     google: 'google',
@@ -15,11 +16,17 @@ const queryEndpoints = {
 export const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: `${serviceURL}/auth/`,
-        prepareHeaders: (headers, { getState }) => {
+        baseUrl: `${SERVICE_API_URL}/auth/`,
+        credentials: 'include',
+        prepareHeaders: (headers, { getState, endpoint }) => {
             const token = (getState() as RootState).user.token;
             if (token) {
                 headers.set('authorization', `Bearer ${token}`);
+            }
+
+            if (endpoint === 'changePassword') {
+                const cookie = getCookie('email_token');
+                headers.set('set-cookie', cookie);
             }
 
             return headers;
@@ -46,10 +53,8 @@ export const userApi = createApi({
                 body,
             }),
             transformResponse: () => {
-                console.log('Good response');
-
                 return {
-                    from: 'registration',
+                    status: 'success',
                     data: {
                         statusCode: 'success',
                         error: '',
@@ -57,17 +62,38 @@ export const userApi = createApi({
                     },
                 };
             },
-            transformErrorResponse: (response, _, arg) => {
-                console.log('Bad response');
-
-                return {
-                    from: 'registration',
-                    data: (response as IServerErrorResponse).data || null,
-                    email: arg.email,
-                };
-            },
+        }),
+        checkEmail: builder.mutation<{ email: string; message: string }, { email: string }>({
+            query: (body) => ({
+                url: queryEndpoints.checkEmail,
+                method: 'POST',
+                body,
+            }),
+        }),
+        confirmEmail: builder.mutation<{ email: string }, { email: string; code: string }>({
+            query: (body) => ({
+                url: queryEndpoints.confirmEmail,
+                method: 'POST',
+                body,
+                credentials: 'include',
+            }),
+        }),
+        changePassword: builder.mutation<{ message: string }, { password: string }>({
+            query: (body) => ({
+                url: queryEndpoints.changePassword,
+                method: 'POST',
+                body: { password: body.password, confirmPassword: body.password },
+                credentials: 'include',
+            }),
         }),
     }),
 });
 
-export const { useLoginMutation, useRegistrationMutation, useLazyLoginGoogleQuery } = userApi;
+export const {
+    useLoginMutation,
+    useRegistrationMutation,
+    useLazyLoginGoogleQuery,
+    useChangePasswordMutation,
+    useCheckEmailMutation,
+    useConfirmEmailMutation,
+} = userApi;

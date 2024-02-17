@@ -1,11 +1,17 @@
-import { Link } from 'react-router-dom';
+import { useCallback } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { ResultComponent } from '@components/index';
-import { IResultItemProps } from './type';
+import { Button } from 'antd';
 import { ROUTES_LINKS } from '@constants/index';
+import { IResultItemProps } from './type';
 
 export const ResultRegistration: React.FC<IResultItemProps> = ({ state }) => {
-    const statusCode = state.data?.statusCode.toString();
-    console.log('location', state);
+    const navigate = useNavigate();
+    const statusCode = state && state.status ? state.status.toString() : '';
+
+    const clickRepeatRegistrationHandler = useCallback(() => {
+        navigate(ROUTES_LINKS.registration);
+    }, [navigate]);
 
     if (statusCode === 'success') {
         return (
@@ -19,7 +25,11 @@ export const ResultRegistration: React.FC<IResultItemProps> = ({ state }) => {
                     </>
                 }
                 extra={
-                    <Link className='link' to={ROUTES_LINKS.auth}>
+                    <Link
+                        className='link'
+                        to={ROUTES_LINKS.auth}
+                        data-test-id='registration-enter-button'
+                    >
                         Войти
                     </Link>
                 }
@@ -34,7 +44,11 @@ export const ResultRegistration: React.FC<IResultItemProps> = ({ state }) => {
                 title='Данные не сохранились'
                 subTitle='Такой e-mail уже записан в системе. Попробуйте зарегистрироваться по другому e-mail.'
                 extra={
-                    <Link className='link' to={ROUTES_LINKS.registration}>
+                    <Link
+                        className='link'
+                        to={ROUTES_LINKS.registration}
+                        data-test-id='registration-back-button'
+                    >
                         Назад к регистрации
                     </Link>
                 }
@@ -53,9 +67,14 @@ export const ResultRegistration: React.FC<IResultItemProps> = ({ state }) => {
                 </>
             }
             extra={
-                <Link className='link' to={ROUTES_LINKS.registration}>
+                <Button
+                    onClick={clickRepeatRegistrationHandler}
+                    type='primary'
+                    className='link'
+                    data-test-id='registration-retry-button'
+                >
                     Повторить
-                </Link>
+                </Button>
             }
         />
     );

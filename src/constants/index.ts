@@ -1,5 +1,5 @@
 export const ROUTES_LINKS = {
-    home: '/',
+    home: '/main',
     calendar: '/#',
     training: '/#',
     progress: '/#',
@@ -24,5 +24,5 @@ export const ROUTES_LINKS = {
     resultSuccessChangePassword: '/result/success-change-password',
 };
 
-export const serviceURL = 'https://marathon-api.clevertec.ru';
+export const SERVICE_API_URL = 'https://marathon-api.clevertec.ru';
 export const TOKEN_AUTH_LOCALSTORAGE = 'agkdh';

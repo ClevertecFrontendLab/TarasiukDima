@@ -1,33 +1,34 @@
-import { Button } from 'antd';
 import { Navigate, useLocation } from 'react-router-dom';
+import { useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { ResultRegistration } from './ResultRegistration';
 import { ResultAuth } from './ResultAuth';
-import { ResultComponent } from '@components/index';
+import { ResultChangePassword } from './ResultChangePassword';
 import { ROUTES_LINKS } from '@constants/index';
+import { IPreviousLocations, getClearLastRoutePath } from '@utils/index';
 
 import './result-page.scss';
 
 export const ResultPage: React.FC = () => {
     const { state } = useLocation();
+    const { previousLocations } = useAppSelector((state) => state.router);
 
-    if (!state || !state.from) {
+    if (!previousLocations || previousLocations.length === 0) {
         return <Navigate to={ROUTES_LINKS.home} replace />;
     }
 
-    if (state.from === 'registration') {
+    const previousPath = getClearLastRoutePath(previousLocations as Array<IPreviousLocations>);
+
+    if (previousPath === ROUTES_LINKS.registration) {
         return <ResultRegistration state={state} />;
     }
 
-    if (state.from === 'auth') {
-        return <ResultAuth />;
+    if (previousPath === ROUTES_LINKS.auth) {
+        return <ResultAuth state={state} />;
     }
 
-    return (
-        <ResultComponent
-            status='500'
-            title='Что-то пошло не так'
-            subTitle='Произошла ошибка, попробуйте отправить форму ещё раз.'
-            extra={<Button type='primary'>Назад</Button>}
-        />
-    );
+    if (previousPath === ROUTES_LINKS.changePassword) {
+        return <ResultChangePassword state={state} />;
+    }
+
+    return <Navigate to={ROUTES_LINKS.home} replace />;
 };

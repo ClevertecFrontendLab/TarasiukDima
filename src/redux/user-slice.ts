@@ -5,11 +5,17 @@ import { getLocalStorageItem } from '@utils/index';
 interface IAppState {
     isAuth: boolean;
     token: string;
+    email: string;
+    password: string;
+    code: string;
 }
 
 const appStateInit: IAppState = {
     isAuth: false,
     token: getLocalStorageItem(TOKEN_AUTH_LOCALSTORAGE),
+    email: '',
+    password: '',
+    code: '',
 };
 
 const userSlice = createSlice({
@@ -22,10 +28,19 @@ const userSlice = createSlice({
         setToken: (state, { payload }: PayloadAction<string>) => {
             state.token = payload;
         },
+        setEmail: (state, { payload }: PayloadAction<string>) => {
+            state.email = payload;
+        },
+        setPassword: (state, { payload }: PayloadAction<string>) => {
+            state.password = payload;
+        },
+        setCode: (state, { payload }: PayloadAction<string>) => {
+            state.code = payload;
+        },
     },
 });
 
 const { actions, reducer } = userSlice;
 
-export const { changeShowSidebar, setToken } = actions;
+export const { changeShowSidebar, setToken, setPassword, setEmail, setCode } = actions;
 export { reducer as userReducer };

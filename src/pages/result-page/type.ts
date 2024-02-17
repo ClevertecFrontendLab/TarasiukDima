@@ -1,5 +1,5 @@
-import { IRequestAnswer } from "@services/index";
+import { IServerErrorResponse } from "@services/index";
 
 export interface IResultItemProps {
-    state: IRequestAnswer
+    state: IServerErrorResponse
 }

@@ -6,6 +6,7 @@ import { UserLayout } from '@components/index';
 import './result.scss';
 
 interface IResultComponentProps {
+    showSpinner?: boolean;
     status?: ResultStatusType;
     title?: ReactNode;
     subTitle?: ReactNode;
@@ -17,9 +18,10 @@ export const ResultComponent: React.FC<IResultComponentProps> = ({
     title = '500',
     subTitle = '',
     extra = '',
+    showSpinner = false,
 }) => {
     return (
-        <UserLayout className='result-content'>
+        <UserLayout className='result-content' showSpinner={showSpinner}>
             <Result status={status} title={title} subTitle={subTitle} extra={extra} />
         </UserLayout>
     );

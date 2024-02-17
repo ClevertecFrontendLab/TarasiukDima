@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { HistoryRouter as Router } from 'redux-first-history/rr6';
 import { history, store } from '@redux/configure-store';
 import { ConfigProvider } from 'antd';
@@ -37,6 +37,11 @@ root.render(
                 <Router history={history}>
                     <Routes>
                         <Route
+                            path={'/'}
+                            element={<Navigate to={ROUTES_LINKS.home} replace={true} />}
+                        />
+
+                        <Route
                             path={ROUTES_LINKS.home}
                             element={
                                 <RequiredAuth redirect={ROUTES_LINKS.auth}>
@@ -67,6 +72,15 @@ root.render(
                         />
                         <Route path={ROUTES_LINKS.confirmEmail} element={<ConfirmEmailPage />} />
                         <Route path={ROUTES_LINKS.resultAll} element={<ResultPage />} />
+
+                        <Route
+                            path='*'
+                            element={
+                                <RequiredAuth redirect={ROUTES_LINKS.auth}>
+                                    <MainPage />
+                                </RequiredAuth>
+                            }
+                        />
                     </Routes>
                 </Router>
             </ConfigProvider>

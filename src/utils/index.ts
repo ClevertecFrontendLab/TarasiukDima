@@ -15,10 +15,10 @@ export const validatePassword = (password: string) => {
     }
 
     const existUpper = Boolean(clearPass.match(/[A-Z]/));
-    const existLower = Boolean(clearPass.match(/[a-z]/));
+    // const existLower = Boolean(clearPass.match(/[a-z]/));
     const existNumber = Boolean(clearPass.match(/[0-9]/));
 
-    if (!existUpper || !existLower || !existNumber) {
+    if (!existUpper || !existNumber) {
         return false;
     }
 
@@ -47,4 +47,29 @@ export const removeLocalStorageItem = (key: string) => {
     } catch (error) {
         console.log('Ошибка удаления из localStorage.', error);
     }
+};
+
+export interface IPreviousLocations {
+    location: { pathname: string };
+}
+export const getClearLastRoutePath = (previousLocations: Array<IPreviousLocations>) => {
+    if (!previousLocations.length) return '';
+
+    return previousLocations[previousLocations.length - 1].location?.pathname.split('/').join('/');
+};
+
+export const getCookie = (key: string) => {
+    const nameCookie = key + '=';
+    const ca = document.cookie.split(';');
+
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1, c.length);
+        }
+
+        if (c.indexOf(nameCookie) == 0) return c.substring(nameCookie.length, c.length);
+    }
+
+    return '';
 };

@@ -13,6 +13,7 @@ export const Spinner: React.FC<ISpinnerProps> = ({ className = '' }) => {
             className={classNames('spinner', {
                 [className]: className,
             })}
+            data-test-id='loader'
         >
             <div className='overflow' />
             <Spin size='large' />

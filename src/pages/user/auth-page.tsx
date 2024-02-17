@@ -1,15 +1,21 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLoginMutation } from '@services/index';
-import { useAppDispatch } from '@hooks/index';
-import { setToken } from '@redux/user-slice';
+import { useAppDispatch, useAppSelector } from '@hooks/index';
+import { setEmail, setToken } from '@redux/user-slice';
+import { IServerErrorResponse, useCheckEmailMutation, useLoginMutation } from '@services/index';
+import {
+    IPreviousLocations,
+    getClearLastRoutePath,
+    setLocalStorageItem,
+    validateEmail,
+    validatePassword,
+} from '@utils/index';
 import { Button, Checkbox, Form, Input, Row } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { EyeInvisibleOutlined, EyeTwoTone, GooglePlusOutlined } from '@ant-design/icons';
 import { UserLayout, Logo } from '@components/index';
 import { AuthNavButtons } from './AuthNavButtons';
 import { ROUTES_LINKS, TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
-import { setLocalStorageItem, validateEmail, validatePassword } from '@utils/index';
 
 import './auth.scss';
 
@@ -22,29 +28,110 @@ interface IFormFields {
 export const AuthPage: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const [login, { isLoading: isLoginLoading }] = useLoginMutation();
+    const { previousLocations } = useAppSelector((state) => state.router);
+    const { email } = useAppSelector((state) => state.user);
 
+    const [
+        loginUser,
+        {
+            isLoading: isLoginLoading,
+            isError: isLoginError,
+            isSuccess: isLoginSuccess,
+            error: logResponseErrorData,
+            data: logResponseData,
+        },
+    ] = useLoginMutation();
+    const [
+        checkEmail,
+        {
+            isLoading: isCheckEmailLoading,
+            isError: isErrorCheckEmail,
+            isSuccess: isSuccessCheckEmail,
+            error: emailErrorData,
+        },
+    ] = useCheckEmailMutation();
+
+    const [curEmail, setCurEmail] = useState<string>('');
     const [submitDisabled, setSubmitDisabled] = useState<boolean>(false);
-    const [email, setEmail] = useState<string>('');
     const [isEmailError, setIsEmailError] = useState<boolean>(false);
     const [isPasswordError, setIsPasswordError] = useState<boolean>(false);
     const [rememberMe, setRememberMe] = useState<boolean>(false);
 
+    // got email check error
+    useEffect(() => {
+        if (isErrorCheckEmail && emailErrorData) {
+            const { status, data } = emailErrorData as IServerErrorResponse;
+
+            if (data && data.message === 'Email не найден' && status.toString() === '404') {
+                navigate(ROUTES_LINKS.resultErrorNoUser, { state: { variantError: 'no-user' } });
+                return;
+            }
+
+            navigate(ROUTES_LINKS.resultErrorEmail, {
+                state: { variantError: 'server' },
+            });
+        }
+    }, [isErrorCheckEmail, emailErrorData, navigate]);
+
+    // got email check success
+    useEffect(() => {
+        if (isSuccessCheckEmail) {
+            navigate(ROUTES_LINKS.confirmEmail);
+            return;
+        }
+    }, [isSuccessCheckEmail, navigate]);
+
+    // got repeat check email
+    useEffect(() => {
+        if (!previousLocations || previousLocations.length === 0) {
+            return;
+        }
+
+        const previousPath = getClearLastRoutePath(previousLocations as Array<IPreviousLocations>);
+
+        if (previousPath === ROUTES_LINKS.resultErrorEmail && email) {
+            checkEmail({ email });
+        }
+    }, [email, previousLocations, checkEmail]);
+
+    // got success Login
+    useEffect(() => {
+        if (isLoginSuccess && logResponseData && 'accessToken' in logResponseData) {
+            const token = logResponseData.accessToken || '';
+
+            if (rememberMe) {
+                setLocalStorageItem(TOKEN_AUTH_LOCALSTORAGE, token);
+            }
+
+            dispatch(setToken(token));
+            navigate(ROUTES_LINKS.home);
+        }
+    }, [dispatch, rememberMe, isLoginSuccess, navigate, logResponseData]);
+
+    // get error Login
+    useEffect(() => {
+        if (isLoginError && logResponseErrorData) {
+            navigate(ROUTES_LINKS.resultErrorLogin);
+            return;
+        }
+    }, [isLoginError, navigate, logResponseErrorData]);
+
     const forgotPasswordHandler = useCallback(() => {
-        if (!email || isEmailError) {
+        if (!curEmail || isEmailError) {
             setIsEmailError(true);
             return;
         }
 
-        navigate(ROUTES_LINKS.changePassword);
-    }, [email, isEmailError, navigate]);
+        dispatch(setEmail(curEmail));
+        checkEmail({ email: curEmail });
+    }, [dispatch, curEmail, checkEmail, isEmailError]);
 
     const emailChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback(
         (event) => {
             const value = event?.target?.value || '';
             const isValidEmail = validateEmail(value);
 
-            setEmail(value);
+            setCurEmail(value);
             setIsEmailError(!isValidEmail);
             setSubmitDisabled(!isValidEmail || isPasswordError);
         },
@@ -63,48 +150,13 @@ export const AuthPage: React.FC = () => {
     );
 
     const rememberChangeHandler = useCallback((event: CheckboxChangeEvent) => {
-        const value = !!event?.target?.value || false;
+        const value = event?.target.checked || false;
+
         setRememberMe(value);
     }, []);
 
-    const saveLoginUserData = useCallback(
-        (token: string) => {
-            dispatch(setToken(token));
-
-            if (rememberMe) {
-                setLocalStorageItem(TOKEN_AUTH_LOCALSTORAGE, token);
-            }
-
-            navigate(ROUTES_LINKS.home);
-        },
-        [dispatch, rememberMe, navigate],
-    );
-
-    const loginUser = useCallback(
-        async (email: string, password: string, remember: boolean) => {
-            const loginResult = await login({ email, password });
-
-            console.log('loginResult', loginResult);
-
-            if ('error' in loginResult) {
-                navigate(ROUTES_LINKS.resultErrorLogin, {
-                    state: {
-                        from: 'auth',
-                    },
-                });
-
-                return;
-            }
-
-            const token = loginResult.data?.accessToken || '';
-
-            saveLoginUserData(token);
-        },
-        [login, navigate, saveLoginUserData],
-    );
-
     const onSubmit = useCallback(
-        async (values: IFormFields) => {
+        (values: IFormFields) => {
             let errorExist = false;
 
             const email = values.email || '';
@@ -125,11 +177,10 @@ export const AuthPage: React.FC = () => {
                 return;
             }
 
-            const remember = !!values.remember || false;
-
-            await loginUser(email, password, remember);
+            dispatch(setEmail(email));
+            loginUser({ email, password });
         },
-        [loginUser],
+        [dispatch, loginUser],
     );
 
     const googleLoginHandler = useCallback(async () => {
@@ -137,7 +188,7 @@ export const AuthPage: React.FC = () => {
     }, []);
 
     return (
-        <UserLayout className='form-content' showSpinner={isLoginLoading}>
+        <UserLayout className='form-content' showSpinner={isLoginLoading || isCheckEmailLoading}>
             <Logo className='content-block__logo' variantIcon='sized' />
 
             <AuthNavButtons active='auth' />
@@ -148,12 +199,12 @@ export const AuthPage: React.FC = () => {
                 onFinish={onSubmit}
                 autoComplete='on'
                 size='large'
-                // noValidate
             >
                 <Form.Item
                     validateStatus={isEmailError ? 'error' : 'success'}
                     className='form__email'
                     name='email'
+                    data-test-id='login-email'
                 >
                     <Input addonBefore='e-mail:' type='email' onChange={emailChangeHandler} />
                 </Form.Item>
@@ -169,12 +220,15 @@ export const AuthPage: React.FC = () => {
                         iconRender={(visible) =>
                             visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                         }
+                        data-test-id='login-password'
                     />
                 </Form.Item>
 
                 <Row justify='space-between' align='middle'>
                     <Form.Item name='remember' valuePropName='checked' className='remember-item'>
-                        <Checkbox onChange={rememberChangeHandler}>Запомнить меня</Checkbox>
+                        <Checkbox onChange={rememberChangeHandler} data-test-id='login-remember'>
+                            Запомнить меня
+                        </Checkbox>
                     </Form.Item>
 
                     <Button
@@ -182,12 +236,18 @@ export const AuthPage: React.FC = () => {
                         type='link'
                         color='primaryColor'
                         className='forgot-btn'
+                        data-test-id='login-forgot-button'
                     >
                         Забыли пароль?
                     </Button>
                 </Row>
 
-                <Button htmlType='submit' className='btn form__submit' disabled={submitDisabled}>
+                <Button
+                    htmlType='submit'
+                    className='btn form__submit'
+                    // disabled={submitDisabled}
+                    data-test-id='login-submit-button'
+                >
                     Войти
                 </Button>
             </Form>

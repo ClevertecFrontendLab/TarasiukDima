@@ -9,6 +9,12 @@ export interface ILoginResponse {
     accessToken: string;
 }
 
+export interface IServerErrorResponse {
+    error: {
+        data: IServerErrorData;
+    };
+}
+
 export interface IServerErrorData {
     statusCode: ResultStatusType | 409;
     error: string;
@@ -21,9 +27,9 @@ export interface IServerErrorResponse {
 }
 
 export interface IRequestAnswer {
-    from: string;
     data: IServerErrorData | null;
     email?: string;
+    password?: string;
 }
 
 export type TServerResponse = IServerErrorResponse | object;

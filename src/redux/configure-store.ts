@@ -8,6 +8,7 @@ import { userApi } from '@services/index';
 
 const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
     history: createBrowserHistory(),
+    savePreviousLocations: 1,
 });
 
 export const store = configureStore({
