@@ -23,7 +23,6 @@ export const ChangePasswordPage: React.FC = () => {
     const { password } = useAppSelector((state) => state.user);
     const { previousLocations } = useAppSelector((state) => state.router);
 
-    const [submitDisabled, setSubmitDisabled] = useState<boolean>(false);
     const [isPasswordError, setIsPasswordError] = useState<boolean>(false);
     const [isPasswordRepeatError, setIsPasswordRepeatError] = useState<boolean>(false);
 
@@ -94,9 +93,8 @@ export const ChangePasswordPage: React.FC = () => {
 
             dispatch(setPassword(value));
             setIsPasswordError(!isValidPassword);
-            setSubmitDisabled(!isValidPassword || isPasswordRepeatError);
         },
-        [dispatch, isPasswordRepeatError],
+        [dispatch],
     );
 
     const passwordRepeatChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback(
@@ -104,9 +102,8 @@ export const ChangePasswordPage: React.FC = () => {
             const value = event?.target?.value || '';
 
             setIsPasswordRepeatError(password !== value);
-            setSubmitDisabled(isPasswordError || password !== value);
         },
-        [password, isPasswordError],
+        [password],
     );
 
     const onSubmit = (values: IFormFields) => {
@@ -115,14 +112,12 @@ export const ChangePasswordPage: React.FC = () => {
         const password = values.password || '';
         if (!validatePassword(password)) {
             setIsPasswordError(true);
-            setSubmitDisabled(true);
             errorExist = true;
         }
 
         const password2 = values.password2 || '';
         if (!password2 || password !== password2) {
             setIsPasswordRepeatError(true);
-            setSubmitDisabled(true);
             errorExist = true;
         }
 
@@ -180,7 +175,6 @@ export const ChangePasswordPage: React.FC = () => {
                 <Button
                     htmlType='submit'
                     className='btn form__submit'
-                    // disabled={submitDisabled}
                     data-test-id='change-submit-button'
                 >
                     Сохранить

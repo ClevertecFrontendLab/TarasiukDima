@@ -52,7 +52,6 @@ export const AuthPage: React.FC = () => {
     ] = useCheckEmailMutation();
 
     const [curEmail, setCurEmail] = useState<string>('');
-    const [submitDisabled, setSubmitDisabled] = useState<boolean>(false);
     const [isEmailError, setIsEmailError] = useState<boolean>(false);
     const [isPasswordError, setIsPasswordError] = useState<boolean>(false);
     const [rememberMe, setRememberMe] = useState<boolean>(false);
@@ -126,17 +125,13 @@ export const AuthPage: React.FC = () => {
         checkEmail({ email: curEmail });
     }, [dispatch, curEmail, checkEmail, isEmailError]);
 
-    const emailChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback(
-        (event) => {
-            const value = event?.target?.value || '';
-            const isValidEmail = validateEmail(value);
+    const emailChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
+        const value = event?.target?.value || '';
+        const isValidEmail = validateEmail(value);
 
-            setCurEmail(value);
-            setIsEmailError(!isValidEmail);
-            setSubmitDisabled(!isValidEmail || isPasswordError);
-        },
-        [isPasswordError],
-    );
+        setCurEmail(value);
+        setIsEmailError(!isValidEmail);
+    }, []);
 
     const passwordChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback(
         (event) => {
@@ -144,9 +139,8 @@ export const AuthPage: React.FC = () => {
             const isValidPassword = validatePassword(value);
 
             setIsPasswordError(!isValidPassword);
-            setSubmitDisabled(isEmailError || !isValidPassword);
         },
-        [isEmailError],
+        [],
     );
 
     const rememberChangeHandler = useCallback((event: CheckboxChangeEvent) => {
@@ -162,14 +156,12 @@ export const AuthPage: React.FC = () => {
             const email = values.email || '';
             if (!validateEmail(email)) {
                 setIsEmailError(true);
-                setSubmitDisabled(true);
                 errorExist = true;
             }
 
             const password = values.password || '';
             if (!validatePassword(password)) {
                 setIsPasswordError(true);
-                setSubmitDisabled(true);
                 errorExist = true;
             }
 
@@ -245,7 +237,6 @@ export const AuthPage: React.FC = () => {
                 <Button
                     htmlType='submit'
                     className='btn form__submit'
-                    // disabled={submitDisabled}
                     data-test-id='login-submit-button'
                 >
                     Войти
