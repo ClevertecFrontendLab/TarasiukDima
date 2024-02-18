@@ -1,25 +1,28 @@
 import { useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
-import { changeShowSidebar } from '@redux/app-reducer';
+import { changeShowSidebar } from '@redux/app-slice';
 import { Button } from 'antd';
 import Sider from 'antd/lib/layout/Sider';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
-
+import { Logo, SiteNavigation } from '@components/index';
 import ExitIcon from '@public/img/exit.svg?react';
 
-
-
-import { Logo, SiteNavigation } from '@components/index';
-import { ROUTES_LINKS } from '@constants/index';
-
 import './sidebar.scss';
+import { setToken } from '@redux/user-slice';
+import { TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
+import { removeLocalStorageItem } from '@utils/index';
 
-const Sidebar = () => {
+export const Sidebar = () => {
     const { isShowSidebar } = useAppSelector((state) => state.app);
     const dispatch = useAppDispatch();
 
     const toggleSidebar = useCallback(() => {
         dispatch(changeShowSidebar());
+    }, [dispatch]);
+
+    const logoutUser = useCallback(() => {
+        dispatch(setToken(''));
+        removeLocalStorageItem(TOKEN_AUTH_LOCALSTORAGE);
     }, [dispatch]);
 
     return (
@@ -32,11 +35,7 @@ const Sidebar = () => {
             className='sider'
             trigger={null}
         >
-            <button
-                onClick={toggleSidebar}
-                className='trigger big'
-                data-test-id='sider-switch'
-            >
+            <button onClick={toggleSidebar} className='trigger big' data-test-id='sider-switch'>
                 {isShowSidebar ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </button>
 
@@ -52,7 +51,7 @@ const Sidebar = () => {
 
             <SiteNavigation inlineCollapsed={isShowSidebar} />
 
-            <Button href={ROUTES_LINKS.logout} className='exit'>
+            <Button className='exit' onClick={logoutUser}>
                 <ExitIcon />
 
                 {isShowSidebar ? '' : 'Выход'}
@@ -60,5 +59,3 @@ const Sidebar = () => {
         </Sider>
     );
 };
-
-export default Sidebar;

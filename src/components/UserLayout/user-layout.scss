@@ -1,0 +1,30 @@
+@import "@assets/scss/variables";
+
+body .user-layout {
+    position: relative;
+    z-index: 1;
+    background-image: url("/public/img/user_bg.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+
+    .user-layout__wrapper {
+        min-height: 100vh;
+        padding: 90px 16px;
+        justify-content: center;
+    }
+
+    .user-layout__content {
+        background-color: $white;
+    }
+}
+
+
+
+@media (max-width: 575px) {
+    body .user-layout {
+        .user-layout__wrapper {
+            align-items: stretch;
+        }
+    }
+}

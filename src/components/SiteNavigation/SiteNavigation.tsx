@@ -1,9 +1,8 @@
 import { FC, useCallback } from 'react';
-import { Menu, MenuProps } from 'antd';
 import classNames from 'classnames';
-import { HeartFilled, TrophyFilled } from '@ant-design/icons';
-
+import { Menu, MenuProps } from 'antd';
 import { ROUTES_LINKS } from '@constants/index';
+import { HeartFilled, TrophyFilled } from '@ant-design/icons';
 import CalendarIcon from '@public/img/calendar.svg?react';
 import ProfileIcon from '@public/img/profile.svg?react';
 
@@ -36,7 +35,10 @@ interface ISiteNavigationProps {
     inlineCollapsed?: boolean;
     className?: string;
 }
-const SiteNavigation: FC<ISiteNavigationProps> = ({ inlineCollapsed = true, className = '' }) => {
+export const SiteNavigation: FC<ISiteNavigationProps> = ({
+    inlineCollapsed = true,
+    className = '',
+}) => {
     const menuItemClick = useCallback(() => {
         console.log('menu click');
     }, []);
@@ -54,5 +56,3 @@ const SiteNavigation: FC<ISiteNavigationProps> = ({ inlineCollapsed = true, clas
         />
     );
 };
-
-export default SiteNavigation;

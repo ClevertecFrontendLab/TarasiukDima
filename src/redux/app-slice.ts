@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 interface IAppState {
     isShowSidebar: boolean;
@@ -9,7 +9,7 @@ const appStateInit: IAppState = {
 };
 
 const appSlice = createSlice({
-    name: 'test',
+    name: 'app',
     initialState: appStateInit,
     reducers: {
         changeShowSidebar: (state) => {
@@ -20,6 +20,5 @@ const appSlice = createSlice({
 
 const { actions, reducer } = appSlice;
 
-export type TChangeShowSidebar = typeof actions.changeShowSidebar.type;
 export const { changeShowSidebar } = actions;
 export { reducer as appReducer };

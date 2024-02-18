@@ -1,5 +1,4 @@
 import { Layout } from 'antd';
-
 import { Sidebar } from '@components/index';
 import HomeContent from './home-content';
 
