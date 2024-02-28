@@ -24,7 +24,7 @@
             "@hooks/*": ["./src/hooks/*"],
             "@pages/*": ["./src/pages/*"],
             "@redux/*": ["./src/redux/*"],
-            "@types/*": ["./src/types/*"],
+            "@app_types/*": ["src/app_types/*"],
             "@assets/*": ["./src/assets/*"],
             "@services/*": ["./src/services/*"],
             "@utils/*": ["./src/utils/*"]

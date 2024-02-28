@@ -3,6 +3,9 @@ export const ROUTES_LINKS = {
     calendar: '/#',
     training: '/#',
     progress: '/#',
+    feedbacks: '/feedbacks',
+
+    // user
     profile: '/#',
     auth: '/auth',
     registration: '/auth/registration',

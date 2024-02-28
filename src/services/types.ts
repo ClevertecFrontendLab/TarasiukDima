@@ -1,5 +1,6 @@
 import { ResultStatusType } from 'antd/lib/result';
 
+// USER
 export interface IUserRegistration {
     email: string;
     password: string;
@@ -33,3 +34,17 @@ export interface IRequestAnswer {
 }
 
 export type TServerResponse = IServerErrorResponse | object;
+
+// FEEDBACK
+export interface IFeedback {
+    fullName: string | null;
+    imageSrc: string | null;
+    message: string | null;
+    rating: number;
+    createdAt: Date;
+}
+
+export interface IFeedbackCreateBody {
+    message: string;
+    rating: number;
+}

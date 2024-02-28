@@ -1,13 +1,12 @@
-import { FC, ReactNode } from 'react';
+import { FC } from 'react';
 import classNames from 'classnames';
 import { Layout, Space } from 'antd';
 import { Spinner } from '@components/index';
+import { IClsAndChildProps } from '@app_types/common';
 
 import './user-layout.scss';
 
-interface IUserLayoutProps {
-    children: ReactNode;
-    className?: string;
+interface IUserLayoutProps extends IClsAndChildProps {
     showSpinner?: boolean;
 }
 

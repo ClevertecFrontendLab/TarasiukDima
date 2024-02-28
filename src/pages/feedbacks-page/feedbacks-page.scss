@@ -1,0 +1,30 @@
+@import "@assets/scss/variables";
+
+body .page-layout {
+    .feedbacks__content {
+    }
+
+    .feedbacks__footer {
+        padding-top: 100px;
+    }
+}
+
+@media (max-width: 991px) {
+    body .page-layout {
+        .feedbacks__content {
+        }
+
+        .feedbacks__footer {
+        }
+    }
+}
+
+@media (max-width: 575px) {
+    body .page-layout {
+        .feedbacks__content {
+        }
+
+        .feedbacks__footer {
+        }
+    }
+}

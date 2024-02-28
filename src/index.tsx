@@ -13,6 +13,7 @@ import {
     RegistrationPage,
     ConfirmEmailPage,
     ResultPage,
+    FeedbacksPage,
 } from './pages';
 import { NotAuth, RequiredAuth } from '@components/index';
 import { ROUTES_LINKS } from '@constants/index';
@@ -46,6 +47,15 @@ root.render(
                             element={
                                 <RequiredAuth redirect={ROUTES_LINKS.auth}>
                                     <MainPage />
+                                </RequiredAuth>
+                            }
+                        />
+
+                        <Route
+                            path={ROUTES_LINKS.feedbacks}
+                            element={
+                                <RequiredAuth redirect={ROUTES_LINKS.auth}>
+                                    <FeedbacksPage />
                                 </RequiredAuth>
                             }
                         />
