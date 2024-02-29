@@ -10,7 +10,7 @@ interface IFeedbacksPageContent {
     feedbacks: Array<IFeedback>;
 }
 
-const COUNT_FEEDBACKS_TO_SHOW = 2;
+const COUNT_FEEDBACKS_TO_SHOW = 4;
 
 export const FeedbacksPageContent: React.FC<IFeedbacksPageContent> = ({
     addCommentModalHandler,
@@ -38,15 +38,21 @@ export const FeedbacksPageContent: React.FC<IFeedbacksPageContent> = ({
 
             <PageFooter className='feedbacks__footer'>
                 <Row justify='start' align='stretch' className='feedbacks__footer_line'>
-                    <Button type='primary' className='button-page' onClick={addCommentModalHandler}>
+                    <Button
+                        type='primary'
+                        className='button-page'
+                        onClick={addCommentModalHandler}
+                        data-test-id='write-review'
+                    >
                         Написать отзыв
                     </Button>
 
-                    {feedbacksList.length >= COUNT_FEEDBACKS_TO_SHOW && (
+                    {feedbacks.length >= COUNT_FEEDBACKS_TO_SHOW && (
                         <Button
                             type='link'
                             className='show-all link'
                             onClick={showAllFeedbacksHandler}
+                            data-test-id='all-reviews-button'
                         >
                             {countItemsToShow ? 'Развернуть все отзывы' : 'Свернуть все отзывы'}
                         </Button>

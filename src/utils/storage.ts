@@ -9,7 +9,7 @@ export const setLocalStorageItem = (key: string, value: unknown) => {
 export const getLocalStorageItem = (key: string) => {
     try {
         const result = localStorage.getItem(key);
-        return result ? result : '';
+        return result ? JSON.parse(result) : '';
     } catch (error) {
         return '';
     }

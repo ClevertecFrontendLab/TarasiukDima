@@ -92,6 +92,7 @@ export const ModalsInfo: React.FC<IFeedbacksPageProps> = ({
                                 type='primary'
                                 className='button-page'
                                 onClick={repeateWriteShowModalFeedback}
+                                data-test-id='write-review-not-saved-modal'
                             >
                                 Написать отзыв
                             </Button>

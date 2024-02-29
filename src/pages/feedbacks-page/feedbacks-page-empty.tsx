@@ -21,7 +21,12 @@ export const FeedbacksPageEmpty: React.FC<{ addCommentModalHandler: TSimpleFn }>
                 }
             />
 
-            <Button type='primary' className='button-page' onClick={addCommentModalHandler}>
+            <Button
+                type='primary'
+                className='button-page'
+                onClick={addCommentModalHandler}
+                data-test-id='write-review'
+            >
                 Написать отзыв
             </Button>
         </PageContent>

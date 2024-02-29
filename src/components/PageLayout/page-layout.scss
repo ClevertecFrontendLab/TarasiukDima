@@ -39,6 +39,22 @@ body .page {
         padding-bottom: 42px;
         background: transparent;
     }
+
+    .spin-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        backdrop-filter: blur(2px);
+        background: rgba(121, 156, 212, 0.5);
+
+        .ant-spin {
+            margin: auto;
+        }
+    }
 }
 
 @media (max-width: 575px) {

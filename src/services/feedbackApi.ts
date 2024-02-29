@@ -6,11 +6,11 @@ import { IFeedback, IFeedbackCreateBody } from './types';
 export const feedbackApi = createApi({
     reducerPath: 'feedbackApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: `${SERVICE_API_URL}/feedback/`,
+        baseUrl: `${SERVICE_API_URL}/feedback`,
         prepareHeaders: (headers, { getState }) => {
             const token = (getState() as RootState).user.token;
             if (token) {
-                headers.set('authorization', `Bearer ${token}`);
+                headers.set('Authorization', `Bearer ${token}`);
             }
 
             return headers;

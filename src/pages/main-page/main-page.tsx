@@ -62,7 +62,11 @@ export const MainPage: React.FC = () => {
 
             <PageFooter className='home-footer'>
                 <Row justify='space-between' align='bottom' className='home-footer__line'>
-                    <Link to={ROUTES_LINKS.feedbacks} className='home-footer__reviews'>
+                    <Link
+                        to={ROUTES_LINKS.feedbacks}
+                        className='home-footer__reviews'
+                        data-test-id='see-reviews'
+                    >
                         Смотреть отзывы
                     </Link>
 
