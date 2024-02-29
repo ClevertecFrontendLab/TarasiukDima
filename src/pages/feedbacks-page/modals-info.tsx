@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
+import { changeShowTokenError } from '@redux/app-slice';
 import { Button, Result, Row } from 'antd';
 import { ModalPage } from '@components/index';
 import { ROUTES_LINKS } from '@constants/index';
@@ -7,9 +9,6 @@ import { ROUTES_LINKS } from '@constants/index';
 interface IFeedbacksPageProps {
     isErrorOpen: boolean;
     closeErrorCB: () => void;
-
-    isTokenErrorOpen: boolean;
-    closeTokenErrorCB: () => void;
 
     isSuccessFeedbackOpen: boolean;
     closeSuccessFeedbackCB: () => void;
@@ -22,8 +21,6 @@ interface IFeedbacksPageProps {
 export const ModalsInfo: React.FC<IFeedbacksPageProps> = ({
     isErrorOpen,
     closeErrorCB,
-    isTokenErrorOpen,
-    closeTokenErrorCB,
     isSuccessFeedbackOpen,
     closeSuccessFeedbackCB,
     isErrorAddFeedbackOpen,
@@ -31,11 +28,17 @@ export const ModalsInfo: React.FC<IFeedbacksPageProps> = ({
     repeateWriteShowModalFeedback,
 }) => {
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const { isShowTokenError } = useAppSelector((state) => state.app);
 
     const redirectHomePage = useCallback(() => {
         closeErrorCB();
         return navigate(ROUTES_LINKS.home);
     }, [navigate, closeErrorCB]);
+
+    const closeModalTokenError = useCallback(() => {
+        dispatch(changeShowTokenError(false));
+    }, [dispatch]);
 
     return (
         <>
@@ -56,7 +59,12 @@ export const ModalsInfo: React.FC<IFeedbacksPageProps> = ({
                 />
             </ModalPage>
 
-            <ModalPage variant='info' open={isTokenErrorOpen} onCancel={closeTokenErrorCB} closable>
+            <ModalPage
+                variant='info'
+                open={isShowTokenError}
+                onCancel={closeModalTokenError}
+                closable
+            >
                 <Result status='error' title='Отсутствует токен' />
             </ModalPage>
 

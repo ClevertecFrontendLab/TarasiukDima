@@ -15,7 +15,7 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { EyeInvisibleOutlined, EyeTwoTone, GooglePlusOutlined } from '@ant-design/icons';
 import { UserLayout, Logo } from '@components/index';
 import { AuthNavButtons } from './AuthNavButtons';
-import { ROUTES_LINKS, TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
+import { ROUTES_LINKS, SERVICE_API_URL, TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
 
 import './auth.scss';
 
@@ -41,6 +41,7 @@ export const AuthPage: React.FC = () => {
             data: logResponseData,
         },
     ] = useLoginMutation();
+
     const [
         checkEmail,
         {
@@ -176,7 +177,7 @@ export const AuthPage: React.FC = () => {
     );
 
     const googleLoginHandler = useCallback(async () => {
-        console.log('googleLoginHandler');
+        window.location.href = `${SERVICE_API_URL}/auth/google`;
     }, []);
 
     return (

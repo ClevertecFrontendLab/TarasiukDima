@@ -10,9 +10,20 @@ interface IAppState {
     code: string;
 }
 
+const readTokenWhileInit = () => {
+    // token from google auth
+    const accessToken = new URLSearchParams(window.location.search).get('accessToken');
+
+    if (accessToken) {
+        return accessToken;
+    }
+
+    return getLocalStorageItem(TOKEN_AUTH_LOCALSTORAGE);
+};
+
 const appStateInit: IAppState = {
     isAuth: false,
-    token: getLocalStorageItem(TOKEN_AUTH_LOCALSTORAGE),
+    token: readTokenWhileInit(),
     email: '',
     password: '',
     code: '',
@@ -22,7 +33,7 @@ const userSlice = createSlice({
     name: 'user',
     initialState: appStateInit,
     reducers: {
-        changeShowSidebar: (state, { payload }: PayloadAction<boolean>) => {
+        changeIsAuth: (state, { payload }: PayloadAction<boolean>) => {
             state.isAuth = payload;
         },
         setToken: (state, { payload }: PayloadAction<string>) => {
@@ -42,5 +53,6 @@ const userSlice = createSlice({
 
 const { actions, reducer } = userSlice;
 
-export const { changeShowSidebar, setToken, setPassword, setEmail, setCode } = actions;
+export const { changeIsAuth, setToken, setPassword, setEmail, setCode } =
+    actions;
 export { reducer as userReducer };

@@ -38,18 +38,13 @@ body .page-layout {
         padding-top: 108px;
 
         .feedbacks__footer_line {
-            gap: 8px;
+            gap: 16px 8px;
         }
 
         .show-all {
             height: auto;
             padding: 8px 15px;
         }
-    }
-}
-
-@media (max-width: 991px) {
-    body .page-layout {
     }
 }
 
@@ -66,7 +61,7 @@ body .page-layout {
         }
 
         .feedbacks__footer {
-            padding-top: 32px;
+            padding-top: 24px;
 
             .show-all,
             .button-page {

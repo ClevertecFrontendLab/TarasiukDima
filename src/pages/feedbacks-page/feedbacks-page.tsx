@@ -30,7 +30,6 @@ export const FeedbacksPage: React.FC = () => {
     const dispatch = useAppDispatch();
 
     const [openModalError, setOpenModalError] = useState<boolean>(false);
-    const [openModalTokenError, setOpenModalTokenError] = useState<boolean>(false);
     const [openModalFeedback, setOpenModalFeedback] = useState<boolean>(false);
     const [openModalOkAddedFeedback, setOpenModalOkAddedFeedback] = useState<boolean>(false);
     const [isErrorAddFeedbackOpen, setErrorAddFeedbackOpen] = useState<boolean>(false);
@@ -60,8 +59,6 @@ export const FeedbacksPage: React.FC = () => {
     // got error Feedbacks
     useEffect(() => {
         if (isFeedbacksError && feedbacksErrorData) {
-            console.log('isFeedbacksError', feedbacksErrorData);
-
             const statusError = (feedbacksErrorData as IServerErrorResponse).status.toString();
 
             if (statusError === '403') {
@@ -75,7 +72,6 @@ export const FeedbacksPage: React.FC = () => {
             setOpenModalError(true);
         }
     }, [dispatch, isFeedbacksError, navigate, feedbacksErrorData]);
-
 
     // got error add a Feedback
     useEffect(() => {
@@ -97,18 +93,12 @@ export const FeedbacksPage: React.FC = () => {
         }
     }, [isSuccessFeedbackAdd]);
 
-
-
     const showAddFeedbackModalHandler = useCallback(() => {
         setOpenModalFeedback(true);
     }, []);
 
     const closeModalError = useCallback(() => {
         setOpenModalError(false);
-    }, []);
-
-    const closeModalTokenError = useCallback(() => {
-        setOpenModalTokenError(false);
     }, []);
 
     const closeModalOkFeedback = useCallback(() => {
@@ -162,8 +152,6 @@ export const FeedbacksPage: React.FC = () => {
             <ModalsInfo
                 isErrorOpen={openModalError}
                 closeErrorCB={closeModalError}
-                isTokenErrorOpen={openModalTokenError}
-                closeTokenErrorCB={closeModalTokenError}
                 isSuccessFeedbackOpen={openModalOkAddedFeedback}
                 closeSuccessFeedbackCB={closeModalOkFeedback}
                 isErrorAddFeedbackOpen={isErrorAddFeedbackOpen}
@@ -186,7 +174,7 @@ export const FeedbacksPage: React.FC = () => {
                             (feedbackStart === 0 && feedbackText === '') || isFeedbackAddLoading
                         }
                         onClick={postFeedback}
-                        test-id='new-review-submit-button'
+                        data-test-id='new-review-submit-button'
                     >
                         Опубликовать
                     </Button>
@@ -205,6 +193,7 @@ export const FeedbacksPage: React.FC = () => {
                     placeholder='Autosize height based on content lines'
                     value={feedbackText}
                     onChange={typeFeedback}
+                    autoSize={{ minRows: 2, maxRows: 8 }}
                 />
             </ModalPage>
         </PageLayout>
