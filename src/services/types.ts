@@ -37,11 +37,12 @@ export type TServerResponse = IServerErrorResponse | object;
 
 // FEEDBACK
 export interface IFeedback {
+    id: string;
     fullName: string | null;
     imageSrc: string | null;
     message: string | null;
     rating: number;
-    createdAt: Date;
+    createdAt: string;
 }
 
 export interface IFeedbackCreateBody {

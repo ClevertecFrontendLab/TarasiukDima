@@ -1,1 +1,1 @@
-export type { IClsAndChildProps } from './common';
+export type { IClsAndChildProps, TSimpleFn } from './common';

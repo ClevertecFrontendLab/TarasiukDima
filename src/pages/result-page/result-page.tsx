@@ -6,7 +6,6 @@ import { ResultChangePassword } from './ResultChangePassword';
 import { ROUTES_LINKS } from '@constants/index';
 import { IPreviousLocations, getClearLastRoutePath } from '@utils/index';
 
-import './result-page.scss';
 
 export const ResultPage: React.FC = () => {
     const { state } = useLocation();

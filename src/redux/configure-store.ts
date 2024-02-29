@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 
 import { appReducer } from './app-slice';
 import { userReducer } from './user-slice';
-import { userApi } from '@services/index';
+import { userApi, feedbackApi } from '@services/index';
 
 const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
     history: createBrowserHistory(),
@@ -17,9 +17,10 @@ export const store = configureStore({
         user: userReducer,
         router: routerReducer,
         [userApi.reducerPath]: userApi.reducer,
+        [feedbackApi.reducerPath]: feedbackApi.reducer,
     }),
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(routerMiddleware, userApi.middleware),
+        getDefaultMiddleware().concat(routerMiddleware, userApi.middleware, feedbackApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

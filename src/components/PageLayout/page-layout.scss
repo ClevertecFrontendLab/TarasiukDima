@@ -24,7 +24,7 @@ body .page {
         flex-wrap: wrap;
         height: auto;
         line-height: 1.3;
-        padding: 16px 24px 21px;
+        padding: 16px 24px;
         background: $primary-light-1;
     }
 
@@ -43,10 +43,13 @@ body .page {
 
 @media (max-width: 575px) {
     body .page {
+        &:before {
+            opacity: 0.8;
+        }
+
         .page-layout__content {
             padding-left: 16px;
             padding-right: 16px;
-            padding-bottom: 14px;
         }
 
         .page-layout__footer {

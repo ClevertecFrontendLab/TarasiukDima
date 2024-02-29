@@ -1,30 +1,77 @@
 @import "@assets/scss/variables";
 
 body .page-layout {
+    .feedbacks__non-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        &_text {
+            padding: 56px;
+            line-height: 1.3;
+            box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.04);
+            background-color: $white;
+
+            .ant-result-title {
+                line-height: 1.3;
+                font-weight: 500;
+                color: $primary-light-9;
+            }
+
+            .ant-result-extra {
+                margin-top: 48px;
+                font-size: 14px;
+                color: $grey;
+            }
+        }
+
+        .button-page {
+            margin: 20px auto 0;
+        }
+    }
+
     .feedbacks__content {
+        flex-grow: 0;
     }
 
     .feedbacks__footer {
-        padding-top: 100px;
+        padding-top: 108px;
+
+        .feedbacks__footer_line {
+            gap: 8px;
+        }
+
+        .show-all {
+            height: auto;
+            padding: 8px 15px;
+        }
     }
 }
 
 @media (max-width: 991px) {
     body .page-layout {
-        .feedbacks__content {
-        }
-
-        .feedbacks__footer {
-        }
     }
 }
 
 @media (max-width: 575px) {
     body .page-layout {
-        .feedbacks__content {
+        .feedbacks__non-content {
+            &_text {
+                padding: 48px 32px;
+            }
+
+            .button-page {
+                width: 100%;
+            }
         }
 
         .feedbacks__footer {
+            padding-top: 32px;
+
+            .show-all,
+            .button-page {
+                width: 100%;
+            }
         }
     }
 }

@@ -14,3 +14,5 @@ export {
     useCheckEmailMutation,
     useConfirmEmailMutation,
 } from './userApi';
+
+export { useGetFeedbackQuery, useAddFeedbackMutation, feedbackApi } from './feedbackApi';

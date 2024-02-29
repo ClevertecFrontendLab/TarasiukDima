@@ -2,6 +2,8 @@
 
 body .page-layout {
     .home-header {
+        padding-bottom: 21px;
+
         .breadcrumbs {
             margin-bottom: 14px;
         }
@@ -207,7 +209,7 @@ body .page-layout {
             &_settings {
                 width: 32px;
                 height: 32px;
-                border: 1px solid $character-light-border;
+                border: 1px solid $greyBorder;
                 padding: 4px 10px;
                 border-radius: 50%;
 
@@ -222,6 +224,8 @@ body .page-layout {
         }
 
         .home-content {
+            padding-bottom: 14px;
+
             .home-content_item {
                 padding: 16px;
 

@@ -9,7 +9,16 @@ export interface IBreadcrumbsProps {
 }
 
 export const Breadcrumbs: React.FC<IBreadcrumbsProps> = ({ routes }) => {
-    return <Breadcrumb className='breadcrumbs' routes={routes} itemRender={itemRender} />;
+    return (
+        <Breadcrumb
+            className='breadcrumbs'
+            style={{
+                width: '100%',
+            }}
+            routes={routes}
+            itemRender={itemRender}
+        />
+    );
 };
 
 const itemRender = (route: Route, _: unknown, routes: Array<Route>) => {

@@ -16,12 +16,19 @@ export const feedbackApi = createApi({
             return headers;
         },
     }),
-    tagTypes: ['Feedback'],
+    tagTypes: ['Feedbacks'],
     endpoints: (builder) => ({
-        getFeedback: builder.query<{ accessToken: string }, null>({
+        getFeedback: builder.query<Array<IFeedback>, null>({
             query: () => ({
                 url: '',
             }),
+            providesTags: (result) =>
+                result
+                    ? [
+                          ...result.map(({ id }) => ({ type: 'Feedbacks' as const, id })),
+                          { type: 'Feedbacks', id: 'LIST' },
+                      ]
+                    : [{ type: 'Feedbacks', id: 'LIST' }],
         }),
         addFeedback: builder.mutation<Array<IFeedback>, IFeedbackCreateBody>({
             query: (body) => ({
@@ -29,6 +36,7 @@ export const feedbackApi = createApi({
                 method: 'POST',
                 body,
             }),
+            invalidatesTags: [{ type: 'Feedbacks', id: 'LIST' }],
         }),
     }),
 });
