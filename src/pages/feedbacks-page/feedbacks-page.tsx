@@ -25,47 +25,6 @@ const routes = [
     },
 ];
 
-const feedbacksList2 = [
-    {
-        id: '1',
-        fullName: 'Вероника Киверова',
-        imageSrc:
-            'https://images.unsplash.com/photo-1709038459415-8379ce8ae789?q=80&w=1972&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        message:
-            'Я очень довольна этим приложением! Оно помогает мне следить за своим здоровьем и физической формой, предлагая разнообразные упражнения и питание. Я люблю, что приложение адаптируется к моему уровню и целям, и дает мне полезные советы и обратную связь. Я рекомендую это приложение всем, кто хочет улучшить свою жизнь!',
-        rating: 5,
-        createdAt: '2024-02-29T06:31:14.960Z',
-    },
-    {
-        id: '2',
-        fullName: 'Петров Петров',
-        imageSrc:
-            'https://plus.unsplash.com/premium_photo-1708275668360-cd29b1f5b67d?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        message:
-            'Это приложение - отличный помощник для тех, кто занимается спортом. Оно показывает мне, как правильно выполнять упражнения, сколько калорий я сжигаю, и какой прогресс я достиг. Оно также мотивирует меня не сдаваться и достигать новых рекордов. Я уверен, что это приложение поможет мне достичь своей мечты - стать чемпионом!',
-        rating: 4,
-        createdAt: '2024-03-22T06:31:14.960Z',
-    },
-    {
-        id: '3',
-        fullName: 'Елена Ковалева',
-        imageSrc:
-            'https://images.unsplash.com/photo-1709038459415-8379ce8ae789?q=80&w=1972&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        message:
-            'Я не могу представить свою жизнь без этого приложения! Оно стало моим лучшим другом и наставником в области фитнеса. Оно учит меня, как заботиться о своем теле и душе, предоставляя мне интересные и эффективные упражнения, здоровое меню и релаксацию. Я чувствую себя счастливой и красивой благодаря этому приложению!',
-        rating: 0,
-        createdAt: '2024-01-29T06:31:14.960Z',
-    },
-    {
-        id: '4',
-        fullName: '',
-        imageSrc: null,
-        message: 'Классное приложение!',
-        rating: 1,
-        createdAt: '2024-03-21T06:31:14.960Z',
-    },
-];
-
 export const FeedbacksPage: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
