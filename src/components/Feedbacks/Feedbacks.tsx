@@ -1,8 +1,9 @@
 import { Avatar, Comment, List } from 'antd';
-import { IFeedback } from '@services/types';
+import { getCorrectDateForShow } from '@utils/index';
 import Paragraph from 'antd/lib/typography/Paragraph';
 import { UserOutlined } from '@ant-design/icons';
 import { Rating } from '@components/index';
+import { IFeedback } from '@services/types';
 
 import './feedbacks.scss';
 
@@ -18,7 +19,7 @@ export const Feedbacks: React.FC<IFeedbacksProps> = ({ feedbacks, isLoading = fa
             loading={isLoading}
             dataSource={feedbacks}
             renderItem={({ createdAt, fullName, id, imageSrc, message, rating }) => {
-                const userName = fullName ? fullName : 'Пользователь';
+                const userName = fullName || 'Пользователь';
 
                 return (
                     <List.Item className='feedbacks-list__item'>
@@ -50,14 +51,4 @@ export const Feedbacks: React.FC<IFeedbacksProps> = ({ feedbacks, isLoading = fa
             }}
         />
     );
-};
-
-const getCorrectDateForShow = (dateStr: string) => {
-    const dateFS = new Date(dateStr);
-
-    return dateFS.toLocaleDateString('ru-RU', {
-        month: 'numeric',
-        day: 'numeric',
-        year: 'numeric',
-    });
 };

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export interface IClsAndChildProps {
+export type TClsAndChildProps = {
     children?: ReactNode;
     className?: string;
 }

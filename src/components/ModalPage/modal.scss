@@ -1,9 +1,9 @@
 @import "@assets/scss/variables";
+@import "@assets/scss/mixins";
 
 body {
     .ant-modal-wrap {
-        backdrop-filter: blur(2px);
-        background: rgba(121, 156, 212, 0.5);
+        @extend %backgroundBlur;
     }
 
     .info-modal,
@@ -13,12 +13,12 @@ body {
         }
 
         .ant-result {
-            padding-top: 64px;
-            padding-bottom: 64px;
+            padding-top: $indentLarge;
+            padding-bottom: $indentLarge;
         }
 
         .ant-result-title {
-            font-weight: 500;
+            font-weight: $weightMedium;
             color: $black;
         }
 
@@ -38,8 +38,8 @@ body {
 
     .info-modal {
         .ant-result {
-            padding-left: 85px;
-            padding-right: 85px;
+            padding-left: $indentMax;
+            padding-right: $indentMax;
         }
 
         .error-buttons {
@@ -53,17 +53,17 @@ body {
 
     .content-modal {
         .ant-modal-body {
-            padding-left: 16px;
-            padding-right: 16px;
+            padding-left: $indentMin2;
+            padding-right: $indentMin2;
         }
 
         .content-rating {
-            margin-bottom: 16px;
+            margin-bottom: $indentMin2;
         }
 
         .content-text {
             border-color: $greyBorder;
-            padding: 5px 12px;
+            padding: 5px $indentSmall;
         }
 
         .content-btn {
@@ -72,33 +72,31 @@ body {
     }
 }
 
-
-@media (max-width: 991px) {
+@include tablet() {
     body {
         .info-modal,
         .error-modal {
             .ant-result {
-                padding-top: 32px;
-                padding-bottom: 32px;
+                padding-top: $indentBig;
+                padding-bottom: $indentBig;
             }
         }
 
         .info-modal {
             .ant-result {
-                padding-left: 32px;
-                padding-right: 32px;
+                padding-left: $indentBig;
+                padding-right: $indentBig;
             }
         }
     }
 }
 
-
-@media (max-width: 575px) {
+@include mobile() {
     body {
         .info-modal {
             .ant-result {
-                padding-left: 16px;
-                padding-right: 16px;
+                padding-left: $indentMin2;
+                padding-right: $indentMin2;
             }
         }
     }

@@ -46,7 +46,7 @@ export const ModalsInfo: React.FC<IFeedbacksPageProps> = ({
                 <Result
                     status='500'
                     title='Что-то пошло не так'
-                    subTitle='Что-то пошло не так'
+                    subTitle={<>Произошла ошибка, <br/>попробуйте ещё раз.</>}
                     extra={
                         <Button
                             type='primary'

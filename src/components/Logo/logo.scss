@@ -1,4 +1,5 @@
-@import '@assets/scss/variables';
+@import "@assets/scss/variables";
+@import "@assets/scss/mixins";
 
 .logo {
     position: relative;
@@ -21,9 +22,8 @@
     }
 }
 
-@media (max-width: 575px) {
+@include mobile() {
     .logo {
         height: 50px;
     }
-
 }

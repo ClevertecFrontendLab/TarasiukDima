@@ -2,11 +2,11 @@ import { FC } from 'react';
 import classNames from 'classnames';
 import { Layout, Space } from 'antd';
 import { Spinner } from '@components/index';
-import { IClsAndChildProps } from '@app_types/common';
+import { TClsAndChildProps } from '@app_types/common';
 
 import './user-layout.scss';
 
-interface IUserLayoutProps extends IClsAndChildProps {
+interface IUserLayoutProps extends TClsAndChildProps {
     showSpinner?: boolean;
 }
 

@@ -2,10 +2,10 @@ import { FC } from 'react';
 import classNames from 'classnames';
 import { Header } from 'antd/lib/layout/layout';
 import { Breadcrumbs } from '@components/index';
-import { IClsAndChildProps } from '@app_types/index';
+import { TClsAndChildProps } from '@app_types/index';
 import { IBreadcrumbsProps } from '@components/Breadcrumbs/Breadcrumbs';
 
-interface IPageHeaderProps extends IClsAndChildProps, IBreadcrumbsProps {}
+interface IPageHeaderProps extends TClsAndChildProps, IBreadcrumbsProps {}
 
 export const PageHeader: FC<IPageHeaderProps> = ({ children, className = '', routes }) => {
     return (

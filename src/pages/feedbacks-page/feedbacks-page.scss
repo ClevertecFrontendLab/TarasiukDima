@@ -1,26 +1,25 @@
 @import "@assets/scss/variables";
+@import "@assets/scss/mixins";
 
 body .page-layout {
     .feedbacks__non-content {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+        @include dflex(center, stretch, column);
 
         &_text {
             padding: 56px;
-            line-height: 1.3;
-            box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.04);
+            line-height: $lineHeight;
+            box-shadow: $shadowLight;
             background-color: $white;
 
             .ant-result-title {
-                line-height: 1.3;
-                font-weight: 500;
-                color: $primary-light-9;
+                line-height: $lineHeight;
+                font-weight: $weightMedium;
+                color: $blueDark;
             }
 
             .ant-result-extra {
                 margin-top: 48px;
-                font-size: 14px;
+                font-size: $fontSizeMin;
                 color: $grey;
             }
         }
@@ -38,21 +37,21 @@ body .page-layout {
         padding-top: 108px;
 
         .feedbacks__footer_line {
-            gap: 16px 8px;
+            gap: $indentMin2 $indentSmallest;
         }
 
         .show-all {
             height: auto;
-            padding: 8px 15px;
+            padding: $indentSmallest 15px;
         }
     }
 }
 
-@media (max-width: 575px) {
+@mixin mobile() {
     body .page-layout {
         .feedbacks__non-content {
             &_text {
-                padding: 48px 32px;
+                padding: 48px $indentBig;
             }
 
             .button-page {
@@ -61,7 +60,7 @@ body .page-layout {
         }
 
         .feedbacks__footer {
-            padding-top: 24px;
+            padding-top: $indentMid;
 
             .show-all,
             .button-page {

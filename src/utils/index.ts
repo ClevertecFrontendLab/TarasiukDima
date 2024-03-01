@@ -1,7 +1,7 @@
 export { getClearLastRoutePath } from './common';
 export type { IPreviousLocations } from './common';
 
-export { sortArrayByDate } from './date';
+export { sortArrayByDate, getCorrectDateForShow } from './date';
 
 export {
     getCookie,

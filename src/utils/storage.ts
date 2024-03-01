@@ -6,6 +6,7 @@ export const setLocalStorageItem = (key: string, value: unknown) => {
         console.log('Ошибка сохранения в localStorage.', error);
     }
 };
+
 export const getLocalStorageItem = (key: string) => {
     try {
         const result = localStorage.getItem(key);
@@ -14,6 +15,7 @@ export const getLocalStorageItem = (key: string) => {
         return '';
     }
 };
+
 export const removeLocalStorageItem = (key: string) => {
     try {
         localStorage.removeItem(key);

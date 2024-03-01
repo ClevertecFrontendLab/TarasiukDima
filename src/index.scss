@@ -8,8 +8,8 @@
     display: block;
     width: fit-content;
     max-width: 100%;
-    border-radius: 2px;
-    box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.04);
+    border-radius: $borderRadius;
+    box-shadow: $shadowLight;
 }
 
 .ant-btn-primary {
@@ -18,18 +18,18 @@
     background-color: $primary;
 
     &:hover {
-        color: $primary;
         border-color: $primary;
+        color: $primary;
         background-color: $white;
     }
 }
 
 .button-page {
-    padding: 8px 15px;
+    padding: $indentSmallest $indentMin1;
 }
 
 :root {
-    line-height: 1.3;
+    line-height: $lineHeight;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -42,7 +42,7 @@ body {
     min-height: 100vh;
     margin: 0;
     font-family: Inter, Roboto, sans-serif;
-    font-weight: 400;
+    font-weight: $weightNormal;
 }
 
 .link,

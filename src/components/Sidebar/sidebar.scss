@@ -1,4 +1,5 @@
 @import "@assets/scss/variables";
+@import "@assets/scss/mixins";
 
 body .sider {
     position: sticky;
@@ -8,7 +9,7 @@ body .sider {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: $shadowItem;
 
     .ant-layout-sider-children {
         position: relative;
@@ -31,8 +32,8 @@ body .sider {
         height: 100vh;
         display: flex;
         flex-direction: column;
-        overflow-y: auto;
         padding-top: 30px;
+        overflow-y: auto;
     }
 
     .sider__logo {
@@ -40,7 +41,7 @@ body .sider {
     }
 
     .ant-menu {
-        margin-bottom: 16px;
+        margin-bottom: $indentMin2;
     }
 
     .trigger {
@@ -76,22 +77,22 @@ body .sider {
         width: 100%;
         height: auto;
         margin-top: auto;
-        padding: 12px 18px;
-        padding-top: 12px !important;
-        line-height: 1.3;
+        padding: $indentSmall 18px;
+        padding-top: $indentSmall !important;
+        line-height: $lineHeight;
         border: none;
-        box-shadow: inset 0 1px 0 0 $character-light-dividers;
+        box-shadow: inset 0 1px 0 0 $lightDividers;
         text-align: left;
         color: $black;
         overflow: hidden;
 
         span:nth-child(2) {
-            margin-left: 24px;
+            margin-left: $indentMid;
         }
     }
 }
 
-@media (max-width: 575px) {
+@include mobile() {
     aside.sider {
         position: fixed;
         top: 0;
@@ -106,11 +107,11 @@ body .sider {
 
         .sider__logo {
             margin-top: 0;
-            margin-bottom: 16px;
+            margin-bottom: $indentMin2;
         }
 
         .trigger {
-            top: 24px;
+            top: $indentMid;
             width: 32px;
             height: 48px;
             transform: translateY(0);
@@ -131,7 +132,7 @@ body .sider {
             }
 
             span:nth-child(2) {
-                margin-left: 16px;
+                margin-left: $indentMin2;
             }
         }
     }

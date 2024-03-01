@@ -1,14 +1,49 @@
 $width-sidebar: 208px;
 $black: #262626;
 $white: #fff;
-$grey: #8c8c8c;
-$lightGrey: #BFBFBF;
-$primary: #2f54eb;
-$red: #FF4D4F;
-$gold: #faad14;
+$lightDividers: #f0f0f0;
+$primaryLight: #f0f5ff;
+$lightWhite: #f5f5f5;
 $greyBorder: #d9d9d9;
+$lightGrey: #bfbfbf;
+$grey: #8c8c8c;
+$primary: #2f54eb;
+$blueDark: #061178;
+$red: #ff4d4f;
+$gold: #faad14;
 
+$transparentBg: rgba(121, 156, 212, 0.5);
 
-$character-light-dividers: #f0f0f0;
-$primary-light-1: #f0f5ff;
-$primary-light-9: #061178;
+$shadowLight: 0 2px 0 0 rgba(0, 0, 0, 0.04);
+$shadowItem: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+$borderRadius: 2px;
+
+// font
+$weightNormal: 400;
+$weightMedium: 500;
+$weightBold: 700;
+$lineHeight: 1.3;
+$fontSizeMin: 14px;
+$fontSizeSmall: 16px;
+$fontSizeText: 18px;
+$fontSizeTextBig: 24px;
+$fontSizeTitle: 30px;
+
+// indent
+$indentSmallest: 8px;
+$indentSmall: 12px;
+$indentMin1: 15px;
+$indentMin2: 16px;
+$indentMid: 24px;
+$indentBig: 32px;
+$indentLarge: 64px;
+$indentMax: 85px;
+
+// animations
+$transition: 0.5s;
+
+// common
+%backgroundBlur {
+    backdrop-filter: blur(12px);
+    background: $transparentBg;
+}
