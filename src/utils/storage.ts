@@ -34,7 +34,7 @@ export const getCookie = (key: string) => {
             c = c.substring(1, c.length);
         }
 
-        if (c.indexOf(nameCookie) == 0) return c.substring(nameCookie.length, c.length);
+        if (c.indexOf(nameCookie) === 0) return c.substring(nameCookie.length, c.length);
     }
 
     return '';

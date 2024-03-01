@@ -18,17 +18,15 @@ export const ModalPage: React.FC<TModalPageProps> = ({
     title = null,
     closable = false,
     ...lastProps
-}) => {
-    return (
-        <Modal
-            className={`${variant}-modal`}
-            closable={closable}
-            footer={footer}
-            title={title}
-            centered
-            {...lastProps}
-        >
-            {children}
-        </Modal>
-    );
-};
+}) => (
+    <Modal
+        className={`${variant}-modal`}
+        closable={closable}
+        footer={footer}
+        title={title}
+        centered
+        {...lastProps}
+    >
+        {children}
+    </Modal>
+);

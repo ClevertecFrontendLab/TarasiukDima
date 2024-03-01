@@ -2,14 +2,19 @@ import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@hooks/typed-react-redux-hooks';
 import { useAddFeedbackMutation, useGetFeedbackQuery } from '@services/feedbackApi';
-import { setToken } from '@redux/user-slice';
+import { setToken } from '@redux/index';
 import { removeLocalStorageItem } from '@utils/storage';
 import { Button, Input } from 'antd';
 import { PageLayout, PageHeader, ModalPage, Rating } from '@components/index';
 import { FeedbacksPageEmpty } from './feedbacks-page-empty';
 import { FeedbacksPageContent } from './feedbacks-page-content';
 import { ModalsInfo } from './modals-info';
-import { ROUTES_LINKS, TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
+import {
+    REPEAT_FEEDBACKS_REQUEST,
+    ROUTES_LINKS,
+    STATUS_CODES,
+    TOKEN_AUTH_LOCALSTORAGE,
+} from '@constants/index';
 import { TServerErrorResponse } from '@app_types/index';
 
 import './feedbacks-page.scss';
@@ -25,7 +30,7 @@ const routes = [
     },
 ];
 
-export const FeedbacksPage: React.FC = () => {
+export const FeedbacksPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
@@ -43,7 +48,7 @@ export const FeedbacksPage: React.FC = () => {
         isLoading: isFeedbacksLoading,
         isError: isFeedbacksError,
     } = useGetFeedbackQuery(null, {
-        pollingInterval: 10000,
+        pollingInterval: REPEAT_FEEDBACKS_REQUEST,
     });
 
     const [
@@ -56,12 +61,11 @@ export const FeedbacksPage: React.FC = () => {
         },
     ] = useAddFeedbackMutation();
 
-    // got error Feedbacks
     useEffect(() => {
         if (isFeedbacksError && feedbacksErrorData) {
             const statusError = (feedbacksErrorData as TServerErrorResponse).status.toString();
 
-            if (statusError === '403') {
+            if (statusError === STATUS_CODES.not_auth) {
                 dispatch(setToken(''));
                 removeLocalStorageItem(TOKEN_AUTH_LOCALSTORAGE);
 
@@ -73,23 +77,19 @@ export const FeedbacksPage: React.FC = () => {
         }
     }, [dispatch, isFeedbacksError, navigate, feedbacksErrorData]);
 
-    // got error add a Feedback
     useEffect(() => {
         if (isErrorFeedbackAdd && feedbackAddErrorData) {
             setOpenModalFeedback(false);
             setErrorAddFeedbackOpen(true);
-            return;
         }
     }, [isErrorFeedbackAdd, feedbackAddErrorData]);
 
-    // got success add a Feedback
     useEffect(() => {
         if (isSuccessFeedbackAdd) {
             setOpenModalOkAddedFeedback(true);
             setOpenModalFeedback(false);
             setFeedbackStart(0);
             setFeedbackText('');
-            return;
         }
     }, [isSuccessFeedbackAdd]);
 
@@ -109,7 +109,6 @@ export const FeedbacksPage: React.FC = () => {
         setOpenModalFeedback(false);
     }, []);
 
-    // feedback modals
     const repeateWriteFeedback = useCallback(() => {
         setOpenModalFeedback(true);
         setErrorAddFeedbackOpen(false);
@@ -123,12 +122,13 @@ export const FeedbacksPage: React.FC = () => {
         setFeedbackText(event.target.value);
     }, []);
 
-    const changeFeedbackStarts = useCallback((stars: number) => {
-        setFeedbackStart(stars);
+    const changeFeedbackStarts = useCallback((star: number) => {
+        setFeedbackStart(star);
     }, []);
 
     const postFeedback = useCallback(() => {
-        if (feedbackStart === 0) return;
+        // eslint-disable-next-line no-extra-boolean-cast
+        if (!Boolean(feedbackStart)) return;
 
         addFeedback({
             message: feedbackText,
@@ -140,14 +140,17 @@ export const FeedbacksPage: React.FC = () => {
         <PageLayout isLoading={isFeedbacksLoading}>
             <PageHeader routes={routes} />
 
-            {!feedbacksList || feedbacksList.length === 0 ? (
-                <FeedbacksPageEmpty addCommentModalHandler={showAddFeedbackModalHandler} />
-            ) : (
-                <FeedbacksPageContent
-                    addCommentModalHandler={showAddFeedbackModalHandler}
-                    feedbacks={feedbacksList}
-                />
-            )}
+            {
+                // eslint-disable-next-line no-extra-boolean-cast
+                !Boolean(feedbacksList.length) ? (
+                    <FeedbacksPageEmpty addCommentModalHandler={showAddFeedbackModalHandler} />
+                ) : (
+                    <FeedbacksPageContent
+                        addCommentModalHandler={showAddFeedbackModalHandler}
+                        feedbacks={feedbacksList}
+                    />
+                )
+            }
 
             <ModalsInfo
                 isErrorOpen={openModalError}
@@ -171,7 +174,8 @@ export const FeedbacksPage: React.FC = () => {
                         type='primary'
                         className='content-btn button-page'
                         disabled={
-                            (feedbackStart === 0 && feedbackText === '') || isFeedbackAddLoading
+                            // eslint-disable-next-line no-extra-boolean-cast
+                            (!Boolean(feedbackStart)) || isFeedbackAddLoading
                         }
                         onClick={postFeedback}
                         data-test-id='new-review-submit-button'

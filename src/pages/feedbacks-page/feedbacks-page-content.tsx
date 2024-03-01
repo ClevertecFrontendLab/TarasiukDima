@@ -2,8 +2,8 @@ import { useCallback, useMemo, useState } from 'react';
 import { sortArrayByDate } from '@utils/index';
 import { Button, Row } from 'antd';
 import { Feedbacks, PageContent, PageFooter } from '@components/index';
-import { TSimpleFn, TFeedback } from '@app_types/index';
 import { COUNT_FEEDBACKS_TO_SHOW } from '@constants/index';
+import { TSimpleFn, TFeedback } from '@app_types/index';
 
 type TFeedbacksPageContent = {
     addCommentModalHandler: TSimpleFn;

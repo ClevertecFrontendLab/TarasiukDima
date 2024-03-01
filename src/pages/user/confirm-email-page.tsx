@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
-import { setCode } from '@redux/user-slice';
+import { setCode } from '@redux/index';
 import { useConfirmEmailMutation } from '@services/userApi';
 import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { TPreviousLocations, getClearLastRoutePath } from '@utils/index';
@@ -13,7 +13,7 @@ import { ROUTES_LINKS } from '@constants/index';
 
 import './auth.scss';
 
-export const ConfirmEmailPage: React.FC = () => {
+export const ConfirmEmailPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { email } = useAppSelector((state) => state.user);
@@ -25,7 +25,6 @@ export const ConfirmEmailPage: React.FC = () => {
         { isLoading: isConfirmLoading, isError: isConfirmError, isSuccess: isConfirmSuccess },
     ] = useConfirmEmailMutation();
 
-    // check if previous is not auth page or current page
     useEffect(() => {
         if (!previousLocations || previousLocations.length === 0) {
             navigate(ROUTES_LINKS.auth);
@@ -38,7 +37,6 @@ export const ConfirmEmailPage: React.FC = () => {
         }
     }, [navigate, previousLocations]);
 
-    // is error confirm
     useEffect(() => {
         if (isConfirmError) {
             setStatusResult('error');
@@ -46,7 +44,6 @@ export const ConfirmEmailPage: React.FC = () => {
         }
     }, [isConfirmError]);
 
-    // is success confirm
     useEffect(() => {
         if (isConfirmSuccess) {
             navigate(ROUTES_LINKS.changePassword);

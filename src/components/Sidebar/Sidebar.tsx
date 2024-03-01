@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
-import { setToken } from '@redux/user-slice';
-import { changeShowSidebar } from '@redux/app-slice';
+import { setToken, changeShowSidebar } from '@redux/index';
 import { removeLocalStorageItem } from '@utils/index';
 import { Button, Col } from 'antd';
 import Sider from 'antd/lib/layout/Sider';

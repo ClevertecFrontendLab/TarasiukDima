@@ -19,10 +19,8 @@ export const ResultComponent: React.FC<TResultComponentProps> = ({
     subTitle = '',
     extra = '',
     showSpinner = false,
-}) => {
-    return (
-        <UserLayout className='result-content' showSpinner={showSpinner}>
-            <Result status={status} title={title} subTitle={subTitle} extra={extra} />
-        </UserLayout>
-    );
-};
+}) => (
+    <UserLayout className='result-content' showSpinner={showSpinner}>
+        <Result status={status} title={title} subTitle={subTitle} extra={extra} />
+    </UserLayout>
+);

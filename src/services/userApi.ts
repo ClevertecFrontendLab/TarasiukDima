@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { SERVICE_API_URL } from '@constants/index';
-import { RootState } from '@redux/configure-store';
-import { TRequestAnswer, TUserRegistration } from './types';
+import { RootState } from '@redux/index';
 import { getCookie } from '@utils/index';
+import { API_TAGS, SERVICE_API_URL } from '@constants/index';
+import { TRequestAnswer, TUserRegistration } from '@app_types/index';
 
 const queryEndpoints = {
     google: 'google',
@@ -32,7 +32,7 @@ export const userApi = createApi({
             return headers;
         },
     }),
-    tagTypes: ['Users'],
+    tagTypes: [API_TAGS.users],
     endpoints: (builder) => ({
         login: builder.mutation<{ accessToken: string }, TUserRegistration>({
             query: (body: TUserRegistration) => ({

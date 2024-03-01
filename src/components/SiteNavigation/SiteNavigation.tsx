@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react';
+import { useCallback } from 'react';
 import classNames from 'classnames';
 import { Menu, MenuProps } from 'antd';
 import { ROUTES_LINKS } from '@constants/index';
@@ -35,7 +35,7 @@ type TSiteNavigationProps = {
     inlineCollapsed?: boolean;
     className?: string;
 };
-export const SiteNavigation: FC<TSiteNavigationProps> = ({
+export const SiteNavigation: React.FC<TSiteNavigationProps> = ({
     inlineCollapsed = true,
     className = '',
 }) => {

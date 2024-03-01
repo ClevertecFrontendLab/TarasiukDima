@@ -7,7 +7,7 @@ import { ROUTES_LINKS } from '@constants/index';
 import { TPreviousLocations, getClearLastRoutePath } from '@utils/index';
 
 
-export const ResultPage: React.FC = () => {
+export const ResultPage = () => {
     const { state } = useLocation();
     const { previousLocations } = useAppSelector((state) => state.router);
 

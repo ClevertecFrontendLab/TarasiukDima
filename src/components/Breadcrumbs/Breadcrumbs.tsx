@@ -8,21 +8,20 @@ export type TBreadcrumbsProps = {
     routes: Route[];
 };
 
-export const Breadcrumbs: React.FC<TBreadcrumbsProps> = ({ routes }) => {
-    return (
-        <Breadcrumb
-            className='breadcrumbs'
-            style={{
-                width: '100%',
-            }}
-            routes={routes}
-            itemRender={itemRender}
-        />
-    );
-};
+export const Breadcrumbs: React.FC<TBreadcrumbsProps> = ({ routes }) => (
+    <Breadcrumb
+        className='breadcrumbs'
+        style={{
+            width: '100%',
+        }}
+        routes={routes}
+        itemRender={itemRender}
+    />
+);
 
 const itemRender = (route: Route, _: unknown, routes: Route[]) => {
     const last = routes.indexOf(route) === routes.length - 1;
+
     return last ? (
         <span>{route.breadcrumbName}</span>
     ) : (

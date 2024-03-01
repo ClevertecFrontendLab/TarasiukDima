@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@hooks/index';
-import { setEmail, setToken } from '@redux/user-slice';
-import { TServerErrorResponse, useCheckEmailMutation, useLoginMutation } from '@services/index';
+import { setEmail, setToken } from '@redux/index';
+import { useCheckEmailMutation, useLoginMutation } from '@services/index';
 import {
     TPreviousLocations,
     getClearLastRoutePath,
@@ -16,6 +16,7 @@ import { EyeInvisibleOutlined, EyeTwoTone, GooglePlusOutlined } from '@ant-desig
 import { UserLayout, Logo } from '@components/index';
 import { AuthNavButtons } from './AuthNavButtons';
 import { ROUTES_LINKS, SERVICE_API_URL, TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
+import { TServerErrorResponse } from '@app_types/responses';
 
 import './auth.scss';
 
@@ -25,7 +26,7 @@ type TFormFields = {
     remember: string;
 };
 
-export const AuthPage: React.FC = () => {
+export const AuthPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { previousLocations } = useAppSelector((state) => state.router);
@@ -57,7 +58,6 @@ export const AuthPage: React.FC = () => {
     const [isPasswordError, setIsPasswordError] = useState<boolean>(false);
     const [rememberMe, setRememberMe] = useState<boolean>(false);
 
-    // got email check error
     useEffect(() => {
         if (isErrorCheckEmail && emailErrorData) {
             const { status, data } = emailErrorData as TServerErrorResponse;
@@ -73,15 +73,12 @@ export const AuthPage: React.FC = () => {
         }
     }, [isErrorCheckEmail, emailErrorData, navigate]);
 
-    // got email check success
     useEffect(() => {
         if (isSuccessCheckEmail) {
             navigate(ROUTES_LINKS.confirmEmail);
-            return;
         }
     }, [isSuccessCheckEmail, navigate]);
 
-    // got repeat check email
     useEffect(() => {
         if (!previousLocations || previousLocations.length === 0) {
             return;
@@ -94,7 +91,6 @@ export const AuthPage: React.FC = () => {
         }
     }, [email, previousLocations, checkEmail]);
 
-    // got success Login
     useEffect(() => {
         if (isLoginSuccess && logResponseData && 'accessToken' in logResponseData) {
             const token = logResponseData.accessToken || '';
@@ -108,11 +104,9 @@ export const AuthPage: React.FC = () => {
         }
     }, [dispatch, rememberMe, isLoginSuccess, navigate, logResponseData]);
 
-    // get error Login
     useEffect(() => {
         if (isLoginError && logResponseErrorData) {
             navigate(ROUTES_LINKS.resultErrorLogin);
-            return;
         }
     }, [isLoginError, navigate, logResponseErrorData]);
 

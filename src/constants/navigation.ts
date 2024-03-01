@@ -5,7 +5,6 @@ export const ROUTES_LINKS = {
     progress: '/#',
     feedbacks: '/feedbacks',
 
-    // user
     profile: '/#',
     auth: '/auth',
     registration: '/auth/registration',

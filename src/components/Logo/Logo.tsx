@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import LogoBig from './LogoBig.svg?react';
@@ -13,23 +13,21 @@ type TLogoProps = {
     className?: string;
 };
 
-export const Logo: FC<TLogoProps> = memo(({ variantIcon = 'big', className = '' }) => {
-    return (
-        <Link
-            to={ROUTES_LINKS.home}
-            className={classNames('logo', {
-                [className]: className,
-                small: variantIcon === 'small',
-            })}
-            aria-label='Логотип фирмы Cleverfit.'
-        >
-            {variantIcon === 'big' ? (
-                <LogoBig />
-            ) : variantIcon === 'small' ? (
-                <LogoSmall />
-            ) : (
-                <LogoSized />
-            )}
-        </Link>
-    );
-});
+export const Logo: React.FC<TLogoProps> = memo(({ variantIcon = 'big', className = '' }) => (
+    <Link
+        to={ROUTES_LINKS.home}
+        className={classNames('logo', {
+            [className]: className,
+            small: variantIcon === 'small',
+        })}
+        aria-label='Логотип фирмы Cleverfit.'
+    >
+        {variantIcon === 'big' ? (
+            <LogoBig />
+        ) : variantIcon === 'small' ? (
+            <LogoSmall />
+        ) : (
+            <LogoSized />
+        )}
+    </Link>
+));

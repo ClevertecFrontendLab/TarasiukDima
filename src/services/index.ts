@@ -1,11 +1,3 @@
-export type {
-    TUserRegistration,
-    TLoginResponse,
-    TServerErrorData,
-    TServerErrorResponse,
-    TRequestAnswer,
-} from './types';
-
 export {
     userApi,
     useLoginMutation,

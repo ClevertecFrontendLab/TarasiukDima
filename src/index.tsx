@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { HistoryRouter as Router } from 'redux-first-history/rr6';
-import { history, store } from '@redux/configure-store';
+import { history, store } from '@redux/index';
 import { ConfigProvider } from 'antd';
 
 import {

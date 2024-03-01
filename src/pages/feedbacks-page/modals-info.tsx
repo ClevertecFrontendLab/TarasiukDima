@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
-import { changeShowTokenError } from '@redux/app-slice';
+import { changeShowTokenError } from '@redux/index';
 import { Button, Result, Row } from 'antd';
 import { ModalPage } from '@components/index';
-import { ROUTES_LINKS } from '@constants/index';
+import { ROUTES_LINKS, STATUS_CODES } from '@constants/index';
+import { ResultStatusType } from 'antd/lib/result';
 
 type TFeedbacksPageProps = {
     isErrorOpen: boolean;
@@ -16,7 +17,7 @@ type TFeedbacksPageProps = {
     isErrorAddFeedbackOpen: boolean;
     closeErrorAddFeedbackCB: () => void;
     repeateWriteShowModalFeedback: () => void;
-}
+};
 
 export const ModalsInfo: React.FC<TFeedbacksPageProps> = ({
     isErrorOpen,
@@ -44,9 +45,14 @@ export const ModalsInfo: React.FC<TFeedbacksPageProps> = ({
         <>
             <ModalPage variant='error' open={isErrorOpen}>
                 <Result
-                    status='500'
+                    status={STATUS_CODES.server_error as ResultStatusType}
                     title='Что-то пошло не так'
-                    subTitle={<>Произошла ошибка, <br/>попробуйте ещё раз.</>}
+                    subTitle={
+                        <>
+                            Произошла ошибка, <br />
+                            попробуйте ещё раз.
+                        </>
+                    }
                     extra={
                         <Button
                             type='primary'

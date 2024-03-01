@@ -1,20 +1,20 @@
+import { MIN_LENGTH_PASSWORD } from '@constants/index';
+
 const regExpForEmail =
     /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
 
-export const validateEmail = (email: string) => {
-    return Boolean(email.match(regExpForEmail));
-};
+export const validateEmail = (email: string) => Boolean(email.match(regExpForEmail));
 
 export const validatePassword = (password: string) => {
     const clearPass = password.trim();
 
-    if (clearPass.length < 8) {
+    if (clearPass.length < MIN_LENGTH_PASSWORD) {
         return false;
     }
 
-    const existUpper = Boolean(clearPass.match(/[A-Z]/));
-    const existLower = Boolean(clearPass.match(/[a-z]/));
-    const existNumber = Boolean(clearPass.match(/[0-9]/));
+    const existUpper = /[A-Z]/.test(clearPass);
+    const existLower = /[a-z]/.test(clearPass);
+    const existNumber = /[0-9]/.test(clearPass);
 
     if (!existUpper || !existNumber || !existLower) {
         return false;

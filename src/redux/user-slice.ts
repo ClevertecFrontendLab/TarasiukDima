@@ -11,7 +11,6 @@ type TUserState = {
 };
 
 const readTokenWhileInit = () => {
-    // token from google auth
     const accessToken = new URLSearchParams(window.location.search).get('accessToken');
 
     if (accessToken) {

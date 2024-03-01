@@ -14,7 +14,6 @@ export const ResultAuth: React.FC<TResultAuthProps> = ({ state }) => {
 
     const repeatCheckEmailHandler = useCallback(() => {
         navigate(ROUTES_LINKS.auth);
-        return;
     }, [navigate]);
 
     if (state && state.variantError === 'no-user') {

@@ -9,9 +9,6 @@ export type TServerErrorData = {
 export type TServerErrorResponse = {
     status: string | number;
     data: TServerErrorData;
-    //     error: {
-    //         data: TServerErrorData;
-    //     };
 };
 
 export type TRequestAnswer = {
