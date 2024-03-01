@@ -1,16 +1,16 @@
 import { useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
+import { setToken } from '@redux/user-slice';
 import { changeShowSidebar } from '@redux/app-slice';
+import { removeLocalStorageItem } from '@utils/index';
 import { Button, Col } from 'antd';
 import Sider from 'antd/lib/layout/Sider';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { Logo, SiteNavigation } from '@components/index';
+import { TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
 import ExitIcon from '@public/img/exit.svg?react';
 
 import './sidebar.scss';
-import { setToken } from '@redux/user-slice';
-import { TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
-import { removeLocalStorageItem } from '@utils/index';
 
 export const Sidebar = () => {
     const { isShowSidebar } = useAppSelector((state) => state.app);

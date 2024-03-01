@@ -2,15 +2,15 @@ import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@hooks/typed-react-redux-hooks';
 import { useAddFeedbackMutation, useGetFeedbackQuery } from '@services/feedbackApi';
-import { removeLocalStorageItem } from '@utils/storage';
 import { setToken } from '@redux/user-slice';
+import { removeLocalStorageItem } from '@utils/storage';
+import { Button, Input } from 'antd';
 import { PageLayout, PageHeader, ModalPage, Rating } from '@components/index';
-import { ROUTES_LINKS, TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
 import { FeedbacksPageEmpty } from './feedbacks-page-empty';
 import { FeedbacksPageContent } from './feedbacks-page-content';
 import { ModalsInfo } from './modals-info';
-import { Button, Input } from 'antd';
-import { IServerErrorResponse } from '@services/types';
+import { ROUTES_LINKS, TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
+import { TServerErrorResponse } from '@app_types/index';
 
 import './feedbacks-page.scss';
 
@@ -59,7 +59,7 @@ export const FeedbacksPage: React.FC = () => {
     // got error Feedbacks
     useEffect(() => {
         if (isFeedbacksError && feedbacksErrorData) {
-            const statusError = (feedbacksErrorData as IServerErrorResponse).status.toString();
+            const statusError = (feedbacksErrorData as TServerErrorResponse).status.toString();
 
             if (statusError === '403') {
                 dispatch(setToken(''));

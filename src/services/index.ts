@@ -1,9 +1,9 @@
 export type {
-    IUserRegistration,
-    ILoginResponse,
-    IServerErrorData,
-    IServerErrorResponse,
-    IRequestAnswer,
+    TUserRegistration,
+    TLoginResponse,
+    TServerErrorData,
+    TServerErrorResponse,
+    TRequestAnswer,
 } from './types';
 
 export {

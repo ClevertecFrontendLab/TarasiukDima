@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@hooks/index';
 import { setEmail, setToken } from '@redux/user-slice';
-import { IServerErrorResponse, useCheckEmailMutation, useLoginMutation } from '@services/index';
+import { TServerErrorResponse, useCheckEmailMutation, useLoginMutation } from '@services/index';
 import {
-    IPreviousLocations,
+    TPreviousLocations,
     getClearLastRoutePath,
     setLocalStorageItem,
     validateEmail,
@@ -19,11 +19,11 @@ import { ROUTES_LINKS, SERVICE_API_URL, TOKEN_AUTH_LOCALSTORAGE } from '@constan
 
 import './auth.scss';
 
-interface IFormFields {
+type TFormFields = {
     email: string;
     password: string;
     remember: string;
-}
+};
 
 export const AuthPage: React.FC = () => {
     const navigate = useNavigate();
@@ -60,7 +60,7 @@ export const AuthPage: React.FC = () => {
     // got email check error
     useEffect(() => {
         if (isErrorCheckEmail && emailErrorData) {
-            const { status, data } = emailErrorData as IServerErrorResponse;
+            const { status, data } = emailErrorData as TServerErrorResponse;
 
             if (data && data.message === 'Email не найден' && status.toString() === '404') {
                 navigate(ROUTES_LINKS.resultErrorNoUser, { state: { variantError: 'no-user' } });
@@ -87,7 +87,7 @@ export const AuthPage: React.FC = () => {
             return;
         }
 
-        const previousPath = getClearLastRoutePath(previousLocations as Array<IPreviousLocations>);
+        const previousPath = getClearLastRoutePath(previousLocations as TPreviousLocations[]);
 
         if (previousPath === ROUTES_LINKS.resultErrorEmail && email) {
             checkEmail({ email });
@@ -151,7 +151,7 @@ export const AuthPage: React.FC = () => {
     }, []);
 
     const onSubmit = useCallback(
-        (values: IFormFields) => {
+        (values: TFormFields) => {
             let errorExist = false;
 
             const email = values.email || '';

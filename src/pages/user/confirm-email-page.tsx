@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { setCode } from '@redux/user-slice';
 import { useConfirmEmailMutation } from '@services/userApi';
 import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
-import { IPreviousLocations, getClearLastRoutePath } from '@utils/index';
+import { TPreviousLocations, getClearLastRoutePath } from '@utils/index';
 import { ResultComponent } from '@components/index';
 import VerificationInput from 'react-verification-input';
 import { Row } from 'antd';
@@ -31,7 +31,7 @@ export const ConfirmEmailPage: React.FC = () => {
             navigate(ROUTES_LINKS.auth);
         }
 
-        const previousPath = getClearLastRoutePath(previousLocations as Array<IPreviousLocations>);
+        const previousPath = getClearLastRoutePath(previousLocations as TPreviousLocations[]);
 
         if (!(previousPath === ROUTES_LINKS.auth || previousPath === ROUTES_LINKS.confirmEmail)) {
             navigate(ROUTES_LINKS.auth);

@@ -1,5 +1,5 @@
 export { getClearLastRoutePath } from './common';
-export type { IPreviousLocations } from './common';
+export type { TPreviousLocations } from './common';
 
 export { sortArrayByDate, getCorrectDateForShow } from './date';
 

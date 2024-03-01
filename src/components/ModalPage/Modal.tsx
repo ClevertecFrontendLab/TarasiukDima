@@ -3,15 +3,15 @@ import { Modal, ModalProps } from 'antd';
 
 import './modal.scss';
 
-interface IModalPageProps extends ModalProps {
+type TModalPageProps = ModalProps & {
     variant?: 'info' | 'error' | 'content';
     children?: ReactNode;
     footer?: ReactNode;
     title?: ReactNode;
     closable?: boolean;
-}
+};
 
-export const ModalPage: React.FC<IModalPageProps> = ({
+export const ModalPage: React.FC<TModalPageProps> = ({
     variant = 'info',
     children,
     footer = null,

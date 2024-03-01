@@ -13,10 +13,10 @@ export const validatePassword = (password: string) => {
     }
 
     const existUpper = Boolean(clearPass.match(/[A-Z]/));
-    // const existLower = Boolean(clearPass.match(/[a-z]/));
+    const existLower = Boolean(clearPass.match(/[a-z]/));
     const existNumber = Boolean(clearPass.match(/[0-9]/));
 
-    if (!existUpper || !existNumber) {
+    if (!existUpper || !existNumber || !existLower) {
         return false;
     }
 

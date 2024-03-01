@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { SERVICE_API_URL } from '@constants/index';
 import { RootState } from '@redux/configure-store';
-import { IFeedback, IFeedbackCreateBody } from './types';
+import { TFeedback, TFeedbackCreateBody } from '@app_types/index';
 
 export const feedbackApi = createApi({
     reducerPath: 'feedbackApi',
@@ -18,7 +18,7 @@ export const feedbackApi = createApi({
     }),
     tagTypes: ['Feedbacks'],
     endpoints: (builder) => ({
-        getFeedback: builder.query<Array<IFeedback>, null>({
+        getFeedback: builder.query<TFeedback[], null>({
             query: () => ({
                 url: '',
             }),
@@ -30,7 +30,7 @@ export const feedbackApi = createApi({
                       ]
                     : [{ type: 'Feedbacks', id: 'LIST' }],
         }),
-        addFeedback: builder.mutation<Array<IFeedback>, IFeedbackCreateBody>({
+        addFeedback: builder.mutation<TFeedback[], TFeedbackCreateBody>({
             query: (body) => ({
                 url: '',
                 method: 'POST',

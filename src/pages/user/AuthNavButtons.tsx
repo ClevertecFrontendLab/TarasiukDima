@@ -1,20 +1,19 @@
 import { Button, Col, Row } from 'antd';
 import { Link } from 'react-router-dom';
-
 import { ROUTES_LINKS } from '@constants/index';
 
 import './auth.scss';
 
-interface IUserPagesButtonsProps {
+type TUserPagesButtonsProps = {
     active?: 'auth' | 'register';
-}
+};
 
-interface IButtonForNavProps {
+type TButtonForNavProps = {
     text: string;
     active: boolean;
     link?: string;
-}
-const ButtonForNav: React.FC<IButtonForNavProps> = ({ text, active, link = '' }) => {
+};
+const ButtonForNav: React.FC<TButtonForNavProps> = ({ text, active, link = '' }) => {
     if (active) {
         return <Button className='auth-buttons__link active'>{text}</Button>;
     }
@@ -26,7 +25,7 @@ const ButtonForNav: React.FC<IButtonForNavProps> = ({ text, active, link = '' })
     );
 };
 
-export const AuthNavButtons: React.FC<IUserPagesButtonsProps> = ({ active = 'auth' }) => {
+export const AuthNavButtons: React.FC<TUserPagesButtonsProps> = ({ active = 'auth' }) => {
     return (
         <Row className='auth-buttons'>
             <Col span={12}>

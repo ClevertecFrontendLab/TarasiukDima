@@ -6,11 +6,11 @@ import { TClsAndChildProps } from '@app_types/common';
 
 import './user-layout.scss';
 
-interface IUserLayoutProps extends TClsAndChildProps {
+type TUserLayoutProps = TClsAndChildProps & {
     showSpinner?: boolean;
-}
+};
 
-export const UserLayout: FC<IUserLayoutProps> = ({
+export const UserLayout: FC<TUserLayoutProps> = ({
     children,
     className = '',
     showSpinner = false,

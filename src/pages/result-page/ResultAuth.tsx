@@ -4,12 +4,12 @@ import { ResultComponent } from '@components/index';
 import { ROUTES_LINKS } from '@constants/index';
 import { useCallback } from 'react';
 
-interface IResultAuthProps {
+type TResultAuthProps = {
     state?: {
         variantError: 'no-user' | 'server' | null;
     };
 }
-export const ResultAuth: React.FC<IResultAuthProps> = ({ state }) => {
+export const ResultAuth: React.FC<TResultAuthProps> = ({ state }) => {
     const navigate = useNavigate();
 
     const repeatCheckEmailHandler = useCallback(() => {

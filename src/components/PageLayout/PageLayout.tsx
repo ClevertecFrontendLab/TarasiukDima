@@ -3,16 +3,15 @@ import classNames from 'classnames';
 import { Layout, Spin } from 'antd';
 import { Sidebar } from '@components/index';
 import Paragraph from 'antd/lib/typography/Paragraph';
+import { TClsAndChildProps } from '@app_types/common';
 
 import './page-layout.scss';
 
-interface IPageLayoutProps {
-    children: ReactNode;
-    className?: string;
+type TPageLayoutProps = TClsAndChildProps & {
     isLoading?: boolean;
-}
+};
 
-export const PageLayout: FC<IPageLayoutProps> = ({
+export const PageLayout: FC<TPageLayoutProps> = ({
     children,
     className = '',
     isLoading = false,

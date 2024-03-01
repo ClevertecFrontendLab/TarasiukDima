@@ -31,11 +31,11 @@ const items: MenuProps['items'] = [
     },
 ];
 
-interface ISiteNavigationProps {
+type TSiteNavigationProps = {
     inlineCollapsed?: boolean;
     className?: string;
-}
-export const SiteNavigation: FC<ISiteNavigationProps> = ({
+};
+export const SiteNavigation: FC<TSiteNavigationProps> = ({
     inlineCollapsed = true,
     className = '',
 }) => {

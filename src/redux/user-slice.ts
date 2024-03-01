@@ -2,13 +2,13 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
 import { getLocalStorageItem } from '@utils/index';
 
-interface IAppState {
+type TUserState = {
     isAuth: boolean;
     token: string;
     email: string;
     password: string;
     code: string;
-}
+};
 
 const readTokenWhileInit = () => {
     // token from google auth
@@ -21,7 +21,7 @@ const readTokenWhileInit = () => {
     return getLocalStorageItem(TOKEN_AUTH_LOCALSTORAGE);
 };
 
-const appStateInit: IAppState = {
+const appStateInit: TUserState = {
     isAuth: false,
     token: readTokenWhileInit(),
     email: '',
@@ -53,6 +53,6 @@ const userSlice = createSlice({
 
 const { actions, reducer } = userSlice;
 
-export const { changeIsAuth, setToken, setPassword, setEmail, setCode } =
-    actions;
+export const { changeIsAuth, setToken, setPassword, setEmail, setCode } = actions;
+
 export { reducer as userReducer };

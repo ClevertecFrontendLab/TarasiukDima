@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@hooks/index';
 import { setEmail, setPassword } from '@redux/user-slice';
 import { useNavigate } from 'react-router-dom';
-import { useRegistrationMutation, IServerErrorResponse } from '@services/index';
+import { useRegistrationMutation, TServerErrorResponse } from '@services/index';
 import { Button, Form, Input } from 'antd';
 import { validateEmail, validatePassword } from '@utils/index';
 import { EyeInvisibleOutlined, EyeTwoTone, GooglePlusOutlined } from '@ant-design/icons';
@@ -12,7 +12,7 @@ import { ROUTES_LINKS } from '@constants/index';
 
 import './auth.scss';
 
-interface IFormFields {
+type TFormFields = {
     email: string;
     password: string;
     password2: string;
@@ -54,13 +54,13 @@ export const RegistrationPage: React.FC = () => {
         if (isRegistrationError && regResponseErrorData) {
             let linkToRedirect = ROUTES_LINKS.resultError;
 
-            if ((regResponseErrorData as IServerErrorResponse).status.toString() === '409') {
+            if ((regResponseErrorData as TServerErrorResponse).status.toString() === '409') {
                 linkToRedirect = ROUTES_LINKS.resultErrorUserExist;
             }
 
             navigate(linkToRedirect, {
                 state: {
-                    ...(regResponseErrorData as IServerErrorResponse),
+                    ...(regResponseErrorData as TServerErrorResponse),
                 },
             });
         }
@@ -107,7 +107,7 @@ export const RegistrationPage: React.FC = () => {
         [curPassword],
     );
 
-    const onSubmit = (values: IFormFields) => {
+    const onSubmit = (values: TFormFields) => {
         let errorExist = false;
         const email = values.email || '';
         if (!validateEmail(email)) {

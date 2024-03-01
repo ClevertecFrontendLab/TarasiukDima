@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
-import { IPreviousLocations, getClearLastRoutePath, validatePassword } from '@utils/index';
+import { TPreviousLocations, getClearLastRoutePath, validatePassword } from '@utils/index';
 import { Button, Form, Input } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
@@ -12,7 +12,7 @@ import './auth.scss';
 import { useChangePasswordMutation } from '@services/userApi';
 import { setPassword } from '@redux/user-slice';
 
-interface IFormFields {
+type TFormFields = {
     password: string;
     password2: string;
 }
@@ -43,7 +43,7 @@ export const ChangePasswordPage: React.FC = () => {
             return;
         }
 
-        const previousPath = getClearLastRoutePath(previousLocations as Array<IPreviousLocations>);
+        const previousPath = getClearLastRoutePath(previousLocations as TPreviousLocations[]);
 
         if (
             !(
@@ -77,7 +77,7 @@ export const ChangePasswordPage: React.FC = () => {
 
     // got repeat change password
     useEffect(() => {
-        const previousPath = getClearLastRoutePath(previousLocations as Array<IPreviousLocations>);
+        const previousPath = getClearLastRoutePath(previousLocations as TPreviousLocations[]);
 
         if (previousPath === ROUTES_LINKS.resultErrorChangePassword && password) {
             changePasswordUser({
@@ -106,7 +106,7 @@ export const ChangePasswordPage: React.FC = () => {
         [password],
     );
 
-    const onSubmit = (values: IFormFields) => {
+    const onSubmit = (values: TFormFields) => {
         let errorExist = false;
 
         const password = values.password || '';

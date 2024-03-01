@@ -1,19 +1,19 @@
 import { FC, memo } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import { ROUTES_LINKS } from '@constants/index';
 import LogoBig from './LogoBig.svg?react';
 import LogoSmall from './LogoSmall.svg?react';
 import LogoSized from './LogoSized.svg?react';
+import { ROUTES_LINKS } from '@constants/index';
 
 import './logo.scss';
 
-interface ILogoProps {
+type TLogoProps = {
     variantIcon?: 'small' | 'big' | 'sized';
     className?: string;
-}
+};
 
-export const Logo: FC<ILogoProps> = memo(({ variantIcon = 'big', className = '' }) => {
+export const Logo: FC<TLogoProps> = memo(({ variantIcon = 'big', className = '' }) => {
     return (
         <Link
             to={ROUTES_LINKS.home}

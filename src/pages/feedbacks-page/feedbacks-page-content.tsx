@@ -1,18 +1,16 @@
 import { useCallback, useMemo, useState } from 'react';
+import { sortArrayByDate } from '@utils/index';
 import { Button, Row } from 'antd';
 import { Feedbacks, PageContent, PageFooter } from '@components/index';
-import { TSimpleFn } from '@app_types/common';
-import { IFeedback } from '@services/types';
-import { sortArrayByDate } from '@utils/index';
+import { TSimpleFn, TFeedback } from '@app_types/index';
+import { COUNT_FEEDBACKS_TO_SHOW } from '@constants/index';
 
-interface IFeedbacksPageContent {
+type TFeedbacksPageContent = {
     addCommentModalHandler: TSimpleFn;
-    feedbacks: Array<IFeedback>;
-}
+    feedbacks: TFeedback[];
+};
 
-const COUNT_FEEDBACKS_TO_SHOW = 4;
-
-export const FeedbacksPageContent: React.FC<IFeedbacksPageContent> = ({
+export const FeedbacksPageContent: React.FC<TFeedbacksPageContent> = ({
     addCommentModalHandler,
     feedbacks,
 }) => {
@@ -27,7 +25,7 @@ export const FeedbacksPageContent: React.FC<IFeedbacksPageContent> = ({
     }, []);
 
     const feedbacksList = useMemo(() => {
-        const sortedList = sortArrayByDate<IFeedback, 'createdAt'>(feedbacks, 'createdAt');
+        const sortedList = sortArrayByDate<TFeedback, 'createdAt'>(feedbacks, 'createdAt');
         return countItemsToShow ? sortedList.slice(0, countItemsToShow) : sortedList;
     }, [countItemsToShow, feedbacks]);
     return (

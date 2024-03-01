@@ -6,7 +6,7 @@ import { Button, Result, Row } from 'antd';
 import { ModalPage } from '@components/index';
 import { ROUTES_LINKS } from '@constants/index';
 
-interface IFeedbacksPageProps {
+type TFeedbacksPageProps = {
     isErrorOpen: boolean;
     closeErrorCB: () => void;
 
@@ -18,7 +18,7 @@ interface IFeedbacksPageProps {
     repeateWriteShowModalFeedback: () => void;
 }
 
-export const ModalsInfo: React.FC<IFeedbacksPageProps> = ({
+export const ModalsInfo: React.FC<TFeedbacksPageProps> = ({
     isErrorOpen,
     closeErrorCB,
     isSuccessFeedbackOpen,

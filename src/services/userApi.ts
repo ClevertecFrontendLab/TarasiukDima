@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { SERVICE_API_URL } from '@constants/index';
 import { RootState } from '@redux/configure-store';
-import { IRequestAnswer, IUserRegistration } from './types';
+import { TRequestAnswer, TUserRegistration } from './types';
 import { getCookie } from '@utils/index';
 
 const queryEndpoints = {
@@ -34,8 +34,8 @@ export const userApi = createApi({
     }),
     tagTypes: ['Users'],
     endpoints: (builder) => ({
-        login: builder.mutation<{ accessToken: string }, IUserRegistration>({
-            query: (body: IUserRegistration) => ({
+        login: builder.mutation<{ accessToken: string }, TUserRegistration>({
+            query: (body: TUserRegistration) => ({
                 url: queryEndpoints.login,
                 method: 'POST',
                 body,
@@ -46,8 +46,8 @@ export const userApi = createApi({
                 url: queryEndpoints.google,
             }),
         }),
-        registration: builder.mutation<IRequestAnswer, IUserRegistration>({
-            query: (body: IUserRegistration) => ({
+        registration: builder.mutation<TRequestAnswer, TUserRegistration>({
+            query: (body: TUserRegistration) => ({
                 url: queryEndpoints.registration,
                 method: 'POST',
                 body,

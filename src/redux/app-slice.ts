@@ -1,11 +1,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-interface IAppState {
+type TAppState = {
     isShowSidebar: boolean;
     isShowTokenError: boolean;
-}
+};
 
-const appStateInit: IAppState = {
+const appStateInit: TAppState = {
     isShowSidebar: true,
     isShowTokenError: false,
 };
@@ -26,4 +26,5 @@ const appSlice = createSlice({
 const { actions, reducer } = appSlice;
 
 export const { changeShowSidebar, changeShowTokenError } = actions;
+
 export { reducer as appReducer };

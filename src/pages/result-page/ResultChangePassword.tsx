@@ -4,13 +4,13 @@ import { ResultComponent } from '@components/index';
 import { ROUTES_LINKS } from '@constants/index';
 import { useCallback } from 'react';
 
-interface IResultChangePasswordProps {
+type TResultChangePasswordProps = {
     state?: {
         variant: 'error' | null;
         password: string;
     };
 }
-export const ResultChangePassword: React.FC<IResultChangePasswordProps> = ({ state }) => {
+export const ResultChangePassword: React.FC<TResultChangePasswordProps> = ({ state }) => {
     const navigate = useNavigate();
 
     const repeatChangePasswordHandler = useCallback(() => {

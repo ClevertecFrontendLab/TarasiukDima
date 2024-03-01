@@ -4,11 +4,11 @@ import { Route } from 'antd/lib/breadcrumb/Breadcrumb';
 
 import './breadcrumbs.scss';
 
-export interface IBreadcrumbsProps {
-    routes: Array<Route>;
-}
+export type TBreadcrumbsProps = {
+    routes: Route[];
+};
 
-export const Breadcrumbs: React.FC<IBreadcrumbsProps> = ({ routes }) => {
+export const Breadcrumbs: React.FC<TBreadcrumbsProps> = ({ routes }) => {
     return (
         <Breadcrumb
             className='breadcrumbs'
@@ -21,7 +21,7 @@ export const Breadcrumbs: React.FC<IBreadcrumbsProps> = ({ routes }) => {
     );
 };
 
-const itemRender = (route: Route, _: unknown, routes: Array<Route>) => {
+const itemRender = (route: Route, _: unknown, routes: Route[]) => {
     const last = routes.indexOf(route) === routes.length - 1;
     return last ? (
         <span>{route.breadcrumbName}</span>

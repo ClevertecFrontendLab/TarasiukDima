@@ -5,15 +5,15 @@ import { UserLayout } from '@components/index';
 
 import './result.scss';
 
-interface IResultComponentProps {
+type TResultComponentProps = {
     showSpinner?: boolean;
     status?: ResultStatusType;
     title?: ReactNode;
     subTitle?: ReactNode;
     extra?: ReactNode;
-}
+};
 
-export const ResultComponent: React.FC<IResultComponentProps> = ({
+export const ResultComponent: React.FC<TResultComponentProps> = ({
     status = '500',
     title = '500',
     subTitle = '',

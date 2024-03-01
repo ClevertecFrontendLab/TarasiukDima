@@ -3,11 +3,11 @@ import classNames from 'classnames';
 
 import './spinner.scss';
 
-interface ISpinnerProps {
+type TSpinnerProps = {
     className?: string;
-}
+};
 
-export const Spinner: React.FC<ISpinnerProps> = ({ className = '' }) => {
+export const Spinner: React.FC<TSpinnerProps> = ({ className = '' }) => {
     return (
         <div
             className={classNames('spinner', {

@@ -3,16 +3,16 @@ import { getCorrectDateForShow } from '@utils/index';
 import Paragraph from 'antd/lib/typography/Paragraph';
 import { UserOutlined } from '@ant-design/icons';
 import { Rating } from '@components/index';
-import { IFeedback } from '@services/types';
+import { TFeedback } from '@app_types/index';
 
 import './feedbacks.scss';
 
-export interface IFeedbacksProps {
-    feedbacks: Array<IFeedback>;
+type TFeedbacksProps = {
+    feedbacks: TFeedback[];
     isLoading?: boolean;
 }
 
-export const Feedbacks: React.FC<IFeedbacksProps> = ({ feedbacks, isLoading = false }) => {
+export const Feedbacks: React.FC<TFeedbacksProps> = ({ feedbacks, isLoading = false }) => {
     return (
         <List
             className='feedbacks-list'
