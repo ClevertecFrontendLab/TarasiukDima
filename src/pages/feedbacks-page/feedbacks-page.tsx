@@ -39,7 +39,7 @@ export const FeedbacksPage = () => {
     const [openModalOkAddedFeedback, setOpenModalOkAddedFeedback] = useState<boolean>(false);
     const [isErrorAddFeedbackOpen, setErrorAddFeedbackOpen] = useState<boolean>(false);
 
-    const [feedbackStart, setFeedbackStart] = useState<number>(0);
+    const [feedbackStar, setFeedbackStar] = useState<number>(0);
     const [feedbackText, setFeedbackText] = useState<string>('');
 
     const {
@@ -88,7 +88,7 @@ export const FeedbacksPage = () => {
         if (isSuccessFeedbackAdd) {
             setOpenModalOkAddedFeedback(true);
             setOpenModalFeedback(false);
-            setFeedbackStart(0);
+            setFeedbackStar(0);
             setFeedbackText('');
         }
     }, [isSuccessFeedbackAdd]);
@@ -122,19 +122,19 @@ export const FeedbacksPage = () => {
         setFeedbackText(event.target.value);
     }, []);
 
-    const changeFeedbackStarts = useCallback((star: number) => {
-        setFeedbackStart(star);
+    const changeFeedbackStars = useCallback((star: number) => {
+        setFeedbackStar(star);
     }, []);
 
     const postFeedback = useCallback(() => {
         // eslint-disable-next-line no-extra-boolean-cast
-        if (!Boolean(feedbackStart)) return;
+        if (!Boolean(feedbackStar)) return;
 
         addFeedback({
             message: feedbackText,
-            rating: feedbackStart,
+            rating: feedbackStar,
         });
-    }, [addFeedback, feedbackStart, feedbackText]);
+    }, [addFeedback, feedbackStar, feedbackText]);
 
     return (
         <PageLayout isLoading={isFeedbacksLoading} className='feedbacks-page'>
@@ -176,7 +176,7 @@ export const FeedbacksPage = () => {
                         className='content-btn button-page'
                         disabled={
                             // eslint-disable-next-line no-extra-boolean-cast
-                            !Boolean(feedbackStart) || isFeedbackAddLoading
+                            (!Boolean(feedbackStar) && !feedbackText) || isFeedbackAddLoading
                         }
                         onClick={postFeedback}
                         data-test-id='new-review-submit-button'
@@ -187,8 +187,8 @@ export const FeedbacksPage = () => {
             >
                 <Rating
                     isClickable
-                    onChange={changeFeedbackStarts}
-                    rating={feedbackStart}
+                    onChange={changeFeedbackStars}
+                    rating={feedbackStar}
                     className='content-rating'
                 />
 
