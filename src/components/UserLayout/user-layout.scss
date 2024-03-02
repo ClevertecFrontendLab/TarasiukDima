@@ -1,4 +1,5 @@
 @import "@assets/scss/variables";
+@import "@assets/scss/mixins";
 
 body .user-layout {
     position: relative;
@@ -8,23 +9,19 @@ body .user-layout {
     background-position: center center;
     background-size: cover;
 
-    .user-layout__wrapper {
+    &__wrapper {
         min-height: 100vh;
-        padding: 90px 16px;
+        padding: 90px $indentMin2;
         justify-content: center;
     }
 
-    .user-layout__content {
+    &__content {
         background-color: $white;
     }
 }
 
-
-
-@media (max-width: 575px) {
-    body .user-layout {
-        .user-layout__wrapper {
-            align-items: stretch;
-        }
+@include mobile() {
+    body .user-layout__wrapper {
+        align-items: stretch;
     }
 }

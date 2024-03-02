@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@hooks/index';
-import { setEmail, setToken } from '@redux/user-slice';
-import { IServerErrorResponse, useCheckEmailMutation, useLoginMutation } from '@services/index';
+import { setEmail, setToken } from '@redux/index';
+import { useCheckEmailMutation, useLoginMutation } from '@services/index';
 import {
-    IPreviousLocations,
+    TPreviousLocations,
     getClearLastRoutePath,
     setLocalStorageItem,
     validateEmail,
@@ -15,17 +15,18 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { EyeInvisibleOutlined, EyeTwoTone, GooglePlusOutlined } from '@ant-design/icons';
 import { UserLayout, Logo } from '@components/index';
 import { AuthNavButtons } from './AuthNavButtons';
-import { ROUTES_LINKS, TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
+import { ROUTES_LINKS, SERVICE_API_URL, TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
+import { TServerErrorResponse } from '@app_types/responses';
 
 import './auth.scss';
 
-interface IFormFields {
+type TFormFields = {
     email: string;
     password: string;
     remember: string;
-}
+};
 
-export const AuthPage: React.FC = () => {
+export const AuthPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { previousLocations } = useAppSelector((state) => state.router);
@@ -41,6 +42,7 @@ export const AuthPage: React.FC = () => {
             data: logResponseData,
         },
     ] = useLoginMutation();
+
     const [
         checkEmail,
         {
@@ -56,10 +58,9 @@ export const AuthPage: React.FC = () => {
     const [isPasswordError, setIsPasswordError] = useState<boolean>(false);
     const [rememberMe, setRememberMe] = useState<boolean>(false);
 
-    // got email check error
     useEffect(() => {
         if (isErrorCheckEmail && emailErrorData) {
-            const { status, data } = emailErrorData as IServerErrorResponse;
+            const { status, data } = emailErrorData as TServerErrorResponse;
 
             if (data && data.message === 'Email не найден' && status.toString() === '404') {
                 navigate(ROUTES_LINKS.resultErrorNoUser, { state: { variantError: 'no-user' } });
@@ -72,28 +73,24 @@ export const AuthPage: React.FC = () => {
         }
     }, [isErrorCheckEmail, emailErrorData, navigate]);
 
-    // got email check success
     useEffect(() => {
         if (isSuccessCheckEmail) {
             navigate(ROUTES_LINKS.confirmEmail);
-            return;
         }
     }, [isSuccessCheckEmail, navigate]);
 
-    // got repeat check email
     useEffect(() => {
         if (!previousLocations || previousLocations.length === 0) {
             return;
         }
 
-        const previousPath = getClearLastRoutePath(previousLocations as Array<IPreviousLocations>);
+        const previousPath = getClearLastRoutePath(previousLocations as TPreviousLocations[]);
 
         if (previousPath === ROUTES_LINKS.resultErrorEmail && email) {
             checkEmail({ email });
         }
     }, [email, previousLocations, checkEmail]);
 
-    // got success Login
     useEffect(() => {
         if (isLoginSuccess && logResponseData && 'accessToken' in logResponseData) {
             const token = logResponseData.accessToken || '';
@@ -107,11 +104,9 @@ export const AuthPage: React.FC = () => {
         }
     }, [dispatch, rememberMe, isLoginSuccess, navigate, logResponseData]);
 
-    // get error Login
     useEffect(() => {
         if (isLoginError && logResponseErrorData) {
             navigate(ROUTES_LINKS.resultErrorLogin);
-            return;
         }
     }, [isLoginError, navigate, logResponseErrorData]);
 
@@ -150,7 +145,7 @@ export const AuthPage: React.FC = () => {
     }, []);
 
     const onSubmit = useCallback(
-        (values: IFormFields) => {
+        (values: TFormFields) => {
             let errorExist = false;
 
             const email = values.email || '';
@@ -176,7 +171,7 @@ export const AuthPage: React.FC = () => {
     );
 
     const googleLoginHandler = useCallback(async () => {
-        console.log('googleLoginHandler');
+        window.location.href = `${SERVICE_API_URL}/auth/google`;
     }, []);
 
     return (

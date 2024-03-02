@@ -1,5 +1,5 @@
-import { IServerErrorResponse } from "@services/index";
+import { TServerErrorResponse } from '@app_types/responses';
 
-export interface IResultItemProps {
-    state: IServerErrorResponse
-}
+export type IResultItemProps = {
+    state: TServerErrorResponse;
+};

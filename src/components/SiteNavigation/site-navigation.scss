@@ -1,54 +1,59 @@
 @import "@assets/scss/variables";
+@import "@assets/scss/mixins";
 
 ul.navigation {
     width: 100%;
-    font-size: 14px;
+    font-size: $fontSizeMin;
     color: $black;
-    line-height: 1.3;
 
     li.ant-menu-item {
+        display: flex;
+        align-items: center;
         height: 42px;
-        margin-top: 0;
-        padding-left: 18px !important;
+        margin: 0;
+        padding-left: $indentMidSmall !important;
 
         &:not(:last-child) {
-            margin-bottom: 16px;
+            margin-bottom: $indentMin2;
         }
-    }
 
-    svg {
-        fill: $primary-light-9;
-    }
-}
+        .ant-menu-item-icon {
+            flex-shrink: 0;
+        }
 
-@media (max-width: 991px) {
-    ul.navigation {
-        &.ant-menu-inline-collapsed li.ant-menu-item{
-            padding-left: 24px !important;
+        svg {
+            fill: $blueDark;
         }
     }
 }
 
-
-@media (max-width: 575px) {
+@include tablet() {
     ul.navigation {
-        &.ant-menu-inline-collapsed li.ant-menu-item{
-            padding-left: 8px !important;
+        &.ant-menu-inline-collapsed li.ant-menu-item {
+            padding-left: $indentMid !important;
+        }
+    }
+}
+
+@include mobile() {
+    ul.navigation {
+        &.ant-menu-inline-collapsed li.ant-menu-item {
+            padding-left: $indentSmallest !important;
         }
 
         li.ant-menu-item {
-            padding-left: 8px !important;
+            padding-left: $indentSmallest !important;
             padding-right: 2px;
 
             &:not(:last-child) {
-                margin-bottom: 8px;
+                margin-bottom: $indentSmallest;
             }
 
-            svg {
+            .ant-menu-item-icon {
                 display: none;
             }
 
-            span {
+            .ant-menu-title-content {
                 margin: 0;
                 min-width: auto;
             }

@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
-import { IPreviousLocations, getClearLastRoutePath, validatePassword } from '@utils/index';
+import { useChangePasswordMutation } from '@services/userApi';
+import { setPassword } from '@redux/index';
+import { TPreviousLocations, getClearLastRoutePath, validatePassword } from '@utils/index';
 import { Button, Form, Input } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
@@ -9,15 +11,13 @@ import { UserLayout } from '@components/index';
 import { ROUTES_LINKS } from '@constants/index';
 
 import './auth.scss';
-import { useChangePasswordMutation } from '@services/userApi';
-import { setPassword } from '@redux/user-slice';
 
-interface IFormFields {
+type TFormFields = {
     password: string;
     password2: string;
-}
+};
 
-export const ChangePasswordPage: React.FC = () => {
+export const ChangePasswordPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { password } = useAppSelector((state) => state.user);
@@ -36,14 +36,13 @@ export const ChangePasswordPage: React.FC = () => {
         },
     ] = useChangePasswordMutation();
 
-    // check if previous is not confirm, current or error pages
     useEffect(() => {
         if (!previousLocations || previousLocations.length === 0) {
             navigate(ROUTES_LINKS.auth);
             return;
         }
 
-        const previousPath = getClearLastRoutePath(previousLocations as Array<IPreviousLocations>);
+        const previousPath = getClearLastRoutePath(previousLocations as TPreviousLocations[]);
 
         if (
             !(
@@ -53,18 +52,15 @@ export const ChangePasswordPage: React.FC = () => {
             )
         ) {
             navigate(ROUTES_LINKS.auth);
-            return;
         }
     }, [previousLocations, navigate]);
 
-    // got success change password
     useEffect(() => {
         if (isChangePasswordSuccess) {
             navigate(ROUTES_LINKS.resultSuccessChangePassword);
         }
     }, [isChangePasswordSuccess, navigate]);
 
-    // get error change password
     useEffect(() => {
         if (isChangePasswordError && changePasswordErrorData) {
             navigate(ROUTES_LINKS.resultErrorChangePassword, {
@@ -75,9 +71,8 @@ export const ChangePasswordPage: React.FC = () => {
         }
     }, [isChangePasswordError, navigate, changePasswordErrorData]);
 
-    // got repeat change password
     useEffect(() => {
-        const previousPath = getClearLastRoutePath(previousLocations as Array<IPreviousLocations>);
+        const previousPath = getClearLastRoutePath(previousLocations as TPreviousLocations[]);
 
         if (previousPath === ROUTES_LINKS.resultErrorChangePassword && password) {
             changePasswordUser({
@@ -106,7 +101,7 @@ export const ChangePasswordPage: React.FC = () => {
         [password],
     );
 
-    const onSubmit = (values: IFormFields) => {
+    const onSubmit = (values: TFormFields) => {
         let errorExist = false;
 
         const password = values.password || '';

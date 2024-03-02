@@ -1,11 +1,3 @@
-export type {
-    IUserRegistration,
-    ILoginResponse,
-    IServerErrorData,
-    IServerErrorResponse,
-    IRequestAnswer,
-} from './types';
-
 export {
     userApi,
     useLoginMutation,
@@ -14,3 +6,5 @@ export {
     useCheckEmailMutation,
     useConfirmEmailMutation,
 } from './userApi';
+
+export { useGetFeedbackQuery, useAddFeedbackMutation, feedbackApi } from './feedbackApi';

@@ -1,4 +1,4 @@
-export interface ICheckAuthProps {
+export type TCheckAuthProps = {
     children: JSX.Element | null;
     redirect?: string;
 }

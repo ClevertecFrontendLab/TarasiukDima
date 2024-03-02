@@ -4,11 +4,9 @@ import { ResultRegistration } from './ResultRegistration';
 import { ResultAuth } from './ResultAuth';
 import { ResultChangePassword } from './ResultChangePassword';
 import { ROUTES_LINKS } from '@constants/index';
-import { IPreviousLocations, getClearLastRoutePath } from '@utils/index';
+import { TPreviousLocations, getClearLastRoutePath } from '@utils/index';
 
-import './result-page.scss';
-
-export const ResultPage: React.FC = () => {
+export const ResultPage = () => {
     const { state } = useLocation();
     const { previousLocations } = useAppSelector((state) => state.router);
 
@@ -16,7 +14,7 @@ export const ResultPage: React.FC = () => {
         return <Navigate to={ROUTES_LINKS.home} replace />;
     }
 
-    const previousPath = getClearLastRoutePath(previousLocations as Array<IPreviousLocations>);
+    const previousPath = getClearLastRoutePath(previousLocations as TPreviousLocations[]);
 
     if (previousPath === ROUTES_LINKS.registration) {
         return <ResultRegistration state={state} />;

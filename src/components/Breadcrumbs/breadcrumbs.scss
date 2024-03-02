@@ -1,0 +1,16 @@
+@import "@assets/scss/variables";
+
+body .breadcrumbs {
+    line-height: $lineHeight;
+}
+
+.breadcrumbs {
+    span {
+        color: $black;
+    }
+
+    .ant-breadcrumb-separator,
+    a {
+        color: $grey;
+    }
+}

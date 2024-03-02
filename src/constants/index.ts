@@ -1,28 +1,10 @@
-export const ROUTES_LINKS = {
-    home: '/main',
-    calendar: '/#',
-    training: '/#',
-    progress: '/#',
-    profile: '/#',
-    auth: '/auth',
-    registration: '/auth/registration',
-    changePassword: '/auth/change-password',
-    confirmEmail: '/auth/confirm-email',
+export {
+    COUNT_FEEDBACKS_TO_SHOW,
+    MIN_LENGTH_PASSWORD,
+    TOKEN_AUTH_LOCALSTORAGE,
+    STATUS_CODES,
+} from './common';
 
-    resultAll: '/result/:variant',
+export { ROUTES_LINKS } from './navigation';
 
-    resultSuccess: '/result/success',
-    resultError: '/result/error',
-
-    resultErrorNoUser: '/result/error-check-email-no-exist',
-    resultErrorEmail: '/result/error-check-email',
-
-    resultErrorLogin: '/result/error-login',
-    resultErrorUserExist: '/result/error-user-exist',
-
-    resultErrorChangePassword: '/result/error-change-password',
-    resultSuccessChangePassword: '/result/success-change-password',
-};
-
-export const SERVICE_API_URL = 'https://marathon-api.clevertec.ru';
-export const TOKEN_AUTH_LOCALSTORAGE = 'agkdh';
+export { SERVICE_API_URL, REPEAT_FEEDBACKS_REQUEST, API_TAGS } from './service';

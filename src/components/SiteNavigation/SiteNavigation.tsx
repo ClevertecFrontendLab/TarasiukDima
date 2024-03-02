@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react';
+import { memo, useCallback } from 'react';
 import classNames from 'classnames';
 import { Menu, MenuProps } from 'antd';
 import { ROUTES_LINKS } from '@constants/index';
@@ -31,28 +31,27 @@ const items: MenuProps['items'] = [
     },
 ];
 
-interface ISiteNavigationProps {
+type TSiteNavigationProps = {
     inlineCollapsed?: boolean;
     className?: string;
-}
-export const SiteNavigation: FC<ISiteNavigationProps> = ({
-    inlineCollapsed = true,
-    className = '',
-}) => {
-    const menuItemClick = useCallback(() => {
-        console.log('menu click');
-    }, []);
-
-    return (
-        <Menu
-            inlineCollapsed={inlineCollapsed}
-            mode='inline'
-            onClick={menuItemClick}
-            selectedKeys={['calendar']}
-            items={items}
-            className={classNames('navigation', {
-                [className]: className,
-            })}
-        />
-    );
 };
+export const SiteNavigation: React.FC<TSiteNavigationProps> = memo(
+    ({ inlineCollapsed = true, className = '' }) => {
+        const menuItemClick = useCallback(() => {
+            console.log('menu click');
+        }, []);
+
+        return (
+            <Menu
+                inlineCollapsed={inlineCollapsed}
+                mode='inline'
+                onClick={menuItemClick}
+                selectedKeys={['calendar']}
+                items={items}
+                className={classNames('navigation', {
+                    [className]: className,
+                })}
+            />
+        );
+    },
+);

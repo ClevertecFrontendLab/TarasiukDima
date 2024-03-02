@@ -1,0 +1,66 @@
+@import "@assets/scss/variables";
+@import "@assets/scss/mixins";
+
+body {
+    .page {
+        position: relative;
+        z-index: 1;
+        background: url("@public/img/home_bg.jpg") 50% / cover no-repeat;
+
+        &:before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background-image: $bgPageGradient;
+        }
+    }
+
+    .page-layout {
+        background: transparent;
+
+        &__header {
+            @include dflex(space-between, flex-start, row, wrap);
+
+            height: auto;
+            padding: $indentMin2 $indentMid;
+            line-height: $lineHeight;
+            background: $primaryLight;
+        }
+
+        &__content {
+            padding: $indentMid;
+            width: 100%;
+        }
+
+        &__footer {
+            padding-left: $indentMid;
+            padding-right: $indentMid;
+            padding-bottom: $indentLargeMin;
+            background: transparent;
+        }
+    }
+}
+
+.page-spinner {
+    position: fixed;
+}
+
+@include mobile() {
+    body {
+        .page:before {
+            opacity: 0.8;
+        }
+
+        .page-layout {
+            &__content {
+                padding-left: $indentMin2;
+                padding-right: $indentMin2;
+            }
+
+            &__footer {
+                padding: 0 $indentMin2 $indentMid;
+            }
+        }
+    }
+}

@@ -4,8 +4,8 @@
     position: absolute;
     inset: 0;
     z-index: 10;
-    display: flex;
-    background-color: rgba(121, 156, 212, 0.5);
+
+    @extend %backgroundBlur;
 
     .ant-spin {
         margin: auto;

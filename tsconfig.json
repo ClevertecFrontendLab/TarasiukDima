@@ -2,7 +2,7 @@
     "compilerOptions": {
         "target": "ES2020",
         "useDefineForClassFields": true,
-        "lib": ["ES2020", "DOM", "DOM.Iterable"],
+        "lib": ["ESNext.Array", "ES2020", "DOM", "DOM.Iterable"],
         "module": "ESNext",
         "skipLibCheck": true,
         "moduleResolution": "bundler",
@@ -10,6 +10,7 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "noEmit": true,
+        "esModuleInterop": true,
         "jsx": "react-jsx",
         "strict": true,
         "noUnusedLocals": true,
@@ -24,7 +25,7 @@
             "@hooks/*": ["./src/hooks/*"],
             "@pages/*": ["./src/pages/*"],
             "@redux/*": ["./src/redux/*"],
-            "@types/*": ["./src/types/*"],
+            "@app_types/*": ["src/app_types/*"],
             "@assets/*": ["./src/assets/*"],
             "@services/*": ["./src/services/*"],
             "@utils/*": ["./src/utils/*"]

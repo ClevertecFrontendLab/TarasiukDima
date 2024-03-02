@@ -2,17 +2,27 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
 import { getLocalStorageItem } from '@utils/index';
 
-interface IAppState {
+type TUserState = {
     isAuth: boolean;
     token: string;
     email: string;
     password: string;
     code: string;
-}
+};
 
-const appStateInit: IAppState = {
+const readTokenWhileInit = () => {
+    const accessToken = new URLSearchParams(window.location.search).get('accessToken');
+
+    if (accessToken) {
+        return accessToken;
+    }
+
+    return getLocalStorageItem(TOKEN_AUTH_LOCALSTORAGE);
+};
+
+const appStateInit: TUserState = {
     isAuth: false,
-    token: getLocalStorageItem(TOKEN_AUTH_LOCALSTORAGE),
+    token: readTokenWhileInit(),
     email: '',
     password: '',
     code: '',
@@ -22,7 +32,7 @@ const userSlice = createSlice({
     name: 'user',
     initialState: appStateInit,
     reducers: {
-        changeShowSidebar: (state, { payload }: PayloadAction<boolean>) => {
+        changeIsAuth: (state, { payload }: PayloadAction<boolean>) => {
             state.isAuth = payload;
         },
         setToken: (state, { payload }: PayloadAction<string>) => {
@@ -42,5 +52,6 @@ const userSlice = createSlice({
 
 const { actions, reducer } = userSlice;
 
-export const { changeShowSidebar, setToken, setPassword, setEmail, setCode } = actions;
+export const { changeIsAuth, setToken, setPassword, setEmail, setCode } = actions;
+
 export { reducer as userReducer };

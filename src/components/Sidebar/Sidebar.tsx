@@ -1,18 +1,17 @@
-import { useCallback } from 'react';
+import { memo, useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
-import { changeShowSidebar } from '@redux/app-slice';
-import { Button } from 'antd';
+import { setToken, changeShowSidebar } from '@redux/index';
+import { removeLocalStorageItem } from '@utils/index';
+import { Button, Col } from 'antd';
 import Sider from 'antd/lib/layout/Sider';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { Logo, SiteNavigation } from '@components/index';
+import { TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
 import ExitIcon from '@public/img/exit.svg?react';
 
 import './sidebar.scss';
-import { setToken } from '@redux/user-slice';
-import { TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
-import { removeLocalStorageItem } from '@utils/index';
 
-export const Sidebar = () => {
+export const Sidebar = memo(() => {
     const { isShowSidebar } = useAppSelector((state) => state.app);
     const dispatch = useAppDispatch();
 
@@ -38,7 +37,6 @@ export const Sidebar = () => {
             <button onClick={toggleSidebar} className='trigger big' data-test-id='sider-switch'>
                 {isShowSidebar ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </button>
-
             <button
                 onClick={toggleSidebar}
                 className='trigger mobile'
@@ -47,15 +45,17 @@ export const Sidebar = () => {
                 {isShowSidebar ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </button>
 
-            <Logo variantIcon={isShowSidebar ? 'small' : 'big'} className='sider__logo' />
+            <Col className='sider__inner'>
+                <Logo variantIcon={isShowSidebar ? 'small' : 'big'} className='sider__logo' />
 
-            <SiteNavigation inlineCollapsed={isShowSidebar} />
+                <SiteNavigation inlineCollapsed={isShowSidebar} />
 
-            <Button className='exit' onClick={logoutUser}>
-                <ExitIcon />
+                <Button className='exit' onClick={logoutUser}>
+                    <ExitIcon />
 
-                {isShowSidebar ? '' : 'Выход'}
-            </Button>
+                    {isShowSidebar ? '' : 'Выход'}
+                </Button>
+            </Col>
         </Sider>
     );
-};
+});

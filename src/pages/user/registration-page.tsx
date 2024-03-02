@@ -1,24 +1,25 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@hooks/index';
-import { setEmail, setPassword } from '@redux/user-slice';
 import { useNavigate } from 'react-router-dom';
-import { useRegistrationMutation, IServerErrorResponse } from '@services/index';
+import { useAppDispatch, useAppSelector } from '@hooks/index';
+import { setEmail, setPassword } from '@redux/index';
+import { useRegistrationMutation } from '@services/index';
 import { Button, Form, Input } from 'antd';
 import { validateEmail, validatePassword } from '@utils/index';
 import { EyeInvisibleOutlined, EyeTwoTone, GooglePlusOutlined } from '@ant-design/icons';
 import { UserLayout, Logo } from '@components/index';
 import { AuthNavButtons } from './AuthNavButtons';
 import { ROUTES_LINKS } from '@constants/index';
+import { TServerErrorResponse } from '@app_types/responses';
 
 import './auth.scss';
 
-interface IFormFields {
+type TFormFields = {
     email: string;
     password: string;
     password2: string;
-}
+};
 
-export const RegistrationPage: React.FC = () => {
+export const RegistrationPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { email, password } = useAppSelector((state) => state.user);
@@ -40,7 +41,6 @@ export const RegistrationPage: React.FC = () => {
         },
     ] = useRegistrationMutation();
 
-    // got success registration
     useEffect(() => {
         if (isRegistrationSuccess && regResponseData) {
             navigate(ROUTES_LINKS.resultSuccess, {
@@ -49,24 +49,22 @@ export const RegistrationPage: React.FC = () => {
         }
     }, [isRegistrationSuccess, navigate, regResponseData]);
 
-    // get error registration
     useEffect(() => {
         if (isRegistrationError && regResponseErrorData) {
             let linkToRedirect = ROUTES_LINKS.resultError;
 
-            if ((regResponseErrorData as IServerErrorResponse).status.toString() === '409') {
+            if ((regResponseErrorData as TServerErrorResponse).status.toString() === '409') {
                 linkToRedirect = ROUTES_LINKS.resultErrorUserExist;
             }
 
             navigate(linkToRedirect, {
                 state: {
-                    ...(regResponseErrorData as IServerErrorResponse),
+                    ...(regResponseErrorData as TServerErrorResponse),
                 },
             });
         }
     }, [isRegistrationError, navigate, regResponseErrorData]);
 
-    // got repeat registration
     useEffect(() => {
         if (!previousLocations || previousLocations.length === 0) {
             return;
@@ -107,7 +105,7 @@ export const RegistrationPage: React.FC = () => {
         [curPassword],
     );
 
-    const onSubmit = (values: IFormFields) => {
+    const onSubmit = (values: TFormFields) => {
         let errorExist = false;
         const email = values.email || '';
         if (!validateEmail(email)) {

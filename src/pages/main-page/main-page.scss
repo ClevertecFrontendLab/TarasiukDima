@@ -1,14 +1,259 @@
-body .home {
-    background: url("@public/img/home_bg.jpg") 50% / cover no-repeat;
+@import "@assets/scss/variables";
+@import "@assets/scss/mixins";
 
-    position: relative;
-    z-index: 1;
+.home-page {
+    .breadcrumbs {
+        margin-bottom: $indentSmall2;
+    }
 
-    &:before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-        background-image: linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, #fffdfd 100%);
+    .home-header {
+        padding-bottom: 21px;
+
+        &_title {
+            max-width: calc(100% - 180px);
+            margin: 0;
+            font-weight: $weightBold;
+            line-height: $lineHeight;
+
+            br {
+                display: none;
+            }
+        }
+
+        &_settings {
+            color: $black;
+            transform: translateY(-7px);
+        }
+    }
+
+    .home-content {
+        max-width: 800px;
+        flex-grow: 1;
+
+        &__item {
+            padding: $indentMid;
+            line-height: $lineHeight;
+            border-radius: $borderRadius;
+            box-shadow: $shadowLight;
+            background-color: $white;
+
+            &.able-item {
+                margin-bottom: $indentMid;
+                line-height: $lineHeight;
+                font-size: $fontSizeSmall;
+                color: $blueDark;
+            }
+
+            &.about-item {
+                margin-bottom: 19px;
+                font-weight: $weightMedium;
+                line-height: $lineHeight;
+                font-size: 20px;
+                color: $black;
+            }
+
+            .ant-typography {
+                margin: 0;
+                color: $blueDark;
+            }
+
+            .ant-list-items {
+                margin: 0;
+                font-size: $fontSizeSmall;
+                line-height: $lineHeight;
+            }
+
+            .ant-list-item {
+                position: relative;
+                z-index: 1;
+                margin: 0;
+                text-indent: $indentMin2;
+                border: none;
+                color: $blueDark;
+
+                &:before {
+                    content: "";
+                    position: absolute;
+                    top: 10px;
+                    left: 0;
+                    width: 16px;
+                    height: 2px;
+                    background-color: $blueDark;
+                }
+            }
+        }
+
+        .cards__item {
+            text-align: center;
+
+            svg {
+                fill: currentColor;
+            }
+        }
+
+        .ant-card-head {
+            padding-left: $indentSmall2;
+            padding-right: $indentSmall2;
+        }
+
+        .ant-card-head-title {
+            padding-top: 9px;
+            font-size: $fontSizeSmall;
+            line-height: $lineHeight;
+            word-wrap: break-word;
+            white-space: inherit;
+        }
+
+        .ant-card-body {
+            padding: $indentSmall2 0;
+        }
+    }
+
+    .home-footer {
+        padding-top: 140px;
+
+        &__reviews {
+            height: auto;
+            padding: 7px $indentSmall;
+            font-size: $fontSizeSmall;
+            color: $primary;
+        }
+
+        &__downloads {
+            width: 240px;
+            box-shadow: $shadowLighter;
+        }
+
+        .ant-card-head-title {
+            padding: $indentSmall 0;
+            line-height: $lineHeight;
+            font-size: $fontSizeMin;
+            font-weight: normal;
+
+            a {
+                display: block;
+                margin-bottom: $indentSmallest;
+                font-size: $fontSizeSmall;
+                color: $primary;
+            }
+
+            .ant-typography {
+                color: $grey;
+            }
+        }
+
+        .ant-card-body {
+            display: flex;
+            padding: $indentSmall 0;
+        }
+
+        .downloads__link {
+            width: 50%;
+            height: auto;
+            padding: 4px;
+            color: $black;
+        }
+    }
+}
+
+@include tablet() {
+    .home-page {
+        .home-header {
+            &_title {
+                max-width: calc(100% - 107px);
+                font-weight: $weightMedium;
+                font-size: $fontSizeTextBig;
+            }
+
+            &_settings {
+                .anticon {
+                    display: none;
+                }
+
+                .anticon + span {
+                    margin: 0;
+                }
+            }
+        }
+
+        .home-content {
+            .home-content_item.about-item br {
+                display: none;
+            }
+        }
+    }
+}
+
+@include mobile() {
+    .home-page {
+        .breadcrumbs {
+            margin-bottom: 6px;
+        }
+
+        .home-header {
+            &_title {
+                max-width: calc(100% - $indentBig);
+                font-size: $fontSizeSmallTitle;
+
+                br {
+                    display: block;
+                }
+            }
+
+            &_settings {
+                width: 32px;
+                height: 32px;
+                padding: 0;
+                border: 1px solid $greyBorder;
+                border-radius: 50%;
+
+                span:not(.anticon) {
+                    display: none;
+                }
+
+                .anticon {
+                    display: block;
+                }
+            }
+        }
+
+        .home-content {
+            padding-bottom: $indentSmall2;
+
+            .home-content_item {
+                padding: $indentMin2;
+
+                &.about-item {
+                    margin-bottom: $indentMin2;
+                }
+
+                .ant-list-items {
+                    letter-spacing: 0.003rem;
+                }
+            }
+
+            .home-content_cards {
+                .ant-col > .ant-list-item {
+                    margin-bottom: 10px;
+                }
+            }
+        }
+
+        .home-footer {
+            &__line {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            &__reviews {
+                order: 2;
+                margin-top: 22px;
+            }
+
+            &__downloads {
+                width: 100%;
+                text-align: center;
+            }
+        }
     }
 }

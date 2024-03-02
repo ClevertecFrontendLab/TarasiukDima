@@ -1,0 +1,105 @@
+@import "@assets/scss/variables";
+@import "@assets/scss/mixins";
+
+body {
+    .ant-modal-wrap {
+        &.light {
+            @extend %backgroundBlurModal;
+        }
+
+        &.dark {
+            @extend %backgroundBlur;
+        }
+    }
+
+    .info-modal,
+    .error-modal {
+        .ant-modal-body {
+            padding: 0;
+        }
+
+        .ant-result {
+            padding-top: $indentLarge;
+            padding-bottom: $indentLarge;
+        }
+
+        .ant-result-title {
+            font-weight: $weightMedium;
+            color: $black;
+        }
+
+        .ant-result-subtitle {
+            color: $grey;
+        }
+
+        button.cbp {
+            margin: 0 auto;
+        }
+
+        button.wbp {
+            width: 100%;
+            margin: 0 auto;
+        }
+    }
+
+    .info-modal {
+        .ant-result {
+            padding-left: $indentMax;
+            padding-right: $indentMax;
+        }
+
+        .error-buttons {
+            gap: $indentSmallest;
+
+            button {
+                width: calc(50% - 4px);
+            }
+        }
+    }
+
+    .content-modal {
+        .ant-modal-body {
+            padding-left: $indentMin2;
+            padding-right: $indentMin2;
+        }
+
+        .content-rating {
+            margin-bottom: $indentMin2;
+        }
+
+        .content-text {
+            border-color: $greyBorder;
+            padding: 5px $indentSmall;
+        }
+
+        .content-btn {
+            margin-left: auto;
+        }
+    }
+}
+
+@include tablet() {
+    body {
+        .info-modal,
+        .error-modal {
+            .ant-result {
+                padding-top: $indentBig;
+                padding-bottom: $indentBig;
+            }
+        }
+
+        .info-modal .ant-result {
+            padding-left: $indentBig;
+            padding-right: $indentBig;
+        }
+    }
+}
+
+@include mobile() {
+    body .info-modal {
+        .ant-result {
+            padding-left: $indentMin2;
+            padding-right: $indentMin2;
+        }
+    }
+}
