@@ -166,6 +166,7 @@ export const FeedbacksPage = () => {
                 width={540}
                 variant='content'
                 title='Ваш отзыв'
+                blur='light'
                 open={openModalFeedback}
                 onCancel={closeModalFeedback}
                 closable

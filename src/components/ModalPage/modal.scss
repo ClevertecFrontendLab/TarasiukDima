@@ -3,7 +3,13 @@
 
 body {
     .ant-modal-wrap {
-        @extend %backgroundBlur;
+        &.light {
+            @extend %backgroundBlurModal;
+        }
+
+        &.dark {
+            @extend %backgroundBlur;
+        }
     }
 
     .info-modal,
