@@ -10,6 +10,7 @@ import { ModalPage } from './ModalPage';
 import { Rating } from './Rating';
 import { PageLayout, PageHeader, PageContent, PageFooter } from './PageLayout';
 import { RequiredAuth, NotAuth } from './CheckAuth';
+import { SiteRouter } from './SiteRouter';
 
 export {
     Logo,
@@ -28,4 +29,5 @@ export {
     Feedbacks,
     ModalPage,
     Rating,
+    SiteRouter,
 };

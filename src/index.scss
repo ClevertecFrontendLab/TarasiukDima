@@ -2,12 +2,29 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap");
 
+:root {
+    line-height: $lineHeight;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    min-width: 320px;
+    min-height: 100vh;
+    margin: 0;
+    font-family: Inter, Roboto, sans-serif;
+    font-weight: $weightNormal;
+    color: $black;
+}
+
 .button-page,
 .ant-btn-primary {
-    height: auto;
     display: block;
     width: fit-content;
     max-width: 100%;
+    height: auto;
     border-radius: $borderRadius;
     box-shadow: $shadowLight;
 }
@@ -26,23 +43,6 @@
 
 .button-page {
     padding: $indentSmallest $indentMin1;
-}
-
-:root {
-    line-height: $lineHeight;
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: $black;
-}
-
-body {
-    min-width: 320px;
-    min-height: 100vh;
-    margin: 0;
-    font-family: Inter, Roboto, sans-serif;
-    font-weight: $weightNormal;
 }
 
 .link,

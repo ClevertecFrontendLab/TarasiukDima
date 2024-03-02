@@ -1,7 +1,7 @@
 @import "@assets/scss/variables";
 @import "@assets/scss/mixins";
 
-body .sider {
+aside.sider {
     position: sticky;
     top: 0;
     left: 0;
@@ -18,20 +18,17 @@ body .sider {
         &:before {
             content: "";
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
             z-index: -1;
             background-color: $white;
         }
     }
 
     .sider__inner {
-        flex-grow: 1;
-        height: 100vh;
         display: flex;
+        flex-grow: 1;
         flex-direction: column;
+        height: 100vh;
         padding-top: 30px;
         overflow-y: auto;
     }
@@ -73,12 +70,13 @@ body .sider {
     }
 
     button.exit {
+        @include dflex(flex-start, center);
+
         flex-shrink: 0;
         width: 100%;
-        height: auto;
+        height: 42px;
         margin-top: auto;
-        padding: $indentSmall 18px;
-        padding-top: $indentSmall !important;
+        padding: $indentSmall $indentMidSmall;
         line-height: $lineHeight;
         border: none;
         box-shadow: inset 0 1px 0 0 $lightDividers;
@@ -86,7 +84,11 @@ body .sider {
         color: $black;
         overflow: hidden;
 
-        span:nth-child(2) {
+        svg {
+            flex-shrink: 0;
+        }
+
+        span {
             margin-left: $indentMid;
         }
     }
@@ -131,7 +133,7 @@ body .sider {
                 display: none;
             }
 
-            span:nth-child(2) {
+            span {
                 margin-left: $indentMin2;
             }
         }

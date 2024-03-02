@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { memo, useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { setToken, changeShowSidebar } from '@redux/index';
 import { removeLocalStorageItem } from '@utils/index';
@@ -11,7 +11,7 @@ import ExitIcon from '@public/img/exit.svg?react';
 
 import './sidebar.scss';
 
-export const Sidebar = () => {
+export const Sidebar = memo(() => {
     const { isShowSidebar } = useAppSelector((state) => state.app);
     const dispatch = useAppDispatch();
 
@@ -58,4 +58,4 @@ export const Sidebar = () => {
             </Col>
         </Sider>
     );
-};
+});

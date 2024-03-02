@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Avatar, Comment, List } from 'antd';
 import { getCorrectDateForShow } from '@utils/index';
 import Paragraph from 'antd/lib/typography/Paragraph';
@@ -12,7 +13,7 @@ type TFeedbacksProps = {
     isLoading?: boolean;
 };
 
-export const Feedbacks: React.FC<TFeedbacksProps> = ({ feedbacks, isLoading = false }) => (
+export const Feedbacks: React.FC<TFeedbacksProps> = memo(({ feedbacks, isLoading = false }) => (
     <List
         className='feedbacks-list'
         loading={isLoading}
@@ -49,4 +50,4 @@ export const Feedbacks: React.FC<TFeedbacksProps> = ({ feedbacks, isLoading = fa
             );
         }}
     />
-);
+));

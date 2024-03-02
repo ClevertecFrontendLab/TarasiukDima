@@ -137,7 +137,7 @@ export const FeedbacksPage = () => {
     }, [addFeedback, feedbackStart, feedbackText]);
 
     return (
-        <PageLayout isLoading={isFeedbacksLoading}>
+        <PageLayout isLoading={isFeedbacksLoading} className='feedbacks-page'>
             <PageHeader routes={routes} />
 
             {
@@ -175,7 +175,7 @@ export const FeedbacksPage = () => {
                         className='content-btn button-page'
                         disabled={
                             // eslint-disable-next-line no-extra-boolean-cast
-                            (!Boolean(feedbackStart)) || isFeedbackAddLoading
+                            !Boolean(feedbackStart) || isFeedbackAddLoading
                         }
                         onClick={postFeedback}
                         data-test-id='new-review-submit-button'

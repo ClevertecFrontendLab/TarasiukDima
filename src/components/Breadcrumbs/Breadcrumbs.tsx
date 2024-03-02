@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Breadcrumb } from 'antd';
 import { Link } from 'react-router-dom';
 import { Route } from 'antd/lib/breadcrumb/Breadcrumb';
@@ -8,7 +9,7 @@ export type TBreadcrumbsProps = {
     routes: Route[];
 };
 
-export const Breadcrumbs: React.FC<TBreadcrumbsProps> = ({ routes }) => (
+export const Breadcrumbs: React.FC<TBreadcrumbsProps> = memo(({ routes }) => (
     <Breadcrumb
         className='breadcrumbs'
         style={{
@@ -17,7 +18,7 @@ export const Breadcrumbs: React.FC<TBreadcrumbsProps> = ({ routes }) => (
         routes={routes}
         itemRender={itemRender}
     />
-);
+));
 
 const itemRender = (route: Route, _: unknown, routes: Route[]) => {
     const last = routes.indexOf(route) === routes.length - 1;

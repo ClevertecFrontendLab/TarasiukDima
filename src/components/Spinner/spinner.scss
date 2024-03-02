@@ -4,8 +4,8 @@
     position: absolute;
     inset: 0;
     z-index: 10;
-    display: flex;
-    background-color: $transparentBg;
+
+    @extend %backgroundBlur;
 
     .ant-spin {
         margin: auto;

@@ -15,7 +15,7 @@ import './auth.scss';
 type TFormFields = {
     password: string;
     password2: string;
-}
+};
 
 export const ChangePasswordPage = () => {
     const navigate = useNavigate();

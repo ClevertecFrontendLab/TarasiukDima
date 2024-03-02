@@ -17,7 +17,7 @@ const routes = [
 ];
 
 export const MainPage = () => (
-    <PageLayout>
+    <PageLayout className='home-page'>
         <PageHeader className='home-header' routes={routes}>
             <Title className='home-header_title'>
                 Приветствуем тебя <br /> в CleverFit — приложении, которое поможет тебе добиться

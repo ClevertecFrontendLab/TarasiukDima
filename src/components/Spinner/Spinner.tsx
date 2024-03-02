@@ -1,4 +1,5 @@
-import { Spin } from 'antd';
+import { memo } from 'react';
+import { Row, Spin } from 'antd';
 import classNames from 'classnames';
 
 import './spinner.scss';
@@ -7,14 +8,13 @@ type TSpinnerProps = {
     className?: string;
 };
 
-export const Spinner: React.FC<TSpinnerProps> = ({ className = '' }) => (
-    <div
+export const Spinner: React.FC<TSpinnerProps> = memo(({ className = '' }) => (
+    <Row
         className={classNames('spinner', {
             [className]: className,
         })}
         data-test-id='loader'
     >
-        <div className='overflow' />
         <Spin size='large' />
-    </div>
-);
+    </Row>
+));

@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { changeShowTokenError } from '@redux/index';
 import { Button, Result, Row } from 'antd';
+import { ResultStatusType } from 'antd/lib/result';
 import { ModalPage } from '@components/index';
 import { ROUTES_LINKS, STATUS_CODES } from '@constants/index';
-import { ResultStatusType } from 'antd/lib/result';
 
 type TFeedbacksPageProps = {
     isErrorOpen: boolean;

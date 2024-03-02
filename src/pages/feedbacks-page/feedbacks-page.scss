@@ -1,7 +1,7 @@
 @import "@assets/scss/variables";
 @import "@assets/scss/mixins";
 
-body .page-layout {
+.feedbacks-page {
     .feedbacks__non-content {
         @include dflex(center, stretch, column);
 
@@ -10,18 +10,18 @@ body .page-layout {
             line-height: $lineHeight;
             box-shadow: $shadowLight;
             background-color: $white;
+        }
 
-            .ant-result-title {
-                line-height: $lineHeight;
-                font-weight: $weightMedium;
-                color: $blueDark;
-            }
+        .ant-result-title {
+            line-height: $lineHeight;
+            font-weight: $weightMedium;
+            color: $blueDark;
+        }
 
-            .ant-result-extra {
-                margin-top: 48px;
-                font-size: $fontSizeMin;
-                color: $grey;
-            }
+        .ant-result-extra {
+            margin-top: $indentLargeMid;
+            font-size: $fontSizeMin;
+            color: $grey;
         }
 
         .button-page {
@@ -42,16 +42,16 @@ body .page-layout {
 
         .show-all {
             height: auto;
-            padding: $indentSmallest 15px;
+            padding: $indentSmallest $indentMin1;
         }
     }
 }
 
-@mixin mobile() {
-    body .page-layout {
+@include mobile() {
+    .feedbacks-page {
         .feedbacks__non-content {
             &_text {
-                padding: 48px $indentBig;
+                padding: $indentLargeMid $indentBig;
             }
 
             .button-page {

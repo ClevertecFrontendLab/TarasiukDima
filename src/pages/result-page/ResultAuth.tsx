@@ -8,7 +8,8 @@ type TResultAuthProps = {
     state?: {
         variantError: 'no-user' | 'server' | null;
     };
-}
+};
+
 export const ResultAuth: React.FC<TResultAuthProps> = ({ state }) => {
     const navigate = useNavigate();
 

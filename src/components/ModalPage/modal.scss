@@ -43,7 +43,7 @@ body {
         }
 
         .error-buttons {
-            gap: 8px;
+            gap: $indentSmallest;
 
             button {
                 width: calc(50% - 4px);
@@ -82,22 +82,18 @@ body {
             }
         }
 
-        .info-modal {
-            .ant-result {
-                padding-left: $indentBig;
-                padding-right: $indentBig;
-            }
+        .info-modal .ant-result {
+            padding-left: $indentBig;
+            padding-right: $indentBig;
         }
     }
 }
 
 @include mobile() {
-    body {
-        .info-modal {
-            .ant-result {
-                padding-left: $indentMin2;
-                padding-right: $indentMin2;
-            }
+    body .info-modal {
+        .ant-result {
+            padding-left: $indentMin2;
+            padding-right: $indentMin2;
         }
     }
 }

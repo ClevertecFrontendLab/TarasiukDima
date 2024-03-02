@@ -9,18 +9,18 @@
         width: 100%;
         max-width: 309px;
         height: 76px;
-        margin: 0 auto 48px;
+        margin: 0 auto $indentLargeMid;
     }
 
     .form-content__title {
-        text-align: center;
         margin-bottom: $indentBig;
+        text-align: center;
     }
 
     .auth-buttons {
         position: relative;
         z-index: 1;
-        margin-bottom: $indentBig;
+        margin-bottom: $fontSizeTextBig;
 
         &:before {
             content: "";
@@ -33,12 +33,12 @@
             background-color: $lightDividers;
         }
 
-        .auth-buttons__link {
+        &__link {
             display: block;
             text-align: center;
             height: auto;
             width: 100%;
-            padding-top: 13px !important;
+            padding-top: 13px;
             padding-bottom: 10px;
             font-size: $fontSizeSmall;
             line-height: $lineHeight;
@@ -77,7 +77,7 @@
 
         .ant-form-item-explain-error,
         .ant-form-item-extra {
-            font-size: 12px;
+            font-size: $fontSizeSmaller;
             line-height: $lineHeight;
         }
 
@@ -91,7 +91,7 @@
     }
 
     .forgot-btn {
-        font-size: $fontSizeMin;
+        font-size: $fontSizeSmall;
         padding-left: 4px;
         padding-right: 4px;
     }
@@ -114,7 +114,7 @@
     }
 }
 
-@mixin mobile() {
+@include mobile() {
     .form-content {
         width: 100%;
         padding: $indentBig $indentMin2;
@@ -127,7 +127,7 @@
         .auth-buttons {
             margin-bottom: $indentMid;
 
-            .auth-buttons__link {
+            &__link {
                 font-size: $fontSizeMin;
                 padding-bottom: 13px;
             }

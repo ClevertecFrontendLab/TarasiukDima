@@ -1,9 +1,10 @@
 @import "@assets/scss/variables";
 
 body .breadcrumbs {
-    width: 100%;
     line-height: $lineHeight;
+}
 
+.breadcrumbs {
     span {
         color: $black;
     }

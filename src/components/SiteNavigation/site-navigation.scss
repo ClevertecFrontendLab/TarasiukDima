@@ -5,24 +5,29 @@ ul.navigation {
     width: 100%;
     font-size: $fontSizeMin;
     color: $black;
-    line-height: $lineHeight;
 
     li.ant-menu-item {
+        display: flex;
+        align-items: center;
         height: 42px;
-        margin-top: 0;
-        padding-left: 18px !important;
+        margin: 0;
+        padding-left: $indentMidSmall !important;
 
         &:not(:last-child) {
             margin-bottom: $indentMin2;
         }
-    }
 
-    svg {
-        fill: $blueDark;
+        .ant-menu-item-icon {
+            flex-shrink: 0;
+        }
+
+        svg {
+            fill: $blueDark;
+        }
     }
 }
 
-@mixin tablet() {
+@include tablet() {
     ul.navigation {
         &.ant-menu-inline-collapsed li.ant-menu-item {
             padding-left: $indentMid !important;
@@ -30,7 +35,7 @@ ul.navigation {
     }
 }
 
-@mixin mobile() {
+@include mobile() {
     ul.navigation {
         &.ant-menu-inline-collapsed li.ant-menu-item {
             padding-left: $indentSmallest !important;
@@ -44,11 +49,11 @@ ul.navigation {
                 margin-bottom: $indentSmallest;
             }
 
-            svg {
+            .ant-menu-item-icon {
                 display: none;
             }
 
-            span {
+            .ant-menu-title-content {
                 margin: 0;
                 min-width: auto;
             }

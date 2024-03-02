@@ -9,21 +9,19 @@ body .user-layout {
     background-position: center center;
     background-size: cover;
 
-    .user-layout__wrapper {
+    &__wrapper {
         min-height: 100vh;
         padding: 90px $indentMin2;
         justify-content: center;
     }
 
-    .user-layout__content {
+    &__content {
         background-color: $white;
     }
 }
 
-@mixin mobile() {
-    body .user-layout {
-        .user-layout__wrapper {
-            align-items: stretch;
-        }
+@include mobile() {
+    body .user-layout__wrapper {
+        align-items: stretch;
     }
 }

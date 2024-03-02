@@ -1,14 +1,15 @@
 @import "@assets/scss/variables";
+@import "@assets/scss/mixins";
 
-body .page-layout {
+.home-page {
+    .breadcrumbs {
+        margin-bottom: $indentSmall2;
+    }
+
     .home-header {
         padding-bottom: 21px;
 
-        .breadcrumbs {
-            margin-bottom: 14px;
-        }
-
-        .home-header_title {
+        &_title {
             max-width: calc(100% - 180px);
             margin: 0;
             font-weight: $weightBold;
@@ -27,8 +28,9 @@ body .page-layout {
 
     .home-content {
         max-width: 800px;
+        flex-grow: 1;
 
-        .home-content__item {
+        &__item {
             padding: $indentMid;
             line-height: $lineHeight;
             border-radius: $borderRadius;
@@ -40,36 +42,6 @@ body .page-layout {
                 line-height: $lineHeight;
                 font-size: $fontSizeSmall;
                 color: $blueDark;
-
-                .ant-typography {
-                    margin: 0;
-                    color: $blueDark;
-                }
-
-                ul {
-                    margin: 0;
-                    font-size: $fontSizeSmall;
-                    line-height: $lineHeight;
-
-                    li {
-                        position: relative;
-                        z-index: 1;
-                        margin: 0;
-                        text-indent: $indentMin2;
-                        border: none;
-                        color: $blueDark;
-
-                        &:before {
-                            content: "";
-                            position: absolute;
-                            top: 10px;
-                            left: 0;
-                            width: 16px;
-                            height: 2px;
-                            background-color: $blueDark;
-                        }
-                    }
-                }
             }
 
             &.about-item {
@@ -79,127 +51,149 @@ body .page-layout {
                 font-size: 20px;
                 color: $black;
             }
-        }
 
-        .home-content__cards {
-            .cards__item {
-                text-align: center;
+            .ant-typography {
+                margin: 0;
+                color: $blueDark;
+            }
 
-                svg {
-                    fill: currentColor;
-                }
+            .ant-list-items {
+                margin: 0;
+                font-size: $fontSizeSmall;
+                line-height: $lineHeight;
+            }
 
-                .ant-card-head {
-                    padding-left: 14px;
-                    padding-right: 14px;
-                }
+            .ant-list-item {
+                position: relative;
+                z-index: 1;
+                margin: 0;
+                text-indent: $indentMin2;
+                border: none;
+                color: $blueDark;
 
-                .ant-card-head-title {
-                    padding-top: 9px;
-                    font-size: $fontSizeSmall;
-                    line-height: $lineHeight;
-                    word-wrap: break-word;
-                    white-space: inherit;
-                }
-
-                .ant-card-body {
-                    padding: 14px 0;
+                &:before {
+                    content: "";
+                    position: absolute;
+                    top: 10px;
+                    left: 0;
+                    width: 16px;
+                    height: 2px;
+                    background-color: $blueDark;
                 }
             }
+        }
+
+        .cards__item {
+            text-align: center;
+
+            svg {
+                fill: currentColor;
+            }
+        }
+
+        .ant-card-head {
+            padding-left: $indentSmall2;
+            padding-right: $indentSmall2;
+        }
+
+        .ant-card-head-title {
+            padding-top: 9px;
+            font-size: $fontSizeSmall;
+            line-height: $lineHeight;
+            word-wrap: break-word;
+            white-space: inherit;
+        }
+
+        .ant-card-body {
+            padding: $indentSmall2 0;
         }
     }
 
     .home-footer {
         padding-top: 140px;
 
-        .home-footer__reviews {
+        &__reviews {
             height: auto;
             padding: 7px $indentSmall;
             font-size: $fontSizeSmall;
             color: $primary;
         }
 
-        .home-footer__downloads {
+        &__downloads {
             width: 240px;
-            box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.02);
+            box-shadow: $shadowLighter;
+        }
 
-            .ant-card-head-title {
-                padding: $indentSmall 0;
-                line-height: $lineHeight;
-                font-size: $fontSizeMin;
-                font-weight: normal;
+        .ant-card-head-title {
+            padding: $indentSmall 0;
+            line-height: $lineHeight;
+            font-size: $fontSizeMin;
+            font-weight: normal;
 
-                a {
-                    display: block;
-                    margin-bottom: $indentSmallest;
-                    font-size: $fontSizeSmall;
-                    color: $primary;
-                }
-
-                .ant-typography {
-                    color: $grey;
-                }
+            a {
+                display: block;
+                margin-bottom: $indentSmallest;
+                font-size: $fontSizeSmall;
+                color: $primary;
             }
 
-            .ant-card-body {
-                display: flex;
-                padding: $indentSmall 0;
+            .ant-typography {
+                color: $grey;
             }
+        }
 
-            .downloads__link {
-                width: 50%;
-                height: auto;
-                padding: 4px;
-                color: $black;
-            }
+        .ant-card-body {
+            display: flex;
+            padding: $indentSmall 0;
+        }
+
+        .downloads__link {
+            width: 50%;
+            height: auto;
+            padding: 4px;
+            color: $black;
         }
     }
 }
 
-@mixin tablet() {
-    body .page-layout {
+@include tablet() {
+    .home-page {
         .home-header {
-            .home-header_title {
+            &_title {
                 max-width: calc(100% - 107px);
                 font-weight: $weightMedium;
                 font-size: $fontSizeTextBig;
             }
 
             &_settings {
-                svg {
+                .anticon {
                     display: none;
                 }
 
-                span {
+                .anticon + span {
                     margin: 0;
                 }
             }
         }
 
         .home-content {
-            .home-content_item {
-                &.about-item br {
-                    display: none;
-                }
+            .home-content_item.about-item br {
+                display: none;
             }
-        }
-
-        .home-footer {
-            padding-top: 344px;
         }
     }
 }
 
-@mixin mobile() {
-    body .page-layout {
-        .home-header {
-            .breadcrumbs {
-                margin-bottom: 6px;
-            }
+@include mobile() {
+    .home-page {
+        .breadcrumbs {
+            margin-bottom: 6px;
+        }
 
-            .home-header_title {
-                max-width: calc(100% - 32px);
-                font-size: 20px;
+        .home-header {
+            &_title {
+                max-width: calc(100% - $indentBig);
+                font-size: $fontSizeSmallTitle;
 
                 br {
                     display: block;
@@ -209,34 +203,32 @@ body .page-layout {
             &_settings {
                 width: 32px;
                 height: 32px;
-                padding: 4px 10px;
+                padding: 0;
                 border: 1px solid $greyBorder;
                 border-radius: 50%;
 
-                svg {
-                    display: block;
+                span:not(.anticon) {
+                    display: none;
                 }
 
-                span:nth-child(2) {
-                    display: none;
+                .anticon {
+                    display: block;
                 }
             }
         }
 
         .home-content {
-            padding-bottom: 14px;
+            padding-bottom: $indentSmall2;
 
             .home-content_item {
                 padding: $indentMin2;
 
-                &.able-item {
-                    ul {
-                        letter-spacing: 0.003rem;
-                    }
-                }
-
                 &.about-item {
                     margin-bottom: $indentMin2;
+                }
+
+                .ant-list-items {
+                    letter-spacing: 0.003rem;
                 }
             }
 
@@ -248,17 +240,17 @@ body .page-layout {
         }
 
         .home-footer {
-            .home-footer__line {
+            &__line {
                 flex-direction: column;
                 align-items: center;
             }
 
-            .home-footer__reviews {
+            &__reviews {
                 order: 2;
                 margin-top: 22px;
             }
 
-            .home-footer__downloads {
+            &__downloads {
                 width: 100%;
                 text-align: center;
             }

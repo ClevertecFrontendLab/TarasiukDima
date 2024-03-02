@@ -1,7 +1,6 @@
 import classNames from 'classnames';
-import { Layout, Spin } from 'antd';
-import { Sidebar } from '@components/index';
-import Paragraph from 'antd/lib/typography/Paragraph';
+import { Layout } from 'antd';
+import { Sidebar, Spinner } from '@components/index';
 import { TClsAndChildProps } from '@app_types/index';
 
 import './page-layout.scss';
@@ -26,10 +25,6 @@ export const PageLayout: React.FC<TPageLayoutProps> = ({
 
         <Layout className='page-layout'>{children}</Layout>
 
-        {isLoading && (
-            <Paragraph className='spin-wrapper'>
-                <Spin size='large' />
-            </Paragraph>
-        )}
+        {isLoading && <Spinner className='page-spinner' />}
     </Layout>
 );
