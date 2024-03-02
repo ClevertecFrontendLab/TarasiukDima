@@ -24,17 +24,26 @@ export const removeLocalStorageItem = (key: string) => {
     }
 };
 
+const getCookieValueIfCorrectKey = (key: string, cookieLine: string) => {
+    const lineCookie = cookieLine.trim();
+
+    if (lineCookie.indexOf(key) === 0) {
+        return lineCookie.substring(key.length, lineCookie.length);
+    }
+
+    return '';
+};
+
 export const getCookie = (key: string) => {
     const nameCookie = key + '=';
-    const ca = document.cookie.split(';');
+    const cookies = document.cookie.split(';');
 
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1, c.length);
+    for (let i = 0; i < cookies.length; i++) {
+        const valueCookie = getCookieValueIfCorrectKey(nameCookie, cookies[i]);
+
+        if (valueCookie) {
+            return valueCookie;
         }
-
-        if (c.indexOf(nameCookie) === 0) return c.substring(nameCookie.length, c.length);
     }
 
     return '';

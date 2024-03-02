@@ -16,9 +16,13 @@ export const sortArrayByDate = <T, K extends keyof T>(items: T[], key: K): T[] =
 export const getCorrectDateForShow = (timeStamp: string) => {
     const dateFromStamp = new Date(timeStamp);
 
+    if (dateFromStamp.toString() === 'Invalid Date') {
+        return '';
+    }
+
     return dateFromStamp.toLocaleDateString('ru-RU', {
-        month: 'numeric',
         day: 'numeric',
+        month: 'numeric',
         year: 'numeric',
     });
 };
