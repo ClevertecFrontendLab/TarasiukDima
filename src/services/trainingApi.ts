@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { API_TAGS, SERVICE_API_URL } from '@constants/index';
 import { RootState } from '@redux/index';
-import { TTraining, TTrainingCreateBody } from '@app_types/index';
+import { TTraining, TTrainingBody } from '@app_types/index';
 
 export const trainingApi = createApi({
     reducerPath: 'trainingApi',
@@ -30,7 +30,7 @@ export const trainingApi = createApi({
                       ]
                     : [{ type: API_TAGS.training, id: 'LIST' }],
         }),
-        addTraining: builder.mutation<TTraining[], TTrainingCreateBody>({
+        addTraining: builder.mutation<TTraining[], TTrainingBody>({
             query: (body) => ({
                 url: '',
                 method: 'POST',
@@ -38,19 +38,18 @@ export const trainingApi = createApi({
             }),
             invalidatesTags: [{ type: API_TAGS.training, id: 'LIST' }],
         }),
-        updateTraining: builder.mutation<TTraining[], TTrainingCreateBody>({
-            query: (body) => ({
-                url: '',
-                method: 'POST',
+        updateTraining: builder.mutation<TTraining[], { body: TTrainingBody; trainingId: string }>({
+            query: ({ body, trainingId }) => ({
+                url: `/${trainingId}`,
+                method: 'PUT',
                 body,
             }),
             invalidatesTags: [{ type: API_TAGS.training, id: 'LIST' }],
         }),
-        deleteTraining: builder.mutation<TTraining[], TTrainingCreateBody>({
-            query: (body) => ({
-                url: '',
-                method: 'POST',
-                body,
+        deleteTraining: builder.mutation<TTraining[], { trainingId: string }>({
+            query: ({ trainingId }) => ({
+                url: `/${trainingId}`,
+                method: 'DELETE',
             }),
             invalidatesTags: [{ type: API_TAGS.training, id: 'LIST' }],
         }),
@@ -60,6 +59,6 @@ export const trainingApi = createApi({
 export const {
     useAddTrainingMutation,
     useDeleteTrainingMutation,
-    useGetTrainingQuery,
+    useLazyGetTrainingQuery,
     useUpdateTrainingMutation,
 } = trainingApi;

@@ -19,13 +19,28 @@ body {
     .page-layout {
         background: transparent;
 
-        &__header {
-            @include dflex(space-between, flex-start, row, wrap);
-
+        .page-layout__header {
             height: auto;
             padding: $indentMin2 $indentMid;
             line-height: $lineHeight;
             background: $primaryLight;
+
+            &_row {
+                margin-top: $indentSmall2;
+            }
+
+            &_title {
+                max-width: calc(100% - 180px);
+                margin: 0;
+                font-weight: $weightBold;
+                line-height: $lineHeight;
+            }
+
+            &_settings {
+                margin-left: auto;
+                color: $black;
+                transform: translateY(-7px);
+            }
         }
 
         &__content {
@@ -46,6 +61,28 @@ body {
     position: fixed;
 }
 
+@include tablet() {
+    body {
+        .page-layout .page-layout__header {
+            &_title {
+                max-width: calc(100% - 107px);
+                font-weight: $weightMedium;
+                font-size: $fontSizeTextBig;
+            }
+
+            &_settings {
+                .anticon {
+                    display: none;
+                }
+
+                .anticon + span {
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
+
 @include mobile() {
     body {
         .page:before {
@@ -53,6 +90,33 @@ body {
         }
 
         .page-layout {
+            .page-layout__header {
+                &_row {
+                    margin-top: 6px;
+                }
+
+                &_title {
+                    max-width: calc(100% - $indentBig);
+                    font-size: $fontSizeSmallTitle;
+                }
+
+                &_settings {
+                    width: 32px;
+                    height: 32px;
+                    padding: 0;
+                    border: 1px solid $greyBorder;
+                    border-radius: 50%;
+
+                    span:not(.anticon) {
+                        display: none;
+                    }
+
+                    .anticon {
+                        display: block;
+                    }
+                }
+            }
+
             &__content {
                 padding-left: $indentMin2;
                 padding-right: $indentMin2;

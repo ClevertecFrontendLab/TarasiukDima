@@ -13,6 +13,8 @@ export {
     trainingApi,
     useAddTrainingMutation,
     useDeleteTrainingMutation,
-    useGetTrainingQuery,
+    useLazyGetTrainingQuery,
     useUpdateTrainingMutation,
 } from './trainingApi';
+
+export { useLazyGetTrainingsListQuery, catalogsApi } from './catalogsApi';

@@ -45,7 +45,7 @@ export const ModalsInfo: React.FC<TFeedbacksPageProps> = ({
         <>
             <ModalPage variant='error' open={isErrorOpen}>
                 <Result
-                    status={STATUS_CODES.server_error as ResultStatusType}
+                    status={STATUS_CODES.serverError as ResultStatusType}
                     title='Что-то пошло не так'
                     subTitle={
                         <>

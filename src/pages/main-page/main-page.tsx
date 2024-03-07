@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
-import { AndroidFilled, AppleFilled, SettingOutlined } from '@ant-design/icons';
+import { AndroidFilled, AppleFilled } from '@ant-design/icons';
 import { Button, Card, List, Row } from 'antd';
 import Paragraph from 'antd/lib/typography/Paragraph';
-import Title from 'antd/lib/typography/Title';
 import { PageContent, PageFooter, PageHeader, PageLayout } from '@components/index';
 import { cardsData, listData } from './home-data';
 import { ROUTES_LINKS } from '@constants/index';
@@ -18,16 +17,17 @@ const routes = [
 
 export const MainPage = () => (
     <PageLayout className='home-page'>
-        <PageHeader className='home-header' routes={routes}>
-            <Title className='home-header_title'>
-                Приветствуем тебя <br /> в CleverFit — приложении, которое поможет тебе добиться
-                своей мечты!
-            </Title>
-
-            <Button className='home-header_settings' type='link'>
-                <SettingOutlined /> Настройки
-            </Button>
-        </PageHeader>
+        <PageHeader
+            className='home-header'
+            routes={routes}
+            showSettingsButton
+            title={
+                <>
+                    Приветствуем тебя <br /> в CleverFit — приложении, которое поможет тебе добиться
+                    своей мечты!
+                </>
+            }
+        ></PageHeader>
 
         <PageContent className='home-content'>
             <Paragraph className='home-content__item able-item'>

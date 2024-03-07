@@ -2,28 +2,12 @@
 @import "@assets/scss/mixins";
 
 .home-page {
-    .breadcrumbs {
-        margin-bottom: $indentSmall2;
-    }
-
     .home-header {
         padding-bottom: 21px;
+    }
 
-        &_title {
-            max-width: calc(100% - 180px);
-            margin: 0;
-            font-weight: $weightBold;
-            line-height: $lineHeight;
-
-            br {
-                display: none;
-            }
-        }
-
-        &_settings {
-            color: $black;
-            transform: translateY(-7px);
-        }
+    .page-layout__header_title br {
+        display: none;
     }
 
     .home-content {
@@ -107,6 +91,21 @@
         .ant-card-body {
             padding: $indentSmall2 0;
         }
+
+        .card-link {
+            height: auto;
+            padding: 0;
+            line-height: $lineHeight;
+            color: $primary;
+
+            svg {
+                color: currentColor;
+            }
+
+            &__name {
+                margin-left: $indentSmallest;
+            }
+        }
     }
 
     .home-footer {
@@ -158,24 +157,6 @@
 
 @include tablet() {
     .home-page {
-        .home-header {
-            &_title {
-                max-width: calc(100% - 107px);
-                font-weight: $weightMedium;
-                font-size: $fontSizeTextBig;
-            }
-
-            &_settings {
-                .anticon {
-                    display: none;
-                }
-
-                .anticon + span {
-                    margin: 0;
-                }
-            }
-        }
-
         .home-content {
             .home-content_item.about-item br {
                 display: none;
@@ -186,35 +167,8 @@
 
 @include mobile() {
     .home-page {
-        .breadcrumbs {
-            margin-bottom: 6px;
-        }
-
-        .home-header {
-            &_title {
-                max-width: calc(100% - $indentBig);
-                font-size: $fontSizeSmallTitle;
-
-                br {
-                    display: block;
-                }
-            }
-
-            &_settings {
-                width: 32px;
-                height: 32px;
-                padding: 0;
-                border: 1px solid $greyBorder;
-                border-radius: 50%;
-
-                span:not(.anticon) {
-                    display: none;
-                }
-
-                .anticon {
-                    display: block;
-                }
-            }
+        .page-layout__header_title br {
+            display: block;
         }
 
         .home-content {

@@ -17,6 +17,10 @@ ul.navigation {
             margin-bottom: $indentMin2;
         }
 
+        &.ant-menu-item-selected svg {
+            fill: currentColor;
+        }
+
         .ant-menu-item-icon {
             flex-shrink: 0;
         }
@@ -24,6 +28,10 @@ ul.navigation {
         svg {
             fill: $blueDark;
         }
+    }
+
+    .menu-link {
+        color: inherit;
     }
 }
 

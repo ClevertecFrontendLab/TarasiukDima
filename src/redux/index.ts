@@ -1,6 +1,13 @@
 export { changeIsAuth, setToken, setPassword, setEmail, setCode, userReducer } from './user-slice';
 
-export { changeShowSidebar, changeShowTokenError, appReducer } from './app-slice';
+export {
+    changeShowSidebar,
+    changeShowTokenError,
+    appReducer,
+    changeShowTrainingListError,
+    changePersonalTrainingList,
+    changeShowLoader,
+} from './app-slice';
 
 export { store, history } from './configure-store';
 

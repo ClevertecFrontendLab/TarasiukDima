@@ -5,3 +5,5 @@ export { FeedbacksPage } from './feedbacks-page';
 export { AuthPage, ChangePasswordPage, RegistrationPage, ConfirmEmailPage } from './user';
 
 export { ResultPage } from './result-page';
+
+export { CalendarPage } from './calendar-page';

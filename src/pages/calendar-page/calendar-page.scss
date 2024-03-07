@@ -1,0 +1,42 @@
+@import "@assets/scss/variables";
+@import "@assets/scss/mixins";
+
+.calendar-page {
+    .calendar-content {
+        flex-grow: 0;
+        background-color: $primaryLight;
+    }
+
+    .ant-picker-calendar,
+    .ant-picker-calendar-full .ant-picker-panel {
+        background-color: transparent;
+    }
+
+    .ant-picker-cell-inner {
+        background-color: $white;
+    }
+}
+
+body .ant-modal-mask {
+    @extend %backgroundBlurModal;
+}
+
+.modal-variants {
+    .ant-modal-confirm-body-wrapper svg {
+        fill: $primary;
+    }
+
+    .ant-modal-confirm-title {
+        color: $black;
+    }
+
+    .ant-modal-confirm-content {
+        color: $grey;
+    }
+}
+
+@include tablet() {
+}
+
+@include mobile() {
+}
