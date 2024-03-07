@@ -10,3 +10,5 @@ export type {
     TServerErrorResponse,
     TServerResponse,
 } from './responses';
+
+export type { TTraining, TTrainingCreateBody } from './training';
