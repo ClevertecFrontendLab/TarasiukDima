@@ -1,12 +1,10 @@
 import { useEffect } from 'react';
 import { useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { useLazyGetTrainingsListQuery } from '@services/index';
-import { Calendar, ConfigProvider, Modal } from 'antd';
+import { Modal } from 'antd';
 import { PageContent, PageHeader, PageLayout } from '@components/index';
+import { CalendarTraining } from './calendar-trainings';
 import { ROUTES_LINKS } from '@constants/index';
-import type { CalendarMode } from 'antd/es/calendar/generateCalendar';
-import locale from 'antd/es/locale/ru_RU';
-import type { Moment } from 'moment';
 
 import './calendar-page.scss';
 
@@ -22,6 +20,9 @@ const routes = [
 ];
 
 export const CalendarPage = () => {
+    // const dispatch = useDispatch();
+    // const navigate = useNavigate();
+    // const [isTrainingVariantsError, setIsTrainingVariantsError] = useState(true);
     const { personalTraining } = useAppSelector((state) => state.app);
 
     const [
@@ -62,22 +63,16 @@ export const CalendarPage = () => {
             });
         }
     }, [isVariantsError, getTrainingVariants]);
-    const onPanelChange = (value: Moment, mode: CalendarMode) => {
-        console.log(value.format('YYYY-MM-DD'), mode);
-    };
 
-    const onSelect = (value: Moment) => {
-        console.log(value.format('YYYY-MM-DD'));
-    };
+    console.log('personalTraining', personalTraining);
+    console.log('trainingVariants', trainingVariants);
 
     return (
         <PageLayout className='calendar-page' isLoading={isTrainingVariantsLoading}>
             <PageHeader className='calendar-header' routes={routes} showSettingsButton />
 
             <PageContent className='calendar-content'>
-                <ConfigProvider locale={locale}>
-                    <Calendar onPanelChange={onPanelChange} onSelect={onSelect} />
-                </ConfigProvider>
+                <CalendarTraining />
             </PageContent>
         </PageLayout>
     );
