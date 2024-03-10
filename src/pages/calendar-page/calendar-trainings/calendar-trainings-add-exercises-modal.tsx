@@ -37,7 +37,9 @@ export const CellAddExercisesModal: React.FC<TCellAddNewExercisesProps> = memo(
 
         const { disableRemove, chosenExercises } = useMemo(() => {
             const chosenExercises =
-                chosenVariantTraining && dayData[chosenVariantTraining]
+                chosenVariantTraining &&
+                dayData[chosenVariantTraining] &&
+                dayData[chosenVariantTraining].exercises
                     ? dayData[chosenVariantTraining].exercises
                     : [];
 

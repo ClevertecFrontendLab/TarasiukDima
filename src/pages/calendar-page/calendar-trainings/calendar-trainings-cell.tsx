@@ -311,8 +311,12 @@ export const CalendarCellContent: React.FC<TCalendarCellContentProps> = memo(
         }, [removeEmptyExercises]);
 
         const addNewExercisesForm = useCallback(() => {
-            setCountExercisesShow((prev) => prev + 1);
-        }, []);
+            if (isEdit && chosenVariantTraining) {
+                dayData[chosenVariantTraining].exercises.push([]);
+            } else {
+                setCountExercisesShow((prev) => prev + 1);
+            }
+        }, [chosenVariantTraining, dayData, isEdit]);
 
         const cellDayContextValue = useMemo(
             () => ({
