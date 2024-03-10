@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { API_TAGS, SERVICE_API_URL } from '@constants/index';
 import { RootState } from '@redux/index';
-import { TTrainingListItem } from '@app_types/index';
+import { TTrainingVariants } from '@app_types/index';
 
 const queryEndpoints = {
     trainingList: 'training-list',
@@ -22,7 +22,7 @@ export const catalogsApi = createApi({
     }),
     tagTypes: [API_TAGS.catalogs],
     endpoints: (builder) => ({
-        getTrainingsList: builder.query<TTrainingListItem[], null>({
+        getTrainingsList: builder.query<TTrainingVariants, null>({
             query: () => ({
                 url: queryEndpoints.trainingList,
             }),

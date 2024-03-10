@@ -17,6 +17,7 @@ export const trainingApi = createApi({
         },
     }),
     tagTypes: [API_TAGS.training],
+
     endpoints: (builder) => ({
         getTraining: builder.query<TTraining[], null>({
             query: () => ({
@@ -30,7 +31,8 @@ export const trainingApi = createApi({
                       ]
                     : [{ type: API_TAGS.training, id: 'LIST' }],
         }),
-        addTraining: builder.mutation<TTraining[], TTrainingBody>({
+
+        addTraining: builder.mutation<TTraining, TTrainingBody>({
             query: (body) => ({
                 url: '',
                 method: 'POST',
@@ -38,7 +40,8 @@ export const trainingApi = createApi({
             }),
             invalidatesTags: [{ type: API_TAGS.training, id: 'LIST' }],
         }),
-        updateTraining: builder.mutation<TTraining[], { body: TTrainingBody; trainingId: string }>({
+
+        updateTraining: builder.mutation<TTraining, { body: TTrainingBody; trainingId: string }>({
             query: ({ body, trainingId }) => ({
                 url: `/${trainingId}`,
                 method: 'PUT',
@@ -46,7 +49,8 @@ export const trainingApi = createApi({
             }),
             invalidatesTags: [{ type: API_TAGS.training, id: 'LIST' }],
         }),
-        deleteTraining: builder.mutation<TTraining[], { trainingId: string }>({
+
+        deleteTraining: builder.mutation<object, { trainingId: string }>({
             query: ({ trainingId }) => ({
                 url: `/${trainingId}`,
                 method: 'DELETE',

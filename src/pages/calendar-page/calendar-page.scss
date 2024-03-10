@@ -1,8 +1,11 @@
 @import "@assets/scss/variables";
 @import "@assets/scss/mixins";
 
+body .calendar-page .calendar-page__header {
+    padding-bottom: 0;
+}
 .calendar-page {
-    .calendar-content {
+    .calendar-page__content {
         flex-grow: 0;
         background-color: $primaryLight;
     }
@@ -17,21 +20,325 @@
     }
 }
 
-body .ant-modal-mask {
-    @extend %backgroundBlurModal;
-}
-
-.modal-variants {
-    .ant-modal-confirm-body-wrapper svg {
-        fill: $primary;
+div.training-calendar.ant-picker-calendar-full {
+    .ant-picker-cell-selected .ant-picker-cell-inner {
+        background-color: $lightWhite;
     }
 
+    .ant-picker-calendar-date-content {
+        height: auto;
+        min-height: 86px;
+    }
+
+    .ant-picker-content tr {
+        td:not(:last-child) {
+            .ant-modal-root {
+                left: 0;
+                right: auto;
+            }
+        }
+
+        td:last-child {
+            .ant-modal-root {
+                right: 0;
+                left: auto;
+            }
+        }
+    }
+
+    .ant-modal-root {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 100;
+    }
+
+    .ant-modal-mask {
+        display: none;
+        // background: transparent;
+    }
+
+    .ant-modal-wrap {
+        position: relative;
+        top: 0;
+        bottom: auto;
+        overflow: initial;
+    }
+
+    .cell-content__modal {
+        top: 0;
+        left: 0;
+        margin: 0;
+        padding: 0;
+    }
+
+    .ant-picker-cell-inner {
+        z-index: inherit;
+        padding-bottom: 20px;
+    }
+}
+
+.ant-picker-cell {
+    position: relative;
+
+    .cell-content {
+        &__training {
+            font-size: 12px;
+            line-height: 1.3;
+        }
+
+        &__training_btn {
+            position: absolute;
+            inset: 0;
+            z-index: 20;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+    }
+}
+
+.add-new-modal,
+.training-modal {
+    width: 264px !important;
+
+    .ant-modal-footer {
+        padding: 12px;
+    }
+
+    .back-button {
+        width: 28px;
+        height: 28px;
+        padding: 0;
+        line-height: 16px;
+
+        .anticon {
+            width: 16px;
+            height: 16px;
+
+            svg {
+                width: 100%;
+                height: 100%;
+                fill: currentColor;
+            }
+        }
+    }
+}
+
+.training-modal {
+    .training-modal__list {
+        margin-top: 30px;
+
+        .edit-training {
+            border: none;
+        }
+
+        svg {
+            fill: $primary;
+        }
+    }
+
+    .ant-modal-header {
+        padding: 16px 36px 0 12px;
+        border-bottom: none;
+    }
+
+    .ant-modal-close {
+        top: 18px;
+        right: 12px;
+    }
+
+    .ant-modal-close-x {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+    }
+
+    .ant-modal-title {
+        font-size: 14px;
+        font-weight: $weightBold;
+    }
+
+    .ant-modal-body {
+        padding: 0 12px 12px;
+    }
+
+    .modal-no-text {
+        color: $grey;
+        margin-bottom: 16px;
+    }
+
+    .add-training {
+        width: 100%;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+}
+
+.add-new-modal {
+    .ant-modal-header {
+        padding: 12px;
+    }
+
+    .ant-select {
+        flex-grow: 1;
+
+        .ant-select-selector {
+            border: none !important;
+        }
+    }
+
+    .save-btn,
+    .add-training {
+        width: 100%;
+        color: $black;
+    }
+
+    .save-btn {
+        margin-top: 8px;
+        border: none;
+        margin-left: 0 !important;
+
+        &:disabled {
+            background-color: transparent;
+        }
+    }
+}
+
+.exercises-modal {
+    .ant-drawer-content-wrapper {
+        width: 408px !important;
+    }
+
+    .ant-drawer-mask {
+        background: transparent;
+    }
+
+    .ant-drawer-close {
+        order: 2;
+        margin-right: 0;
+    }
+
+    .ant-drawer-title {
+        font-size: 20px;
+        color: $black;
+
+        .anticon {
+            width: 12px;
+            height: 12px;
+            margin-right: 12px;
+        }
+
+        svg {
+            fill: currentColor;
+        }
+    }
+
+    .ant-drawer-header {
+        border-bottom: none;
+    }
+
+    .ant-drawer-body {
+        padding: 0 32px;
+    }
+
+    .exercises-modal__var-info {
+        font-size: 14px;
+        font-weight: $weightMedium;
+
+        &_badge .ant-badge-status-text {
+            color: $grey;
+        }
+
+        &_date {
+            margin-bottom: 0;
+            color: $grey;
+        }
+    }
+
+    .exercise-fields {
+        padding-top: 24px;
+
+        input {
+            color: $black;
+
+            &::placeholder {
+                color: $lightGrey;
+            }
+        }
+
+        &__name {
+            width: 100%;
+            line-height: $lineHeight;
+            margin-bottom: 8px;
+        }
+
+        &__weight,
+        &__replays,
+        &__approaches {
+            margin-bottom: 0;
+        }
+
+        &__approaches {
+            width: 120px;
+            margin-right: auto;
+        }
+
+        .multiply {
+            flex-shrink: 0;
+            align-self: flex-end;
+            margin: 0 2px 5px;
+            font-size: 16px;
+            color: $lightGrey;
+        }
+
+        .ant-form-item-label {
+            width: 100%;
+            margin-bottom: 6px;
+            padding: 1px 8px;
+            text-align: left;
+            background-color: $lightDividers;
+
+            label {
+                height: auto;
+                font-size: 12px;
+            }
+        }
+
+        &__weight {
+            width: 90px;
+        }
+
+        &__replays {
+            width: 90px;
+        }
+    }
+
+    .add-more {
+        height: auto;
+        width: 100%;
+        text-align: left;
+        margin-top: 24px;
+        padding: 8px 13px;
+        border-radius: 0 0 12px 12px;
+        color: $primary;
+        background: $lightWhite;
+    }
+}
+
+.modal-page {
     .ant-modal-confirm-title {
         color: $black;
     }
 
     .ant-modal-confirm-content {
         color: $grey;
+    }
+}
+
+.modal-variants {
+    .ant-modal-confirm-body-wrapper svg {
+        fill: $primary;
     }
 }
 

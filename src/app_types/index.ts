@@ -11,6 +11,12 @@ export type {
     TServerResponse,
 } from './responses';
 
-export type { TTraining, TTrainingBody } from './training';
+export type {
+    TTrainingParameters,
+    TTrainingExercise,
+    TTrainingRequired,
+    TTrainingBody,
+    TTraining,
+} from './training';
 
-export type { TTrainingListItem } from './catalogs';
+export type { TTrainingListItem, TTrainingVariants } from './catalogs';

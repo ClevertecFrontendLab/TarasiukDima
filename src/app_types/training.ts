@@ -6,7 +6,7 @@ export type TTrainingParameters = {
 };
 
 export type TTrainingExercise = {
-    _id: string;
+    _id?: string;
     name: string;
     replays: number;
     weight: number;

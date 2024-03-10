@@ -4,6 +4,10 @@
 .home-page {
     .home-header {
         padding-bottom: 21px;
+
+        .page-layout__header_settings {
+            transform: translateY(-7px);
+        }
     }
 
     .page-layout__header_title br {

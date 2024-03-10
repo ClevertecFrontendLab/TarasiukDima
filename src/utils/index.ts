@@ -1,7 +1,13 @@
-export { getClearLastRoutePath } from './common';
+export { getClearLastRoutePath, getTrainingBadgeStatusColor } from './common';
 export type { TPreviousLocations } from './common';
 
-export { sortArrayByDate, getCorrectDateForShow } from './date';
+export {
+    sortArrayByDate,
+    getCorrectDateForShow,
+    compareDates,
+    getTimeInNeededFormat,
+    updatedNeededLengthValue,
+} from './date';
 
 export {
     getCookie,
