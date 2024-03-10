@@ -98,12 +98,29 @@ div.training-calendar.ant-picker-calendar-full {
     }
 }
 
-.add-new-modal,
-.training-modal {
+.cell-content__modal {
     width: 264px !important;
+
+    .ant-modal-body {
+        padding: 0 12px 12px;
+    }
 
     .ant-modal-footer {
         padding: 12px;
+    }
+
+    .training__list {
+        &.training__info_list {
+            margin-top: 30px;
+        }
+
+        .edit-training {
+            border: none;
+        }
+
+        svg {
+            fill: $primary;
+        }
     }
 
     .back-button {
@@ -126,18 +143,6 @@ div.training-calendar.ant-picker-calendar-full {
 }
 
 .training-modal {
-    .training-modal__list {
-        margin-top: 30px;
-
-        .edit-training {
-            border: none;
-        }
-
-        svg {
-            fill: $primary;
-        }
-    }
-
     .ant-modal-header {
         padding: 16px 36px 0 12px;
         border-bottom: none;
@@ -159,10 +164,6 @@ div.training-calendar.ant-picker-calendar-full {
         font-weight: $weightBold;
     }
 
-    .ant-modal-body {
-        padding: 0 12px 12px;
-    }
-
     .modal-no-text {
         color: $grey;
         margin-bottom: 16px;
@@ -179,12 +180,25 @@ div.training-calendar.ant-picker-calendar-full {
     .ant-modal-header {
         padding: 12px;
     }
+    .ant-modal-body {
+        padding-top: 12px;
+    }
+
+    .ant-badge-status-text {
+        color: $grey;
+    }
+
+    .ant-badge-status-dot {
+        display: none;
+    }
 
     .ant-select {
         flex-grow: 1;
 
         .ant-select-selector {
+            color: $black !important;
             border: none !important;
+            background: $white !important;
         }
     }
 
@@ -314,15 +328,29 @@ div.training-calendar.ant-picker-calendar-full {
         }
     }
 
+    .buttons-wrapper {
+        border-radius: 0 0 12px 12px;
+        overflow: hidden;
+    }
+
+    .remove,
     .add-more {
+        flex-grow: 1;
         height: auto;
-        width: 100%;
+        width: 50%;
         text-align: left;
         margin-top: 24px;
         padding: 8px 13px;
-        border-radius: 0 0 12px 12px;
         color: $primary;
         background: $lightWhite;
+    }
+
+    .add-more {
+        color: $primary;
+    }
+
+    .remove {
+        color: $black;
     }
 }
 

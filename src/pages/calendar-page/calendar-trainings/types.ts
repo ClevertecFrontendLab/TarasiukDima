@@ -22,12 +22,18 @@ export type TCalendarCellContentProps = TCalendarVariantsDayInfo & {
 
 export type TVariantChosenItem = keyof TTrainingRequired | null;
 
+export type TTrainingCellDataExercise = TTrainingExercise & {
+    isChecked: boolean;
+};
+
+export type TCellTrainingsDataValue = Omit<TTraining, 'exercises'> & {
+    isChanged: boolean;
+    isNew: boolean;
+    exercises: TTrainingCellDataExercise[];
+};
+
 export type TCellTrainingsData = {
-    [key: string]: TTraining & {
-        isChanged: boolean;
-        isNew: boolean;
-        needRemove: boolean;
-    };
+    [key: string]: TCellTrainingsDataValue;
 };
 
 export type TCellAddNewModalProps = TCalendarVariantsDayInfo & {
@@ -43,4 +49,9 @@ export type TCellAddNewModalProps = TCalendarVariantsDayInfo & {
 };
 
 export type TTrainingEditButtonCb = (trainingName: string) => void;
-export type TUpdateTrainingExercisesCB = (ind: number, excInfo: TTrainingExercise) => void;
+
+export type TUpdateTrainingExercisesCB = (ind: number, excInfo: TExerciseInfo) => void;
+
+export type TExerciseInfo = Omit<TTrainingExercise, 'isImplementation'> & {
+    isChecked: boolean;
+};

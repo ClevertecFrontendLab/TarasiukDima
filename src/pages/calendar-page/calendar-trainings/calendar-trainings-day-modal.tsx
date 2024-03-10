@@ -1,11 +1,12 @@
 import { memo, useContext } from 'react';
+import { CellDayContext, TCellDayContext } from './calendar-cell-context';
 import { Button, Modal } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
 import Paragraph from 'antd/lib/typography/Paragraph';
 import { EmptyIcon } from './empty';
 import { CalendarTrainingList, TCalendarTrainingListItem } from './calendar-trainings-list';
-import { TSimpleFn } from '@app_types/index';
 import { TTrainingEditButtonCb } from './types';
-import { CellDayContext, TCellDayContext } from './calendar-trainings-cell';
+import { TSimpleFn } from '@app_types/index';
 
 type TCellTrainingDayModalProps = {
     isShow: boolean;
@@ -47,9 +48,11 @@ export const CellTrainingDayModal: React.FC<TCellTrainingDayModalProps> = memo(
 
         return (
             <Modal
+                data-test-id='modal-create-training'
                 className='cell-content__modal training-modal'
                 open={isShow}
                 closable
+                closeIcon={<CloseOutlined data-test-id='modal-create-training-button-close' />}
                 getContainer={refEl}
                 onCancel={closeCb}
                 title={`Тренировки на ${date}`}
@@ -74,7 +77,7 @@ export const CellTrainingDayModal: React.FC<TCellTrainingDayModalProps> = memo(
                         items={items}
                         editButtonCb={editTrainingCb}
                         needButtonEdit
-                        className='cell-content__training training-modal__list'
+                        className='training__list training__info_list'
                     />
                 )}
             </Modal>

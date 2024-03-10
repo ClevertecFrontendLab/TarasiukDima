@@ -1,92 +1,124 @@
-import { memo, useCallback, useState } from 'react';
-import { Form, Input, InputNumber, Row } from 'antd';
-import { TTrainingExercise } from '@app_types/training';
+import { memo, useCallback, useContext, useState } from 'react';
+import { Checkbox, Form, Input, InputNumber, Row } from 'antd';
+import { CellDayContext, TCellDayContext } from './calendar-cell-context';
+import { TExerciseInfo, TUpdateTrainingExercisesCB } from './types';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 
 type TCellAddNewExercisesProps = {
+    name?: string;
+    weight?: number;
+    approaches?: number;
+    replays?: number;
     keyItem: number;
-    changeExercisesInfoCB: (ind: number, excInfo: TTrainingExercise) => void;
+
+    changeExercisesInfoCB: TUpdateTrainingExercisesCB;
 };
 
 export const CellAddNewExercises: React.FC<TCellAddNewExercisesProps> = memo(
-    ({ changeExercisesInfoCB, keyItem }) => {
-        const [nameExercise, setNameExercise] = useState('');
-        const [approaches, setApproaches] = useState(1);
-        const [replays, setReplays] = useState(1);
-        const [weight, setWeight] = useState(0);
+    ({ changeExercisesInfoCB, keyItem, name = '', weight = 0, approaches = 1, replays = 1 }) => {
+        const { isEdit } = useContext(CellDayContext) as TCellDayContext;
+
+        const [exerciseName, setExerciseName] = useState(name);
+        const [exerciseChecked, setExerciseChecked] = useState(false);
+        const [exerciseApproaches, setExerciseApproaches] = useState(approaches);
+        const [exerciseWeight, setExerciseWeight] = useState(weight);
+        const [exerciseReplays, setExerciseReplays] = useState(replays);
+
+        const updateData = useCallback(
+            (key: keyof TExerciseInfo, val: unknown) => {
+                const itemData: TExerciseInfo = {
+                    name: exerciseName,
+                    approaches: exerciseApproaches || 1,
+                    replays: exerciseReplays || 1,
+                    weight: exerciseWeight || 0,
+
+                    isChecked: exerciseChecked,
+                };
+
+                itemData[key] = val as never;
+
+                changeExercisesInfoCB(keyItem, itemData);
+            },
+            [
+                keyItem,
+                exerciseName,
+                exerciseApproaches,
+                exerciseReplays,
+                exerciseWeight,
+                exerciseChecked,
+                changeExercisesInfoCB,
+            ],
+        );
 
         const changeNameExercise: React.ChangeEventHandler<HTMLInputElement> = useCallback(
             (event) => {
                 const newValue = event.target.value || '';
-                setNameExercise(newValue);
-                changeExercisesInfoCB(keyItem, {
-                    name: newValue,
-                    approaches: approaches || 1,
-                    replays: replays || 1,
-                    weight: weight || 0,
-                    isImplementation: false,
-                });
+                setExerciseName(newValue);
+                updateData('name', newValue);
             },
-            [approaches, changeExercisesInfoCB, keyItem, weight, replays],
+            [updateData],
         );
 
-        const changeWeight = useCallback(
-            (event: number | null) => {
-                const newValue = event || 0;
-                setWeight(+newValue);
-                changeExercisesInfoCB(keyItem, {
-                    name: nameExercise,
-                    approaches: approaches || 1,
-                    replays: replays || 1,
-                    weight: +newValue,
-                    isImplementation: false,
-                });
+        const changeCheckedExercise = useCallback(
+            (event: CheckboxChangeEvent) => {
+                const newValue = event.target.checked;
+                setExerciseChecked(newValue);
+                updateData('isChecked', newValue);
             },
-            [approaches, changeExercisesInfoCB, keyItem, nameExercise, replays],
+            [updateData],
         );
 
         const changeApproaches = useCallback(
-            (event: number | null) => {
-                const newValue = event || 1;
-                console.log('event', event);
-                setApproaches(+newValue);
-                changeExercisesInfoCB(keyItem, {
-                    name: nameExercise,
-                    approaches: +newValue,
-                    replays: replays || 1,
-                    weight: weight || 0,
-                    isImplementation: false,
-                });
+            (newApproach: number | null) => {
+                const newValue = newApproach || 1;
+                setExerciseApproaches(+newValue);
+                updateData('approaches', +newValue);
             },
-            [weight, changeExercisesInfoCB, keyItem, nameExercise, replays],
+            [updateData],
+        );
+
+        const changeWeight = useCallback(
+            (newWeight: number | null) => {
+                const newValue = newWeight || 0;
+                setExerciseWeight(+newValue);
+                updateData('weight', +newValue);
+            },
+            [updateData],
         );
 
         const changeReplays = useCallback(
-            (event: number | null) => {
-                const newValue = event || 1;
-                setReplays(+newValue);
-                changeExercisesInfoCB(keyItem, {
-                    name: nameExercise,
-                    approaches: approaches || 1,
-                    replays: +newValue,
-                    weight: weight || 0,
-                    isImplementation: false,
-                });
+            (newReplays: number | null) => {
+                const newValue = newReplays || 1;
+                setExerciseReplays(+newValue);
+                updateData('replays', +newValue);
             },
-            [approaches, changeExercisesInfoCB, keyItem, nameExercise, weight],
+            [updateData],
         );
 
         return (
             <Row align='stretch' className='exercise-fields' justify='space-between'>
                 <Input
+                    data-test-id={`modal-drawer-right-input-exercise${keyItem}`}
+                    addonAfter={
+                        isEdit ? (
+                            <Checkbox
+                                onChange={changeCheckedExercise}
+                                checked={exerciseChecked}
+                                data-test-id={`modal-drawer-right-checkbox-exercise${keyItem}`}
+                            />
+                        ) : null
+                    }
                     placeholder='Упражнение'
+                    value={exerciseName}
                     onChange={changeNameExercise}
                     className='exercise-fields__name'
                 />
 
                 <Form.Item colon={false} label='Подходы' className='exercise-fields__approaches'>
                     <InputNumber
+                        data-test-id={`modal-drawer-right-input-approach${keyItem}`}
                         addonBefore='+'
-                        defaultValue={1}
+                        value={exerciseApproaches}
                         step={1}
                         min={1}
                         onChange={changeApproaches}
@@ -96,7 +128,8 @@ export const CellAddNewExercises: React.FC<TCellAddNewExercisesProps> = memo(
 
                 <Form.Item colon={false} label='Вес, кг' className='exercise-fields__weight'>
                     <InputNumber
-                        defaultValue={0}
+                        data-test-id={`modal-drawer-right-input-weight${keyItem}`}
+                        value={exerciseWeight}
                         step={1}
                         min={0}
                         onChange={changeWeight}
@@ -108,7 +141,8 @@ export const CellAddNewExercises: React.FC<TCellAddNewExercisesProps> = memo(
 
                 <Form.Item colon={false} label='Количество' className='exercise-fields__replays'>
                     <InputNumber
-                        defaultValue={1}
+                        data-test-id={`modal-drawer-right-input-quantity${keyItem}`}
+                        value={exerciseReplays}
                         step={1}
                         min={1}
                         onChange={changeReplays}

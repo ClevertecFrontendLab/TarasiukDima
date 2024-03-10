@@ -30,6 +30,7 @@ export const CalendarTrainingList: React.FC<TCalendarTrainingListProps> = memo(
                         {needButtonEdit && (
                             <Button
                                 className='edit-training'
+                                data-test-id={`modal-update-training-edit-button${item.index}`}
                                 disabled={item.disabled}
                                 onClick={() => {
                                     editButtonCb && editButtonCb(item.name);

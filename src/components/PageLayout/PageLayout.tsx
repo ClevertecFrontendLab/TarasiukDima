@@ -45,7 +45,11 @@ export const PageLayout: React.FC<TPageLayoutProps> = ({
             {(isLoading || isShowLoader) && <Spinner className='page-spinner' />}
 
             {isShowTrainingListError && (
-                <ModalPage variant='error' open={isShowTrainingListError}>
+                <ModalPage
+                    variant='error'
+                    open={isShowTrainingListError}
+                    dataTestId='modal-no-review'
+                >
                     <Result
                         status={STATUS_CODES.serverError as ResultStatusType}
                         title='Что-то пошло не так'

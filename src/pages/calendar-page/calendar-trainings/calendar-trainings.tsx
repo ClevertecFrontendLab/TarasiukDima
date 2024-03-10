@@ -4,12 +4,12 @@ import dayjs, { Dayjs } from 'dayjs';
 import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
 import { useIsMobile, useGetCurrentDayInfo, useAppSelector } from '@hooks/index';
 import generateCalendar from 'antd/es/calendar/generateCalendar';
+import { CalendarCellContent } from './calendar-trainings-cell';
 import locale from 'antd/es/locale/ru_RU';
 import localeRu from 'dayjs/locale/ru';
 import { DATE_FORMAT } from '@constants/index';
 import { compareDates, updatedNeededLengthValue } from '@utils/index';
-import { TCalendarTrainingVariants, TCellTrainingsData } from './types';
-import { CalendarCellContent } from './calendar-trainings-cell';
+import { TCalendarTrainingVariants, TCellTrainingsData, TCellTrainingsDataValue } from './types';
 
 dayjs.locale('ru', localeRu);
 const Calendar = generateCalendar<Dayjs>(dayjsGenerateConfig);
@@ -39,9 +39,14 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
                     startObjDayData[item.name] = {
                         ...item,
                         isChanged: false,
-                        isNew: false,
-                        needRemove: false,
-                    };
+                    } as TCellTrainingsDataValue;
+
+                    startObjDayData[item.name].exercises = startObjDayData[item.name].exercises.map(
+                        (item) => ({
+                            ...item,
+                            isChecked: false,
+                        }),
+                    );
                 });
 
                 return (
@@ -79,7 +84,6 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
                 }
 
                 if (isMobile && withoutModal) return;
-
                 console.log('onSelect', date.format(DATE_FORMAT));
             },
             [selectedMonth, selectedYear, isMobile, isSelected],

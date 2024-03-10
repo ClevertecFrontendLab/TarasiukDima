@@ -11,6 +11,7 @@ type TModalPageProps = ModalProps & {
     footer?: ReactNode;
     title?: ReactNode;
     closable?: boolean;
+    dataTestId?: string;
 };
 
 export const ModalPage: React.FC<TModalPageProps> = memo(
@@ -21,6 +22,7 @@ export const ModalPage: React.FC<TModalPageProps> = memo(
         footer = null,
         title = null,
         closable = false,
+        dataTestId = '',
         ...lastProps
     }) => (
         <Modal
@@ -29,6 +31,7 @@ export const ModalPage: React.FC<TModalPageProps> = memo(
             footer={footer}
             title={title}
             centered
+            data-test-id={dataTestId}
             {...lastProps}
         >
             {children}

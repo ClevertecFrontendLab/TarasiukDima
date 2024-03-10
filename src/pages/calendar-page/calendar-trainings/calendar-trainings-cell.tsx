@@ -1,5 +1,6 @@
-import { createContext, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useAppDispatch } from '@hooks/index';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useAppDispatch, useGetPersonalTrainings } from '@hooks/index';
+import { CellDayContext } from './calendar-cell-context';
 import { useAddTrainingMutation, useUpdateTrainingMutation } from '@services/index';
 import { Modal, Row } from 'antd';
 import { changeShowLoader } from '@redux/index';
@@ -8,9 +9,14 @@ import { CellTrainingDayModal } from './calendar-trainings-day-modal';
 import { CellAddTrainingModal } from './calendar-trainings-add-training-modal';
 import { CellAddExercisesModal } from './calendar-trainings-add-exercises-modal';
 import { DATE_FORMAT_TO_VIEW } from '@constants/index';
-import { TTrainingExercise, TTrainingRequired, TTrainingVariants } from '@app_types/index';
-import { TCalendarCellContentProps, TCellTrainingsData, TVariantChosenItem } from './types';
-import { Dayjs } from 'dayjs';
+import { TTraining, TTrainingBody, TTrainingExercise, TTrainingRequired } from '@app_types/index';
+import {
+    TCalendarCellContentProps,
+    TCellTrainingsData,
+    TExerciseInfo,
+    TTrainingCellDataExercise,
+    TVariantChosenItem,
+} from './types';
 
 const ModalErrorOptions = {
     centered: true,
@@ -24,21 +30,11 @@ const ModalErrorOptions = {
     className: 'modal-page',
 };
 
-export type TCellDayContext = {
-    dayData: TCellTrainingsData;
-    date: Dayjs;
-    trainingVariants: TTrainingVariants;
-    isFutureDay: boolean;
-    isEdit: boolean;
-    chosenVariantTraining: TVariantChosenItem;
-    changeTrainingVariantCb: (variant: TVariantChosenItem) => void;
-};
-export const CellDayContext = createContext<TCellDayContext | null>(null);
-
 export const CalendarCellContent: React.FC<TCalendarCellContentProps> = memo(
     ({ date, trainingVariants, dayInfo = {}, isFutureDay, isSelectedDay }) => {
         const cellRef = useRef<HTMLDivElement>(null);
         const dispatch = useAppDispatch();
+        const { getPersonalTrainings } = useGetPersonalTrainings();
 
         const [showModalTraining, setShowModalTraining] = useState<boolean>(isSelectedDay);
         const [showModalAddNew, setShowModalAddNew] = useState<boolean>(false);
@@ -80,6 +76,10 @@ export const CalendarCellContent: React.FC<TCalendarCellContentProps> = memo(
         useEffect(() => {
             if (isAddTrainingError) {
                 Modal.error(ModalErrorOptions);
+
+                setShowModalAddNew(false);
+                setShowExercisesModal(false);
+                setShowModalTraining(false);
             }
         }, [isAddTrainingError]);
 
@@ -120,7 +120,7 @@ export const CalendarCellContent: React.FC<TCalendarCellContentProps> = memo(
         }, [isSelectedDay, showModalAddNew]);
 
         const updateExercisesInfo = useCallback(
-            (ind: number, excInfo: TTrainingExercise) => {
+            (ind: number, excInfo: TExerciseInfo) => {
                 if (!chosenVariantTraining && excInfo.name) return;
                 const nameTraining = chosenVariantTraining as keyof TTrainingRequired;
 
@@ -129,19 +129,25 @@ export const CalendarCellContent: React.FC<TCalendarCellContentProps> = memo(
                         ...prev,
                     };
 
-                    const prevExercises = prev[nameTraining]?.exercises || [];
-                    const isNewItem = prev[nameTraining] ? prev[nameTraining].isNew : true;
+                    let prevExercises: TTrainingCellDataExercise[] = [];
+                    let isNewItem = true;
+                    let itemDate = date.toISOString();
+                    if (prev[nameTraining]) {
+                        prevExercises = prev[nameTraining]?.exercises;
+                        isNewItem = prev[nameTraining].isNew;
+                        itemDate = prev[nameTraining].date;
+                    }
 
                     newData[nameTraining] = {
                         ...prev[nameTraining],
                         name: nameTraining,
-                        date: date.toISOString(),
+                        date: itemDate,
                         exercises: prevExercises,
                         isNew: isNewItem,
                         isChanged: true,
                     };
 
-                    newData[nameTraining].exercises[ind] = excInfo;
+                    newData[nameTraining].exercises[ind] = { ...excInfo, isImplementation: false };
 
                     return newData;
                 });
@@ -151,24 +157,91 @@ export const CalendarCellContent: React.FC<TCalendarCellContentProps> = memo(
             [date, chosenVariantTraining],
         );
 
+        const removeExercisesHandler = useCallback(() => {
+            if (!chosenVariantTraining) return;
+
+            const nameTraining = chosenVariantTraining as keyof TTrainingRequired;
+            setDayData((prev) => {
+                const newData = {
+                    ...prev,
+                };
+
+                const newExercises = newData[nameTraining].exercises.filter(
+                    (item) => !item.isChecked,
+                );
+                newData[nameTraining] = {
+                    ...prev[nameTraining],
+                    exercises: newExercises,
+                };
+
+                return newData;
+            });
+        }, [chosenVariantTraining]);
+
         const saveExercises = useCallback(() => {
             for (const key in dayData) {
-                const body = dayData[key];
+                if (!dayData[key].isChanged) {
+                    continue;
+                }
 
-                if (body.id) {
-                    updateTraining({ body, trainingId: body.id });
+                const body: TTrainingBody | TTraining = {
+                    ...dayData[key],
+                };
+
+                const newExercises = dayData[key].exercises.map(
+                    (item: TTrainingCellDataExercise) => {
+                        const newExItem: TTrainingExercise = { ...item };
+
+                        if (newExItem.isChecked) {
+                            delete newExItem.isChecked;
+                        }
+
+                        return newExItem;
+                    },
+                ) as TTrainingExercise[];
+
+                body.exercises = newExercises;
+
+                if ('_id' in body) {
+                    if (isEdit && !isFutureDay) {
+                        body.isImplementation = true;
+                    }
+
+                    updateTraining({ body, trainingId: body['_id'] as string });
                 } else {
                     addTraining(body);
                 }
             }
 
             setIsExercisesChanged(false);
-        }, [addTraining, updateTraining, dayData]);
+            setShowModalAddNew(false);
+            setShowExercisesModal(false);
+            setIsEdit(false);
+            setCountExercisesShow(1);
+            setChosenVariantTraining(null);
+            setShowModalTraining(true);
+            getPersonalTrainings();
+        }, [isEdit, isFutureDay, addTraining, updateTraining, dayData, getPersonalTrainings]);
 
-        const changeChosenNameTrainingHandler = useCallback((variant: TVariantChosenItem) => {
-            console.log('variant', variant);
-            setChosenVariantTraining(variant);
-        }, []);
+        const changeChosenNameTrainingHandler = useCallback(
+            (variant: TVariantChosenItem) => {
+                setChosenVariantTraining((prev) => {
+                    if (isEdit && prev && variant) {
+                        setDayData((prevData) => {
+                            const newData = prevData;
+                            newData[variant] = newData[prev];
+                            newData[variant].name = variant;
+                            delete newData[prev];
+
+                            return newData;
+                        });
+                        setIsExercisesChanged(true);
+                    }
+                    return variant;
+                });
+            },
+            [isEdit],
+        );
 
         const showDayInfoModalHandler = useCallback(() => {
             setShowModalTraining(true);
@@ -198,14 +271,44 @@ export const CalendarCellContent: React.FC<TCalendarCellContentProps> = memo(
         }, []);
 
         const showAddExercisesModalHandler = useCallback(() => {
+            const chosenExercises =
+                chosenVariantTraining && dayData[chosenVariantTraining]
+                    ? dayData[chosenVariantTraining].exercises
+                    : [];
+            const countExercises = chosenExercises.length || 1;
+
+            if (isEdit) {
+                setCountExercisesShow(countExercises);
+            } else {
+                setCountExercisesShow(1);
+            }
+
             setShowModalAddNew(false);
             setShowExercisesModal(true);
-        }, []);
+        }, [chosenVariantTraining, dayData, isEdit]);
+
+        const removeEmptyExercises = useCallback(() => {
+            if (
+                chosenVariantTraining &&
+                dayData[chosenVariantTraining] &&
+                dayData[chosenVariantTraining].exercises
+            ) {
+                setDayData((prevData) => {
+                    const newData = prevData;
+                    const newExercises = prevData[chosenVariantTraining].exercises.filter(
+                        (item) => item.name,
+                    );
+                    newData[chosenVariantTraining].exercises = newExercises;
+                    return newData;
+                });
+            }
+        }, [chosenVariantTraining, dayData]);
 
         const closeAddExercisesModalHandler = useCallback(() => {
+            removeEmptyExercises();
             setShowExercisesModal(false);
             setShowModalAddNew(true);
-        }, []);
+        }, [removeEmptyExercises]);
 
         const addNewExercisesForm = useCallback(() => {
             setCountExercisesShow((prev) => prev + 1);
@@ -281,6 +384,7 @@ export const CalendarCellContent: React.FC<TCalendarCellContentProps> = memo(
                         closeAddExercises={closeAddExercisesModalHandler}
                         addNewExerciseCb={addNewExercisesForm}
                         changeExercisesInfoCB={updateExercisesInfo}
+                        removeHandlerCB={removeExercisesHandler}
                     />
                 </CellDayContext.Provider>
             </Row>

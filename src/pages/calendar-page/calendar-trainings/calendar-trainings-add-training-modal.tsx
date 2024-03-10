@@ -1,11 +1,11 @@
-import { memo, useCallback, useContext, useEffect, useState } from 'react';
+import { memo, useContext, useEffect, useState } from 'react';
+import { CellDayContext, TCellDayContext } from './calendar-cell-context';
 import { Button, Modal, Row, Select } from 'antd';
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, CloseOutlined } from '@ant-design/icons';
 import { EmptyIcon } from './empty';
-import { CellDayContext, TCellDayContext } from './calendar-trainings-cell';
 import { DEFAULT_TRAINING_NAME_VARIANT } from '@constants/index';
-import { TSimpleFn } from '@app_types/index';
 import { CalendarTrainingList, TCalendarTrainingListItem } from './calendar-trainings-list';
+import { TSimpleFn } from '@app_types/index';
 import { TVariantChosenItem } from './types';
 
 type TCellAddTrainingModalProps = {
@@ -35,7 +35,6 @@ export const CellAddTrainingModal: React.FC<TCellAddTrainingModalProps> = memo(
             trainingVariants,
             chosenVariantTraining,
             changeTrainingVariantCb,
-            isEdit,
             isFutureDay,
         } = useContext(CellDayContext) as TCellDayContext;
         const addedTrainingNames = Object.keys(dayData);
@@ -65,11 +64,9 @@ export const CellAddTrainingModal: React.FC<TCellAddTrainingModalProps> = memo(
             };
         });
 
-        if (!isEdit) {
-            variantsTrainingForChoose = variantsTrainingForChoose.filter(
-                (item) => !addedTrainingNames.includes(item.label),
-            );
-        }
+        variantsTrainingForChoose = variantsTrainingForChoose.filter(
+            (item) => !addedTrainingNames.includes(item.label),
+        );
 
         useEffect(() => {
             if (chosenVariantTraining) {
@@ -79,14 +76,12 @@ export const CellAddTrainingModal: React.FC<TCellAddTrainingModalProps> = memo(
             }
         }, [chosenVariantTraining]);
 
-        const editExercisesCb = useCallback(() => {
-            console.log('editExercisesCb', editExercisesCb);
-        }, []);
-
         return (
             <Modal
+                data-test-id='modal-create-exercise'
                 className='cell-content__modal add-new-modal'
                 open={isShow}
+                closeIcon={<CloseOutlined data-test-id='modal-exercise-training-button-close' />}
                 closable={false}
                 getContainer={refEl}
                 onCancel={closeCb}
@@ -97,8 +92,8 @@ export const CellAddTrainingModal: React.FC<TCellAddTrainingModalProps> = memo(
                         </Button>
 
                         <Select
+                            data-test-id='modal-create-exercise-select'
                             value={defaultSelectValue as TVariantChosenItem}
-                            disabled={isEdit}
                             onChange={changeTrainingVariantCb}
                             options={variantsTrainingForChoose}
                         />
@@ -133,9 +128,9 @@ export const CellAddTrainingModal: React.FC<TCellAddTrainingModalProps> = memo(
                     ) : (
                         <CalendarTrainingList
                             items={items}
-                            editButtonCb={editExercisesCb}
+                            editButtonCb={showAddExercisesCb}
                             needButtonEdit
-                            className='cell-content__training training-modal__list'
+                            className='training__list'
                         />
                     )
                 }

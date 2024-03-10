@@ -13,8 +13,10 @@ export const useGetPersonalTrainings = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [getPersonalTrainingsTrigger, { isError, isSuccess, currentData, isLoading }] =
-        useLazyGetTrainingQuery();
+    const [
+        getPersonalTrainingsTrigger,
+        { isError, isSuccess, currentData, isLoading },
+    ] = useLazyGetTrainingQuery();
 
     useEffect(() => {
         if (isLoading) {

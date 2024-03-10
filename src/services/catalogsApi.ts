@@ -4,7 +4,7 @@ import { RootState } from '@redux/index';
 import { TTrainingVariants } from '@app_types/index';
 
 const queryEndpoints = {
-    trainingList: 'training-list',
+    trainingList: 'training-list1',
 };
 
 export const catalogsApi = createApi({

@@ -28,4 +28,5 @@ export type TTrainingBody = TTrainingRequired & {
 
 export type TTraining = TTrainingBody & {
     id: string;
+    userId: string;
 };

@@ -11,7 +11,12 @@ export const CalendarLink = () => {
     }, [getPersonalTrainings]);
 
     return (
-        <Button className='card-link' onClick={calendarHandler} type='link'>
+        <Button
+            className='card-link'
+            onClick={calendarHandler}
+            type='link'
+            data-test-id='menu-button-calendar'
+        >
             <CalendarIcon />
             <span className='card-link__name'>Календарь</span>
         </Button>

@@ -6,6 +6,7 @@ import { CalendarTraining } from './calendar-trainings/calendar-trainings';
 import { ROUTES_LINKS } from '@constants/index';
 
 import './calendar-page.scss';
+import { CloseOutlined } from '@ant-design/icons';
 
 const routes = [
     {
@@ -37,22 +38,29 @@ export const CalendarPage = () => {
             const repeatGetVariantsList = () => {
                 getTrainingVariants(null);
             };
-
             Modal.error({
                 centered: true,
                 closable: true,
                 title: (
-                    <>
+                    <span data-test-id='modal-error-user-training-title'>
                         При открытии данных
                         <br /> произошла ошибка
-                    </>
+                    </span>
                 ),
-                content: 'Попробуйте ещё раз.',
+                content: (
+                    <span data-test-id='modal-error-user-training-subtitle'>
+                        Попробуйте ещё раз.
+                    </span>
+                ),
+                closeIcon: <CloseOutlined data-test-id='modal-error-user-training-button-close' />,
                 okText: 'Обновить',
                 onOk: repeatGetVariantsList,
                 className: 'modal-page modal-variants',
                 okButtonProps: {
                     className: 'right-btn',
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    'data-test-id': 'modal-error-user-training-button',
                 },
             });
         }
