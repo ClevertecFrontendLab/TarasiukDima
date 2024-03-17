@@ -55,7 +55,6 @@ div.training-calendar.ant-picker-calendar-full {
 
     .ant-modal-mask {
         display: none;
-        // background: transparent;
     }
 
     .ant-modal-wrap {
@@ -78,23 +77,26 @@ div.training-calendar.ant-picker-calendar-full {
     }
 }
 
+.ant-list-items .isFinished {
+    .ant-badge-status-text {
+        color: $lightGrey;
+    }
+
+    .edit-training {
+        color: $lightGrey;
+
+        svg {
+            fill: currentColor;
+        }
+    }
+}
+
 .ant-picker-cell {
     position: relative;
 
-    .cell-content {
-        &__training {
-            font-size: 12px;
-            line-height: 1.3;
-        }
-
-        &__training_btn {
-            position: absolute;
-            inset: 0;
-            z-index: 20;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-        }
+    .cell-content__training {
+        font-size: $fontSizeSmaller;
+        line-height: $lineHeight;
     }
 }
 
@@ -102,11 +104,11 @@ div.training-calendar.ant-picker-calendar-full {
     width: 264px !important;
 
     .ant-modal-body {
-        padding: 0 12px 12px;
+        padding: 0 $indentSmall $indentSmall;
     }
 
     .ant-modal-footer {
-        padding: 12px;
+        padding: $indentSmall;
     }
 
     .training__list {
@@ -127,7 +129,7 @@ div.training-calendar.ant-picker-calendar-full {
         width: 28px;
         height: 28px;
         padding: 0;
-        line-height: 16px;
+        line-height: $lineHeightSmall;
 
         .anticon {
             width: 16px;
@@ -144,44 +146,44 @@ div.training-calendar.ant-picker-calendar-full {
 
 .training-modal {
     .ant-modal-header {
-        padding: 16px 36px 0 12px;
+        padding: $indentMin2 36px 0 $indentSmall;
         border-bottom: none;
     }
 
     .ant-modal-close {
         top: 18px;
-        right: 12px;
+        right: $indentSmall;
     }
 
     .ant-modal-close-x {
         width: 16px;
         height: 16px;
-        line-height: 16px;
+        line-height: $lineHeightSmall;
     }
 
     .ant-modal-title {
-        font-size: 14px;
+        font-size: $fontSizeMin;
         font-weight: $weightBold;
     }
 
     .modal-no-text {
         color: $grey;
-        margin-bottom: 16px;
+        margin-bottom: $indentMin2;
     }
 
     .add-training {
         width: 100%;
-        padding-top: 8px;
-        padding-bottom: 8px;
+        padding-top: $indentSmallest;
+        padding-bottom: $indentSmallest;
     }
 }
 
 .add-new-modal {
     .ant-modal-header {
-        padding: 12px;
+        padding: $indentSmall;
     }
     .ant-modal-body {
-        padding-top: 12px;
+        padding-top: $indentSmall;
     }
 
     .ant-badge-status-text {
@@ -242,9 +244,9 @@ div.training-calendar.ant-picker-calendar-full {
         color: $black;
 
         .anticon {
-            width: 12px;
-            height: 12px;
-            margin-right: 12px;
+            width: $indentSmall;
+            height: $indentSmall;
+            margin-right: $indentSmall;
         }
 
         svg {
@@ -259,11 +261,11 @@ div.training-calendar.ant-picker-calendar-full {
     .ant-drawer-body {
         display: flex;
         flex-direction: column;
-        padding: 0 32px 32px;
+        padding: 0 $indentBig $indentBig;
     }
 
     .exercises-modal__var-info {
-        font-size: 14px;
+        font-size: $fontSizeMin;
         font-weight: $weightMedium;
 
         &_badge .ant-badge-status-text {
@@ -277,7 +279,7 @@ div.training-calendar.ant-picker-calendar-full {
     }
 
     .exercise-fields {
-        padding-top: 24px;
+        padding-top: $indentMid;
 
         input {
             color: $black;
@@ -285,12 +287,16 @@ div.training-calendar.ant-picker-calendar-full {
             &::placeholder {
                 color: $lightGrey;
             }
+
+            &:disabled {
+                background: $white;
+            }
         }
 
         &__name {
             width: 100%;
             line-height: $lineHeight;
-            margin-bottom: 8px;
+            margin-bottom: $indentSmallest;
         }
 
         &__weight,
@@ -308,20 +314,20 @@ div.training-calendar.ant-picker-calendar-full {
             flex-shrink: 0;
             align-self: flex-end;
             margin: 0 2px 5px;
-            font-size: 16px;
+            font-size: $fontSizeSmall;
             color: $lightGrey;
         }
 
         .ant-form-item-label {
             width: 100%;
             margin-bottom: 6px;
-            padding: 1px 8px;
+            padding: 1px $indentSmallest;
             text-align: left;
             background-color: $lightDividers;
 
             label {
                 height: auto;
-                font-size: 12px;
+                font-size: $fontSizeSmaller;
             }
         }
 
@@ -335,7 +341,7 @@ div.training-calendar.ant-picker-calendar-full {
     }
 
     .buttons-wrapper {
-        border-radius: 0 0 12px 12px;
+        border-radius: 0 0 $borderRadiusBig $borderRadiusBig;
         overflow: hidden;
     }
 
@@ -345,8 +351,8 @@ div.training-calendar.ant-picker-calendar-full {
         height: auto;
         width: 50%;
         text-align: left;
-        margin-top: 24px;
-        padding: 8px 13px;
+        margin-top: $indentMid;
+        padding: $indentSmallest 13px;
         color: $primary;
         background: $lightWhite;
     }
@@ -362,7 +368,7 @@ div.training-calendar.ant-picker-calendar-full {
     .last-chance-edit {
         margin-top: auto;
         line-height: $lineHeight;
-        font-size: 12px;
+        font-size: $fontSizeSmaller;
         text-align: center;
         color: $grey;
     }

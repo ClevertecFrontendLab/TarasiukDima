@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { EditOutlined } from '@ant-design/icons';
+import { EditFilled, EditOutlined } from '@ant-design/icons';
 import { Badge, Button, List, Row } from 'antd';
 import { getTrainingBadgeStatusColor } from '@utils/index';
 import { TCalendarTrainingListProps } from './types';
@@ -9,22 +9,25 @@ export const CalendarTrainingList: React.FC<TCalendarTrainingListProps> = memo(
         <List
             className={className}
             dataSource={items}
-            renderItem={(item) => (
-                <li key={item.name}>
-                    <Row align='middle' justify='space-between'>
-                        <Badge color={getTrainingBadgeStatusColor(item.name)} text={item.name} />
+            renderItem={({ name, isFinished, index }) => (
+                <li key={name}>
+                    <Row
+                        align='middle'
+                        justify='space-between'
+                        className={isFinished ? 'isFinished' : ''}
+                    >
+                        <Badge color={getTrainingBadgeStatusColor(name)} text={name} />
 
                         {needButtonEdit && (
                             <Button
                                 className='edit-training'
-                                data-test-id={`modal-update-training-edit-button${item.index}`}
-                                disabled={item.disabled}
+                                data-test-id={`modal-update-training-edit-button${index}`}
                                 onClick={() => {
-                                    editButtonCb && editButtonCb(item.name);
+                                    editButtonCb && editButtonCb(name, isFinished);
                                 }}
-                                aria-label={`Редактировать тренировку - '${item.name}'`}
+                                aria-label={`Редактировать тренировку - '${name}'`}
                             >
-                                <EditOutlined />
+                                {isFinished ? <EditFilled /> : <EditOutlined />}
                             </Button>
                         )}
                     </Row>

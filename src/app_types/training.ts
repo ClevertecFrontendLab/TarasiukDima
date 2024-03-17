@@ -22,11 +22,10 @@ export type TTrainingRequired = {
 
 export type TTrainingBody = TTrainingRequired & {
     isImplementation?: boolean;
-    userId?: string;
     parameters?: TTrainingParameters;
 };
 
 export type TTraining = TTrainingBody & {
-    id: string;
-    userId: string;
+    _id?: string;
+    userId?: string;
 };

@@ -1,6 +1,7 @@
 import { memo, useCallback, useContext, useMemo, useState } from 'react';
+import { useGetCurrentDayInfo } from '@hooks/index';
 import { getTrainingBadgeStatusColor } from '@utils/index';
-import { DATE_FORMAT, DATE_FORMAT_TO_VIEW } from '@constants/index';
+import { DATE_FORMAT_TO_VIEW } from '@constants/index';
 import { CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Badge, Button, Drawer, Row } from 'antd';
 import Paragraph from 'antd/lib/typography/Paragraph';
@@ -25,25 +26,25 @@ const emptyExercise: TTrainingExerciseItem = {
 
 export const CellExercisesModal: React.FC<TCellAddNewExercisesProps> = memo(
     ({ isShow, isEditExercises, closeAddExercises, setChangedPersonalTraining, curDay }) => {
-        const { isFutureDay, isEdit, dayData, date, chosenVariantTraining } = useContext(
-            CellDayContext,
-        ) as TCellDayContext;
+        const { getDateNeededFormat } = useGetCurrentDayInfo();
+        const { isFutureDay, isFinishedItem, isEdit, dayData, date, chosenVariantTraining } =
+            useContext(CellDayContext) as TCellDayContext;
 
-        const dayToView = date.format(DATE_FORMAT);
-        const isCantEdit = !dayData[chosenVariantTraining as string].isImplementation || false;
+        const dayToView = getDateNeededFormat(date);
+        const isCantEdit = !dayData[chosenVariantTraining as string]?.isImplementation || false;
 
         const [exercises, setExercises] = useState<TTrainingExerciseItem[]>(() => {
             if (dayData[chosenVariantTraining as string]?.exercises) {
                 const newState = [...(dayData[chosenVariantTraining as string]?.exercises || [])];
 
-                if (!isEditExercises) {
+                if (!isFinishedItem && !isEditExercises) {
                     newState.push({ ...emptyExercise });
                 }
 
                 return newState;
             }
 
-            return [{ ...emptyExercise }];
+            return !isFinishedItem ? [{ ...emptyExercise }] : [];
         });
 
         const existChosenItem = useMemo(() => {
@@ -129,13 +130,14 @@ export const CellExercisesModal: React.FC<TCellAddNewExercisesProps> = memo(
                         text={chosenVariantTraining}
                     />
                     <Paragraph className='exercises-modal__var-info_date'>
-                        {date.format(DATE_FORMAT_TO_VIEW)}
+                        {getDateNeededFormat(date, DATE_FORMAT_TO_VIEW)}
                     </Paragraph>
                 </Row>
 
                 {exercises.map(
                     ({ name, approaches, weight, replays, isChecked = false }, index: number) => (
                         <CellAddNewExercises
+                            isFinished={isFinishedItem}
                             key={index + dayToView}
                             keyItem={index}
                             changeExercisesInfoCB={changeExercisesInfoCB}
@@ -148,24 +150,26 @@ export const CellExercisesModal: React.FC<TCellAddNewExercisesProps> = memo(
                     ),
                 )}
 
-                <Row className='buttons-wrapper'>
-                    <Button type='text' className='add-more' onClick={addNewExerciseCb}>
-                        <PlusOutlined />
-                        <span>Добавить ещё</span>
-                    </Button>
-
-                    {isEdit && (
-                        <Button
-                            type='text'
-                            className='remove'
-                            disabled={!existChosenItem}
-                            onClick={removeExercisesCb}
-                        >
-                            <MinusOutlined />
-                            <span>Удалить</span>
+                {!isFinishedItem && (
+                    <Row className='buttons-wrapper'>
+                        <Button type='text' className='add-more' onClick={addNewExerciseCb}>
+                            <PlusOutlined />
+                            <span>Добавить ещё</span>
                         </Button>
-                    )}
-                </Row>
+
+                        {isEdit && (
+                            <Button
+                                type='text'
+                                className='remove'
+                                disabled={!existChosenItem}
+                                onClick={removeExercisesCb}
+                            >
+                                <MinusOutlined />
+                                <span>Удалить</span>
+                            </Button>
+                        )}
+                    </Row>
+                )}
 
                 {!isFutureDay && isCantEdit && (
                     <Paragraph className='last-chance-edit'>

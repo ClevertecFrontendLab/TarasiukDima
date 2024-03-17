@@ -26,13 +26,8 @@ export const CellTrainingModal: React.FC<TCellTrainingModalProps> = memo(
         showAddExercisesCb,
         showEditExerciseCb,
     }) => {
-        const {
-            dayData,
-            trainingVariants,
-            chosenVariantTraining,
-            changeTrainingVariantCb,
-            isFutureDay,
-        } = useContext(CellDayContext) as TCellDayContext;
+        const { dayData, trainingVariants, chosenVariantTraining, changeTrainingVariantCb } =
+            useContext(CellDayContext) as TCellDayContext;
         const addedTrainingNames = Object.keys(dayData);
 
         const [defaultSelectValue, setDefaultSelectValue] = useState(
@@ -42,12 +37,9 @@ export const CellTrainingModal: React.FC<TCellTrainingModalProps> = memo(
         const items: TCalendarTrainingListItem[] = [];
         if (chosenVariantTraining && dayData[chosenVariantTraining]) {
             const trainingDay = dayData[chosenVariantTraining];
-            const disabled = isFutureDay ? false : trainingDay.isImplementation ? true : false;
-
             trainingDay.exercises.forEach((exerciseItem, index) => {
                 items.push({
                     name: exerciseItem.name,
-                    disabled: disabled,
                     index,
                 });
             });
@@ -64,16 +56,32 @@ export const CellTrainingModal: React.FC<TCellTrainingModalProps> = memo(
             (item) => !addedTrainingNames.includes(item.label),
         );
 
-        const isDisabledChoseTrainingName = useMemo(() => {
+        const { isDisabledChoseTrainingName, isTrainingVariantExist } = useMemo(() => {
+            let isTrainingVariantExist = false;
+
             let isDisabled = false;
             daySavedTraining.forEach((item) => {
                 if (item.name === defaultSelectValue) {
                     isDisabled = true;
+                    isTrainingVariantExist = true;
                 }
             });
 
-            return isDisabled;
+            return { isDisabledChoseTrainingName: isDisabled, isTrainingVariantExist };
         }, [daySavedTraining, defaultSelectValue]);
+
+        const disabledSaveBtn = useMemo(() => {
+            const disabledSaveBtn = !isCanSaveExercises || isLoading;
+
+            if (isTrainingVariantExist || !chosenVariantTraining) {
+                return disabledSaveBtn;
+            }
+
+            const exercises = dayData[chosenVariantTraining]?.exercises || [];
+            // eslint-disable-next-line no-extra-boolean-cast
+            const emptyExercises = exercises ? !Boolean(exercises.length) : true;
+            return disabledSaveBtn || emptyExercises;
+        }, [isTrainingVariantExist, chosenVariantTraining, dayData, isCanSaveExercises, isLoading]);
 
         useEffect(() => {
             if (chosenVariantTraining) {
@@ -125,7 +133,7 @@ export const CellTrainingModal: React.FC<TCellTrainingModalProps> = memo(
                             })}
                             loading={isLoading}
                             onClick={saveExercisesCb}
-                            disabled={!isCanSaveExercises || isLoading}
+                            disabled={disabledSaveBtn}
                         >
                             Сохранить
                         </Button>

@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import dayjs from 'dayjs';
-import { useAppSelector, useGetPersonalTrainings } from '@hooks/index';
+import { useAppSelector, useGetCurrentDayInfo, useGetPersonalTrainings } from '@hooks/index';
 import { useAddTrainingMutation, useUpdateTrainingMutation } from '@services/index';
 import { Modal } from 'antd';
 import { CellDayModal } from './calendar-cell-day-modal';
@@ -10,6 +10,13 @@ import { CellExercisesModal } from './calendar-cell-add-exercises-modal';
 import { DATE_FORMAT } from '@constants/index';
 import { TTrainingRequired } from '@app_types/index';
 import { TCellModals, TTrainingDayData, TVariantChosenItem } from './types';
+import localeRu from 'dayjs/locale/ru';
+import utc from 'dayjs/plugin/utc';
+import isLeapYear from 'dayjs/plugin/isLeapYear';
+
+dayjs.extend(isLeapYear);
+dayjs.extend(utc);
+dayjs.locale('ru', localeRu);
 
 export const CellModals: React.FC<TCellModals> = memo(
     ({
@@ -24,6 +31,7 @@ export const CellModals: React.FC<TCellModals> = memo(
     }) => {
         const { getPersonalTrainings } = useGetPersonalTrainings();
         const { personalTraining } = useAppSelector((state) => state.app);
+        const { getDateNeededFormat, getDateForSave } = useGetCurrentDayInfo();
 
         const [isEdit, setIsEdit] = useState<boolean>(false);
         const [chosenVariantTraining, setChosenVariantTraining] =
@@ -32,16 +40,16 @@ export const CellModals: React.FC<TCellModals> = memo(
         const [showModalDay, setShowModalDay] = useState<boolean>(true);
         const [showModalAddNew, setShowModalAddNew] = useState<boolean>(false);
         const [isEditExercises, setIsEditExercises] = useState<boolean>(false);
+        const [isFinishedItem, setIsFinishedItem] = useState<boolean>(false);
 
         const [showExercisesModal, setShowExercisesModal] = useState<boolean>(false);
 
         const date = dayjs(curDay);
         const changedItemsExist = Boolean(Object.keys(dayChangedInfo).length);
         const daySavedTraining = useMemo(() => {
-            return personalTraining.filter(
-                (item) => dayjs(item.date).format(DATE_FORMAT) === curDay,
-            );
-        }, [personalTraining, curDay]);
+            return personalTraining.filter((item) => getDateNeededFormat(item.date) === curDay);
+        }, [personalTraining, getDateNeededFormat, curDay]);
+
         const dayData = useMemo(() => {
             if (!changedItemsExist) {
                 const dayDataContent: TTrainingDayData = {};
@@ -61,7 +69,7 @@ export const CellModals: React.FC<TCellModals> = memo(
             updateTraining,
             {
                 isError: isUpdateTrainingError,
-                // isSuccess: isUpdateTrainingSuccess,
+                isSuccess: isUpdateTrainingSuccess,
                 isLoading: isUpdateTrainingLoading,
             },
         ] = useUpdateTrainingMutation();
@@ -70,7 +78,7 @@ export const CellModals: React.FC<TCellModals> = memo(
             addTraining,
             {
                 isError: isAddTrainingError,
-                // isSuccess: isAddTrainingSuccess,
+                isSuccess: isAddTrainingSuccess,
                 isLoading: isAddTrainingLoading,
             },
         ] = useAddTrainingMutation();
@@ -101,12 +109,42 @@ export const CellModals: React.FC<TCellModals> = memo(
             }
         }, [isAddTrainingError, isUpdateTrainingError]);
 
+        useEffect(() => {
+            if (isUpdateTrainingSuccess || isAddTrainingSuccess) {
+                setShowModalAddNew(false);
+                setShowExercisesModal(false);
+                setIsEdit(false);
+                setChosenVariantTraining(null);
+                setShowModalDay(true);
+            }
+        }, [isUpdateTrainingSuccess, isAddTrainingSuccess]);
+
         const saveExercises = useCallback(() => {
-            if (isUpdateTrainingLoading || isAddTrainingLoading) return;
+            if (isUpdateTrainingLoading || isAddTrainingLoading || !chosenVariantTraining) return;
 
-            console.log('saveExercises', dayData);
+            const itemToSave = dayData[chosenVariantTraining];
 
-        }, []);
+            if (itemToSave._id) {
+                if (isEdit && !isFutureDay) {
+                    itemToSave.isImplementation = true;
+                }
+                updateTraining({ body: itemToSave, trainingId: itemToSave._id as string });
+            } else {
+                addTraining(itemToSave);
+            }
+
+            getPersonalTrainings();
+        }, [
+            chosenVariantTraining,
+            dayData,
+            isAddTrainingLoading,
+            isUpdateTrainingLoading,
+            addTraining,
+            isEdit,
+            isFutureDay,
+            updateTraining,
+            getPersonalTrainings,
+        ]);
 
         const changeTrainingVariantInChanged = useCallback(
             (lastName: string, variant: string) => {
@@ -137,13 +175,14 @@ export const CellModals: React.FC<TCellModals> = memo(
                     newData[curDay][variant] = {
                         name: variant,
                         exercises: [],
-                        date: date.toISOString(),
+                        date: getDateForSave(date),
+                        isImplementation: false,
                     };
 
                     return newData;
                 });
             },
-            [setChangedPersonalTraining, curDay, date],
+            [setChangedPersonalTraining, curDay, getDateForSave, date],
         );
 
         const changeChosenNameTrainingHandler = useCallback(
@@ -172,11 +211,18 @@ export const CellModals: React.FC<TCellModals> = memo(
             setShowModalDay(true);
         }, []);
 
-        const showEditTrainingModalCb = useCallback((trainingName: string) => {
-            setIsEdit(true);
-            setChosenVariantTraining(trainingName as keyof TTrainingRequired);
+        const editTrainingButtonCb = useCallback((trainingName: string, isFinished = false) => {
             setShowModalDay(false);
-            setShowModalAddNew(true);
+            setChosenVariantTraining(trainingName as keyof TTrainingRequired);
+            setIsEdit(true);
+
+            if (isFinished) {
+                setShowExercisesModal(true);
+                setIsFinishedItem(true);
+            } else {
+                setIsFinishedItem(false);
+                setShowModalAddNew(true);
+            }
         }, []);
 
         const showExercisesModalCb = useCallback(() => {
@@ -186,6 +232,7 @@ export const CellModals: React.FC<TCellModals> = memo(
         }, []);
 
         const showEditExercisesModalCb = useCallback(() => {
+            setIsEdit(true);
             setIsEditExercises(true);
             setShowModalAddNew(false);
             setShowExercisesModal(true);
@@ -194,8 +241,14 @@ export const CellModals: React.FC<TCellModals> = memo(
         const closeExercisesModalCb = useCallback(() => {
             setIsEditExercises(false);
             setShowExercisesModal(false);
-            setShowModalAddNew(true);
-        }, []);
+
+            if (isFinishedItem) {
+                setIsFinishedItem(false);
+                setShowModalDay(true);
+            } else {
+                setShowModalAddNew(true);
+            }
+        }, [isFinishedItem]);
 
         const cellDayContextValue = useMemo(
             () => ({
@@ -204,6 +257,7 @@ export const CellModals: React.FC<TCellModals> = memo(
                 trainingVariants,
                 isFutureDay,
                 isEdit,
+                isFinishedItem,
                 chosenVariantTraining,
                 changeTrainingVariantCb: changeChosenNameTrainingHandler,
             }),
@@ -213,10 +267,13 @@ export const CellModals: React.FC<TCellModals> = memo(
                 trainingVariants,
                 isFutureDay,
                 isEdit,
+                isFinishedItem,
                 chosenVariantTraining,
                 changeChosenNameTrainingHandler,
             ],
         );
+
+        if (!curRef || !curRef.current) return null;
 
         return (
             <CellDayContext.Provider value={cellDayContextValue}>
@@ -227,7 +284,7 @@ export const CellModals: React.FC<TCellModals> = memo(
                     addedTrainingNames={addedTrainingNames}
                     closeCb={closeModalCb}
                     addNewTrainingCb={showAddTrainingModalCb}
-                    editTrainingCb={showEditTrainingModalCb}
+                    editTrainingCb={editTrainingButtonCb}
                 />
 
                 <CellTrainingModal

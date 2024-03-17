@@ -5,7 +5,6 @@ export {
     sortArrayByDate,
     getCorrectDateForShow,
     compareDates,
-    getTimeInNeededFormat,
     updatedNeededLengthValue,
 } from './date';
 

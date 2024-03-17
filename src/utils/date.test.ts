@@ -2,7 +2,6 @@ import {
     sortArrayByDate,
     getCorrectDateForShow,
     compareDates,
-    getTimeInNeededFormat,
     updatedNeededLengthValue,
 } from './date';
 
@@ -44,41 +43,6 @@ describe('updatedNeededLengthValue', () => {
     test('get value more needed length', () => {
         const value = 222;
         expect(updatedNeededLengthValue(value, 1, '*')).toEqual(value.toString());
-    });
-});
-
-describe('getTimeInNeededFormat', () => {
-    const format = 'YY-MM-DD';
-    const day = '2';
-    const month = '2';
-    const year = '2024';
-
-    test('get format full', () => {
-        expect(getTimeInNeededFormat({ format, year, month, day })).toEqual(
-            `${year}-0${month}-0${day}`,
-        );
-    });
-
-    test('get part format', () => {
-        expect(getTimeInNeededFormat({ format: 'Y-M', year, month })).toEqual(`${year}-0${month}`);
-    });
-
-    test('get part format lower', () => {
-        expect(getTimeInNeededFormat({ format: 'yYy-mM-dD', year, month, day })).toEqual(
-            `${year}-0${month}-0${day}`,
-        );
-    });
-
-    test('get year', () => {
-        expect(getTimeInNeededFormat({ format: 'Y', year })).toEqual(`${year}`);
-    });
-
-    test('get month', () => {
-        expect(getTimeInNeededFormat({ format: 'M', month })).toEqual(`0${month}`);
-    });
-
-    test('get day', () => {
-        expect(getTimeInNeededFormat({ format: 'D', day })).toEqual(`0${day}`);
     });
 });
 

@@ -26,7 +26,7 @@ export const trainingApi = createApi({
             providesTags: (result) =>
                 result
                     ? [
-                          ...result.map(({ id }) => ({ type: API_TAGS.training, id })),
+                          ...result.map(({ _id }) => ({ type: API_TAGS.training, id: _id })),
                           { type: API_TAGS.training, id: 'LIST' },
                       ]
                     : [{ type: API_TAGS.training, id: 'LIST' }],
@@ -63,6 +63,7 @@ export const trainingApi = createApi({
 export const {
     useAddTrainingMutation,
     useDeleteTrainingMutation,
+    useGetTrainingQuery,
     useLazyGetTrainingQuery,
     useUpdateTrainingMutation,
 } = trainingApi;

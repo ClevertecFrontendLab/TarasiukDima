@@ -13,31 +13,6 @@ export const updatedNeededLengthValue = (val: string | number, minLength = 2, pa
     return val.toString().padStart(minLength, padValue);
 };
 
-type TGetTImeFormatOptions = {
-    format: string;
-    year?: string;
-    month?: string;
-    day?: string;
-};
-export const getTimeInNeededFormat = ({
-    format,
-    year = '',
-    month = '',
-    day = '',
-}: TGetTImeFormatOptions) => {
-    if (year) {
-        format = format.replace(/[Y|y]+/g, year);
-    }
-    if (month) {
-        format = format.replace(/[M|m]+/g, updatedNeededLengthValue(month));
-    }
-    if (day) {
-        format = format.replace(/[D|d]+/g, updatedNeededLengthValue(day));
-    }
-
-    return format;
-};
-
 export const sortArrayByDate = <T, K extends keyof T>(items: T[], key: K): T[] => {
     const sortedItems = items.toSorted((a: T, b: T) =>
         compareDates(a[key] as string, b[key] as string),

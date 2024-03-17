@@ -1,10 +1,12 @@
 import { memo, useContext } from 'react';
+import { useGetCurrentDayInfo } from '@hooks/index';
 import { CellDayContext } from './calendar-cell-context';
 import { Button, Modal } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import Paragraph from 'antd/lib/typography/Paragraph';
 import { EmptyIcon } from './empty';
 import { CalendarTrainingList } from './calendar-trainings-list';
+import { DATE_FORMAT_TO_VIEW } from '@constants/index';
 import { TCalendarTrainingListItem, TCellDayContext, TCellDayModalProps } from './types';
 
 export const CellDayModal: React.FC<TCellDayModalProps> = memo(
@@ -17,6 +19,7 @@ export const CellDayModal: React.FC<TCellDayModalProps> = memo(
         addNewTrainingCb,
         editTrainingCb,
     }) => {
+        const { getDateNeededFormat } = useGetCurrentDayInfo();
         const { date, dayData, isFutureDay, trainingVariants } = useContext(
             CellDayContext,
         ) as TCellDayContext;
@@ -28,12 +31,10 @@ export const CellDayModal: React.FC<TCellDayModalProps> = memo(
 
         let index = 0;
         for (const key in dayData) {
-            const disabled = isFutureDay ? false : dayData[key].isImplementation ? true : false;
-
             items.push({
                 name: key,
-                disabled: disabled,
                 index,
+                isFinished: dayData[key].isImplementation,
             });
             index++;
         }
@@ -47,7 +48,7 @@ export const CellDayModal: React.FC<TCellDayModalProps> = memo(
                 closeIcon={<CloseOutlined data-test-id='modal-create-training-button-close' />}
                 getContainer={refEl}
                 onCancel={closeCb}
-                title={`Тренировки на ${date.format('DD.MM.YYYY')}}`}
+                title={`Тренировки на ${getDateNeededFormat(date, DATE_FORMAT_TO_VIEW)}}`}
                 footer={
                     <Button
                         type='primary'

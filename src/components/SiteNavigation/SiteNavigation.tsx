@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from 'react';
+import { memo, useCallback } from 'react';
 import { useAppSelector, useGetPersonalTrainings } from '@hooks/index';
 import classNames from 'classnames';
 import { Menu, MenuProps } from 'antd';
@@ -47,7 +47,7 @@ export const SiteNavigation: React.FC<TSiteNavigationProps> = memo(
         const menuClick = useCallback(
             (menuInfo: { key: string }) => {
                 if (menuInfo.key === ROUTES_LINKS.calendar) {
-                    getPersonalTrainings();
+                    getPersonalTrainings(true);
                 }
             },
             [getPersonalTrainings],

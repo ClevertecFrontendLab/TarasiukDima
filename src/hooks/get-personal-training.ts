@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import {
@@ -13,16 +13,18 @@ export const useGetPersonalTrainings = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const [ needLoader, setNeedLoader] = useState(false);
+
     const [
         getPersonalTrainingsTrigger,
-        { isError, isSuccess, currentData, isLoading },
+        { isError, isSuccess, data, isLoading },
     ] = useLazyGetTrainingQuery();
 
     useEffect(() => {
-        if (isLoading) {
+        if (needLoader && isLoading) {
             dispatch(changeShowLoader(true));
         }
-    }, [isLoading, dispatch]);
+    }, [isLoading, dispatch, needLoader]);
 
     useEffect(() => {
         if (isError) {
@@ -32,14 +34,15 @@ export const useGetPersonalTrainings = () => {
     }, [isError, dispatch]);
 
     useEffect(() => {
-        if (isSuccess && currentData) {
-            dispatch(changePersonalTrainingList(currentData));
+        if (isSuccess && data) {
+            dispatch(changePersonalTrainingList(data));
             dispatch(changeShowLoader(false));
             navigate(ROUTES_LINKS.calendar);
         }
-    }, [isSuccess, currentData, dispatch, navigate]);
+    }, [isSuccess, data, dispatch, navigate]);
 
-    const getPersonalTrainings = () => {
+    const getPersonalTrainings = (withLoader=false) => {
+        setNeedLoader(withLoader);
         getPersonalTrainingsTrigger(null);
     };
 

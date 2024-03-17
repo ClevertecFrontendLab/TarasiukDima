@@ -18,11 +18,13 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
         approaches = 1,
         replays = 1,
         isChecked = false,
+        isFinished = false,
     }) => {
         const { isEdit } = useContext(CellDayContext) as TCellDayContext;
 
         const updateData = useCallback(
             (key: keyof TExerciseInfo, val: unknown) => {
+                if (isFinished) return;
                 const itemData: TExerciseNewInfo = {
                     name: name,
                     approaches: approaches || 1,
@@ -34,7 +36,16 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
                 itemData[key] = val as never;
                 changeExercisesInfoCB(keyItem, itemData);
             },
-            [keyItem, name, approaches, replays, weight, isChecked, changeExercisesInfoCB],
+            [
+                keyItem,
+                name,
+                approaches,
+                replays,
+                weight,
+                isChecked,
+                changeExercisesInfoCB,
+                isFinished,
+            ],
         );
 
         const changeName: React.ChangeEventHandler<HTMLInputElement> = useCallback(
@@ -76,17 +87,19 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
             [updateData],
         );
 
-        const innerInput = isEdit ? (
-            <Checkbox
-                onChange={changeChecked}
-                checked={isChecked}
-                data-test-id={`modal-drawer-right-checkbox-exercise${keyItem}`}
-            />
-        ) : null;
+        const innerInput =
+            !isFinished && isEdit ? (
+                <Checkbox
+                    onChange={changeChecked}
+                    checked={isChecked}
+                    data-test-id={`modal-drawer-right-checkbox-exercise${keyItem}`}
+                />
+            ) : null;
 
         return (
             <Row align='stretch' className='exercise-fields' justify='space-between'>
                 <Input
+                    disabled={isFinished}
                     data-test-id={`modal-drawer-right-input-exercise${keyItem}`}
                     addonAfter={innerInput}
                     placeholder='Упражнение'
@@ -97,6 +110,7 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
 
                 <Form.Item colon={false} label='Подходы' className='exercise-fields__approaches'>
                     <InputNumber
+                        disabled={isFinished}
                         data-test-id={`modal-drawer-right-input-approach${keyItem}`}
                         addonBefore='+'
                         value={approaches}
@@ -109,6 +123,7 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
 
                 <Form.Item colon={false} label='Вес, кг' className='exercise-fields__weight'>
                     <InputNumber
+                        disabled={isFinished}
                         data-test-id={`modal-drawer-right-input-weight${keyItem}`}
                         value={weight}
                         step={1}
@@ -122,6 +137,7 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
 
                 <Form.Item colon={false} label='Количество' className='exercise-fields__replays'>
                     <InputNumber
+                        disabled={isFinished}
                         data-test-id={`modal-drawer-right-input-quantity${keyItem}`}
                         value={replays}
                         step={1}
