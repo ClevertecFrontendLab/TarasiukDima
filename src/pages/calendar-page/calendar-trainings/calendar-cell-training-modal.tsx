@@ -1,34 +1,30 @@
-import { memo, useContext, useEffect, useState } from 'react';
-import { CellDayContext, TCellDayContext } from './calendar-cell-context';
-import { Button, Modal, Row, Select } from 'antd';
-import { ArrowLeftOutlined, CloseOutlined } from '@ant-design/icons';
-import { EmptyIcon } from './empty';
+import { memo, useContext, useEffect, useMemo, useState } from 'react';
+import classNames from 'classnames';
 import { DEFAULT_TRAINING_NAME_VARIANT } from '@constants/index';
-import { CalendarTrainingList, TCalendarTrainingListItem } from './calendar-trainings-list';
-import { TSimpleFn } from '@app_types/index';
-import { TVariantChosenItem } from './types';
+import { ArrowLeftOutlined, CloseOutlined } from '@ant-design/icons';
+import { Button, Modal, Row, Select } from 'antd';
+import { CellDayContext } from './calendar-cell-context';
+import { CalendarTrainingList } from './calendar-trainings-list';
+import { EmptyIcon } from './empty';
+import {
+    TCalendarTrainingListItem,
+    TCellDayContext,
+    TCellTrainingModalProps,
+    TVariantChosenItem,
+} from './types';
 
-type TCellAddTrainingModalProps = {
-    isShow: boolean;
-    isLoading: boolean;
-    isCanSaveExercises: boolean;
-    refEl: HTMLElement;
-
-    closeCb: TSimpleFn;
-    saveExercisesCb: TSimpleFn;
-    showAddExercisesCb: TSimpleFn;
-};
-
-export const CellAddTrainingModal: React.FC<TCellAddTrainingModalProps> = memo(
+export const CellTrainingModal: React.FC<TCellTrainingModalProps> = memo(
     ({
+        refEl,
         isShow,
         isLoading,
         isCanSaveExercises,
-        refEl,
+        daySavedTraining,
 
         closeCb,
         saveExercisesCb,
         showAddExercisesCb,
+        showEditExerciseCb,
     }) => {
         const {
             dayData,
@@ -68,6 +64,17 @@ export const CellAddTrainingModal: React.FC<TCellAddTrainingModalProps> = memo(
             (item) => !addedTrainingNames.includes(item.label),
         );
 
+        const isDisabledChoseTrainingName = useMemo(() => {
+            let isDisabled = false;
+            daySavedTraining.forEach((item) => {
+                if (item.name === defaultSelectValue) {
+                    isDisabled = true;
+                }
+            });
+
+            return isDisabled;
+        }, [daySavedTraining, defaultSelectValue]);
+
         useEffect(() => {
             if (chosenVariantTraining) {
                 setDefaultSelectValue(chosenVariantTraining);
@@ -94,6 +101,7 @@ export const CellAddTrainingModal: React.FC<TCellAddTrainingModalProps> = memo(
                         <Select
                             data-test-id='modal-create-exercise-select'
                             value={defaultSelectValue as TVariantChosenItem}
+                            disabled={isDisabledChoseTrainingName}
                             onChange={changeTrainingVariantCb}
                             options={variantsTrainingForChoose}
                         />
@@ -112,9 +120,12 @@ export const CellAddTrainingModal: React.FC<TCellAddTrainingModalProps> = memo(
 
                         <Button
                             type='default'
-                            className='save-btn'
+                            className={classNames('save-btn', {
+                                ['is-loading']: isLoading,
+                            })}
+                            loading={isLoading}
                             onClick={saveExercisesCb}
-                            disabled={isCanSaveExercises || isLoading}
+                            disabled={!isCanSaveExercises || isLoading}
                         >
                             Сохранить
                         </Button>
@@ -128,7 +139,7 @@ export const CellAddTrainingModal: React.FC<TCellAddTrainingModalProps> = memo(
                     ) : (
                         <CalendarTrainingList
                             items={items}
-                            editButtonCb={showAddExercisesCb}
+                            editButtonCb={showEditExerciseCb}
                             needButtonEdit
                             className='training__list'
                         />

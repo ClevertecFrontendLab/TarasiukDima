@@ -2,20 +2,7 @@ import { memo } from 'react';
 import { EditOutlined } from '@ant-design/icons';
 import { Badge, Button, List, Row } from 'antd';
 import { getTrainingBadgeStatusColor } from '@utils/index';
-import { TTrainingEditButtonCb } from './types';
-
-export type TCalendarTrainingListItem = {
-    name: string;
-    disabled: boolean;
-    index: number;
-};
-
-type TCalendarTrainingListProps = {
-    items: TCalendarTrainingListItem[];
-    className?: string;
-    needButtonEdit?: boolean;
-    editButtonCb?: TTrainingEditButtonCb;
-};
+import { TCalendarTrainingListProps } from './types';
 
 export const CalendarTrainingList: React.FC<TCalendarTrainingListProps> = memo(
     ({ items, needButtonEdit = false, editButtonCb, className = '' }) => (

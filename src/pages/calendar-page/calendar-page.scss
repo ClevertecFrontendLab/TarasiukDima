@@ -216,6 +216,10 @@ div.training-calendar.ant-picker-calendar-full {
         &:disabled {
             background-color: transparent;
         }
+
+        &.is-loading {
+            color: $blueLoading;
+        }
     }
 }
 
@@ -253,7 +257,9 @@ div.training-calendar.ant-picker-calendar-full {
     }
 
     .ant-drawer-body {
-        padding: 0 32px;
+        display: flex;
+        flex-direction: column;
+        padding: 0 32px 32px;
     }
 
     .exercises-modal__var-info {
@@ -351,6 +357,14 @@ div.training-calendar.ant-picker-calendar-full {
 
     .remove {
         color: $black;
+    }
+
+    .last-chance-edit {
+        margin-top: auto;
+        line-height: $lineHeight;
+        font-size: 12px;
+        text-align: center;
+        color: $grey;
     }
 }
 
