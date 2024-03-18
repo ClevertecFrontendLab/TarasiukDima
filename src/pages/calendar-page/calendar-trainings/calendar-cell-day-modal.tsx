@@ -12,11 +12,11 @@ import { TCalendarTrainingListItem, TCellDayContext, TCellDayModalProps } from '
 export const CellDayModal: React.FC<TCellDayModalProps> = memo(
     ({ isShow, refEl, closeCb, addNewTrainingCb, editTrainingCb }) => {
         const { getDateNeededFormat } = useGetCurrentDayInfo();
-        const { date, dayData, isFutureDay, trainingVariants } = useContext(
+        const { date, dayFullInfo, isFutureDay, trainingVariants } = useContext(
             CellDayContext,
         ) as TCellDayContext;
 
-        const addedTrainingNames = Object.keys(dayData);
+        const addedTrainingNames = Object.keys(dayFullInfo);
         // eslint-disable-next-line no-extra-boolean-cast
         const isEmptyDay = !Boolean(addedTrainingNames.length);
         const addNewDisabled =
@@ -24,17 +24,17 @@ export const CellDayModal: React.FC<TCellDayModalProps> = memo(
         const trainingItems: TCalendarTrainingListItem[] = useMemo(() => {
             const items = [];
             let index = 0;
-            for (const key in dayData) {
+            for (const key in dayFullInfo) {
                 items.push({
                     name: key,
                     index,
-                    isFinished: dayData[key].isImplementation,
+                    isFinished: dayFullInfo[key].isImplementation,
                 });
                 index++;
             }
 
             return items;
-        }, [dayData]);
+        }, [dayFullInfo]);
 
         return (
             <Modal
@@ -42,10 +42,7 @@ export const CellDayModal: React.FC<TCellDayModalProps> = memo(
                 className='cell-content__modal training-modal'
                 open={isShow}
                 closable
-                closeIcon={
-                    <CloseOutlined data-test-id={TRAININGS_IDS.modalTrainingCloseBtn}/>
-                }
-
+                closeIcon={<CloseOutlined data-test-id={TRAININGS_IDS.modalTrainingCloseBtn} />}
                 getContainer={refEl}
                 onCancel={closeCb}
                 title={`Тренировки на ${getDateNeededFormat(date, DATE_FORMAT_TO_VIEW)}`}

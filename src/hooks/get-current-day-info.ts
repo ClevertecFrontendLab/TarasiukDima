@@ -1,10 +1,8 @@
 import dayjs, { Dayjs } from 'dayjs';
 import localeRu from 'dayjs/locale/ru';
 import utc from 'dayjs/plugin/utc';
-import isLeapYear from 'dayjs/plugin/isLeapYear';
 import { DATE_FORMAT } from '@constants/date';
 
-dayjs.extend(isLeapYear);
 dayjs.extend(utc);
 dayjs.locale('ru', localeRu);
 
@@ -21,9 +19,8 @@ export const useGetCurrentDayInfo = () => {
         return now.format(dateFormat);
     };
 
-    const getDateForSave = (date: string | Dayjs | null = null) => {
-        return dayjs(date).local().format();
-    };
+    const getDateForSave = (date: string | Dayjs | null = null) =>
+        dayjs(date).utcOffset(0, true).format();
 
     const currentDate = getDateNeededFormat();
 

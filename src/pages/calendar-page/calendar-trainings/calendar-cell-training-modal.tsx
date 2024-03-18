@@ -1,6 +1,6 @@
 import { memo, useContext, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { useAppSelector, useGetCurrentDayInfo } from '@hooks/index';
+import { useGetSavedTraining } from '@hooks/index';
 import { DEFAULT_TRAINING_NAME_VARIANT, TRAININGS_IDS } from '@constants/index';
 import { ArrowLeftOutlined, CloseOutlined } from '@ant-design/icons';
 import { Button, Modal, Row, Select } from 'antd';
@@ -25,29 +25,31 @@ export const CellTrainingModal: React.FC<TCellTrainingModalProps> = memo(
         showAddExercisesCb,
         showEditExerciseCb,
     }) => {
-        const { personalTraining } = useAppSelector((state) => state.app);
-        const { getDateNeededFormat } = useGetCurrentDayInfo();
         const {
-            dayData,
+            dayChangedInfo,
+            dayFullInfo,
             curDay,
             trainingVariants,
             chosenVariantTraining,
             changeTrainingVariantCb,
         } = useContext(CellDayContext) as TCellDayContext;
+        const { getSavedTrainingByDay } = useGetSavedTraining();
 
         const [defaultSelectValue, setDefaultSelectValue] = useState(
             chosenVariantTraining ?? DEFAULT_TRAINING_NAME_VARIANT,
         );
 
-        const savedTraining = useMemo(() => {
-            return personalTraining.filter((item) => getDateNeededFormat(item.date) === curDay);
-        }, [personalTraining, getDateNeededFormat, curDay]);
-        const addedTrainingNames = Object.keys(dayData);
+        const savedTrainings = getSavedTrainingByDay(curDay);
+        const addedTrainingNames = Object.keys(dayFullInfo);
 
         const trainingItems = useMemo(() => {
             const items: TCalendarTrainingListItem[] = [];
-            if (chosenVariantTraining && dayData[chosenVariantTraining]) {
-                const trainingDay = dayData[chosenVariantTraining];
+            if (
+                chosenVariantTraining &&
+                (dayChangedInfo[chosenVariantTraining] || dayFullInfo[chosenVariantTraining])
+            ) {
+                const trainingDay =
+                    dayChangedInfo[chosenVariantTraining] ?? dayFullInfo[chosenVariantTraining];
                 trainingDay.exercises.forEach((exerciseItem, index) => {
                     items.push({
                         name: exerciseItem.name,
@@ -57,7 +59,7 @@ export const CellTrainingModal: React.FC<TCellTrainingModalProps> = memo(
             }
 
             return items;
-        }, [chosenVariantTraining, dayData]);
+        }, [chosenVariantTraining, dayChangedInfo, dayFullInfo]);
 
         const variantsTrainingForChoose = useMemo(() => {
             return trainingVariants
@@ -74,7 +76,7 @@ export const CellTrainingModal: React.FC<TCellTrainingModalProps> = memo(
             let isTrainingVariantExist = false;
 
             let isDisabled = false;
-            savedTraining.forEach((item) => {
+            savedTrainings.forEach((item) => {
                 if (item.name === defaultSelectValue) {
                     isDisabled = true;
                     isTrainingVariantExist = true;
@@ -82,9 +84,10 @@ export const CellTrainingModal: React.FC<TCellTrainingModalProps> = memo(
             });
 
             return { isDisabledChoseTrainingName: isDisabled, isTrainingVariantExist };
-        }, [savedTraining, defaultSelectValue]);
+        }, [savedTrainings, defaultSelectValue]);
 
-        const isCanSaveExercises = dayData[chosenVariantTraining as string]?.isChanged || false;
+        const isCanSaveExercises =
+            dayChangedInfo[chosenVariantTraining as string]?.isChanged || false;
 
         const disabledSaveBtn = useMemo(() => {
             const disabledSaveBtn = !isCanSaveExercises || isLoading;
@@ -93,11 +96,17 @@ export const CellTrainingModal: React.FC<TCellTrainingModalProps> = memo(
                 return disabledSaveBtn;
             }
 
-            const exercises = dayData[chosenVariantTraining]?.exercises || [];
+            const exercises = dayChangedInfo[chosenVariantTraining]?.exercises || [];
             // eslint-disable-next-line no-extra-boolean-cast
             const emptyExercises = exercises ? !Boolean(exercises.length) : true;
             return disabledSaveBtn || emptyExercises;
-        }, [isTrainingVariantExist, chosenVariantTraining, dayData, isCanSaveExercises, isLoading]);
+        }, [
+            isTrainingVariantExist,
+            chosenVariantTraining,
+            dayChangedInfo,
+            isCanSaveExercises,
+            isLoading,
+        ]);
 
         useEffect(() => {
             if (chosenVariantTraining) {

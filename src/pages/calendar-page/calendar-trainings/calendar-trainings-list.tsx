@@ -11,7 +11,7 @@ export const CalendarTrainingList: React.FC<TCalendarTrainingListProps> = memo(
             className={className}
             dataSource={items}
             renderItem={({ name, isFinished, index }) => (
-                <li key={name}>
+                <li key={name + index}>
                     <Row
                         align='middle'
                         justify='space-between'

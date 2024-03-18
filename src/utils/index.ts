@@ -1,4 +1,8 @@
-export { getClearLastRoutePath, getTrainingBadgeStatusColor } from './common';
+export {
+    getClearLastRoutePath,
+    isTwoSameExerciseArrays,
+    getTrainingBadgeStatusColor,
+} from './common';
 export type { TPreviousLocations } from './common';
 
 export {

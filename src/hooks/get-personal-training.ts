@@ -39,6 +39,7 @@ export const useGetPersonalTrainings = () => {
     }, [isSuccess, currentData, dispatch, navigate]);
 
     const getPersonalTrainings = (withLoader = false) => {
+        console.log("getNewData", withLoader);
         setNeedLoader(withLoader);
         getPersonalTrainingsTrigger(null);
     };

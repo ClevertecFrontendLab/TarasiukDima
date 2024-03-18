@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { ConfigProvider } from 'antd';
 import { Dayjs } from 'dayjs';
 import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
@@ -33,23 +33,33 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
         const [selectedYear, setSelectedYear] = useState(updatedNeededLengthValue(currentYear));
         const [isSelected, setIsSelected] = useState<boolean>(false);
 
-        const initialChangedState = useMemo(() => {
-            const newState: TChangedTrainingState = {};
+        const [changedPersonalTraining, setChangedPersonalTraining] =
+            useState<TChangedTrainingState>({});
+
+        const dataForShow = useMemo(() => {
+            const data: TChangedTrainingState = {};
             personalTraining.forEach((item) => {
                 const dateItem = getDateNeededFormat(item.date);
 
-                if (!newState[dateItem]) {
-                    newState[dateItem] = {};
+                if (!data[dateItem]) {
+                    data[dateItem] = {};
                 }
 
-                newState[dateItem][item.name] = { ...item, isChanged: false };
+                data[dateItem][item.name] = item;
             });
 
-            return newState;
-        }, [personalTraining, getDateNeededFormat]);
+            for (const dayKey in changedPersonalTraining) {
+                for (const trainingName in changedPersonalTraining[dayKey]) {
+                    if (!data[dayKey]) {
+                        data[dayKey] = {}
+                    }
+                    data[dayKey][trainingName] = changedPersonalTraining[dayKey][trainingName];
+                }
+            }
 
-        const [changedPersonalTraining, setChangedPersonalTraining] =
-            useState<TChangedTrainingState>(initialChangedState);
+            return data;
+        }, [personalTraining, getDateNeededFormat, changedPersonalTraining]);
+
         const [isCellModalShow, setIsCellModalShow] = useState(false);
 
         const hideCellModal = useCallback(() => {
@@ -71,13 +81,13 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
                 const cellDay = getDateNeededFormat(date.toString());
                 const addedTrainingNames: TCalendarTrainingListItem[] = [];
 
-                if (changedPersonalTraining[cellDay]) {
+                if (dataForShow[cellDay]) {
                     let index = 0;
-                    for (const training in changedPersonalTraining[cellDay]) {
+                    for (const training in dataForShow[cellDay]) {
                         addedTrainingNames.push({
-                            name: changedPersonalTraining[cellDay][training].name,
+                            name: dataForShow[cellDay][training].name,
                             index: index,
-                            isFinished: changedPersonalTraining[cellDay][training].isImplementation,
+                            isFinished: dataForShow[cellDay][training].isImplementation,
                         });
                         index++;
                     }
@@ -94,7 +104,7 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
                     </CalendarCell>
                 );
             },
-            [getDateNeededFormat, addRefCellItem, changedPersonalTraining],
+            [getDateNeededFormat, addRefCellItem, dataForShow],
         );
 
         const onSelect = useCallback(
@@ -144,6 +154,7 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
                         trainingVariants={trainingVariants}
                         isFutureDay={compareDates(currentDate, selectedDay) === 1}
                         dayChangedInfo={changedPersonalTraining[selectedDay]}
+                        dayFullInfo={dataForShow[selectedDay]}
                         setChangedPersonalTraining={setChangedPersonalTraining}
                         closeModalCb={hideCellModal}
                     />

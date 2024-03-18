@@ -15,7 +15,8 @@ export type TCalendarTrainingVariants = {
 };
 
 export type TCellDayContext = {
-    dayData: TTrainingDayData;
+    dayChangedInfo: TTrainingDayData;
+    dayFullInfo: TTrainingDayData;
     date: Dayjs;
     curDay: string;
     trainingVariants: TTrainingVariants;
@@ -32,6 +33,7 @@ export type TCellModals = {
     trainingVariants: TTrainingVariants;
     isFutureDay: boolean;
     dayChangedInfo: TTrainingDayData;
+    dayFullInfo: TTrainingDayData;
 
     closeModalCb: () => void;
     setChangedPersonalTraining: TChangedTrainingCb;

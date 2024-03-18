@@ -1,13 +1,12 @@
 import { memo, useCallback, useContext, useMemo, useState } from 'react';
-import { useGetCurrentDayInfo } from '@hooks/index';
-import { getTrainingBadgeStatusColor } from '@utils/index';
+import { useGetCurrentDayInfo, useGetSavedTraining } from '@hooks/index';
+import { getTrainingBadgeStatusColor, isTwoSameExerciseArrays } from '@utils/index';
 import { DATE_FORMAT_TO_VIEW, TRAININGS_IDS } from '@constants/index';
 import { CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Badge, Button, Drawer, Row } from 'antd';
 import Paragraph from 'antd/lib/typography/Paragraph';
 import { CellAddNewExercises } from './calendar-cell-add-exercises-form';
 import { CellDayContext } from './calendar-cell-context';
-import { TTrainingBody } from '@app_types/index';
 import {
     TCellAddNewExercisesProps,
     TCellDayContext,
@@ -26,23 +25,28 @@ const emptyExercise: TTrainingExerciseItem = {
 
 export const CellExercisesModal: React.FC<TCellAddNewExercisesProps> = memo(
     ({ isShow, isEditExercises, closeAddExercises, setChangedPersonalTraining }) => {
-        const { getDateNeededFormat } = useGetCurrentDayInfo();
+        const { getDateNeededFormat, getDateForSave } = useGetCurrentDayInfo();
         const {
             isFutureDay,
             isFinishedItem,
             isEdit,
-            dayData,
+            dayChangedInfo,
+            dayFullInfo,
             date,
             curDay,
             chosenVariantTraining,
         } = useContext(CellDayContext) as TCellDayContext;
 
         const dayToView = getDateNeededFormat(date);
-        const isCantEdit = !dayData[chosenVariantTraining as string]?.isImplementation || false;
+        const isCantEdit = !dayFullInfo[chosenVariantTraining as string]?.isImplementation || false;
+        const { getSavedTrainingByName } = useGetSavedTraining();
 
         const [exercises, setExercises] = useState<TTrainingExerciseItem[]>(() => {
-            if (dayData[chosenVariantTraining as string]?.exercises) {
-                const newState = [...(dayData[chosenVariantTraining as string]?.exercises || [])];
+            const dataToShow =
+                dayChangedInfo[chosenVariantTraining as string] ??
+                dayFullInfo[chosenVariantTraining as string];
+            if (dataToShow?.exercises) {
+                const newState = [...(dataToShow?.exercises || [])];
 
                 if (!isFinishedItem && !isEditExercises) {
                     newState.push({ ...emptyExercise });
@@ -85,42 +89,71 @@ export const CellExercisesModal: React.FC<TCellAddNewExercisesProps> = memo(
             setExercises((prev) => [...prev].filter((item) => !item.isChecked));
         }, []);
 
-        const changePersonalTrainings = useCallback(
-            (key: string, keyTraining: string, newTrainingData: TTrainingBody) => {
+        const changePersonalTrainings = useCallback(() => {
+            if (!chosenVariantTraining) return;
+
+            const changedItem = dayChangedInfo[chosenVariantTraining];
+            const savedItem = getSavedTrainingByName(curDay, chosenVariantTraining)[0];
+            const newExercises = exercises.filter((item) => item.name);
+
+            if (!savedItem || !changedItem || exercises.length !== changedItem.exercises.length) {
+                if (changedItem && isTwoSameExerciseArrays(newExercises, changedItem.exercises)) {
+                    return;
+                }
+
+                if (!changedItem && isTwoSameExerciseArrays(newExercises, savedItem.exercises)) {
+                    return;
+                }
+
                 setChangedPersonalTraining((prev) => {
                     const newData = {
                         ...prev,
-                        [key]: { ...prev[key] },
+                        [curDay]: { ...prev[curDay] },
                     };
-                    newData[key][keyTraining] = { ...newTrainingData, isChanged: true };
+
+                    if (!newData[curDay]) {
+                        newData[curDay] = {};
+                    }
+
+                    if (!newData[curDay][chosenVariantTraining]) {
+                        newData[curDay][chosenVariantTraining] = savedItem
+                            ? { ...savedItem }
+                            : {
+                                  name: chosenVariantTraining,
+                                  exercises: [],
+                                  date: getDateForSave(date),
+
+                                  isImplementation: false,
+                                  isChanged: false,
+                              };
+                    }
+
+                    newData[curDay][chosenVariantTraining].isChanged = true;
+                    newData[curDay][chosenVariantTraining].exercises = newExercises;
+
                     return newData;
                 });
-            },
-            [setChangedPersonalTraining],
-        );
+            }
+        }, [
+            setChangedPersonalTraining,
+            curDay,
+            dayChangedInfo,
+            getSavedTrainingByName,
+            getDateForSave,
+            chosenVariantTraining,
+            exercises,
+            date,
+        ]);
 
         const closeExercisesModal = useCallback(() => {
-            if (chosenVariantTraining) {
-                const newData = { ...dayData[chosenVariantTraining] };
-                newData.exercises = exercises.filter((item) => item.name);
-                changePersonalTrainings(curDay, chosenVariantTraining, newData);
-            }
+            changePersonalTrainings();
             closeAddExercises();
-        }, [
-            changePersonalTrainings,
-            chosenVariantTraining,
-            closeAddExercises,
-            curDay,
-            dayData,
-            exercises,
-        ]);
+        }, [changePersonalTrainings, closeAddExercises]);
 
         return (
             <Drawer
                 data-test-id={TRAININGS_IDS.modalExercise}
-                closeIcon={
-                    <CloseOutlined data-test-id={TRAININGS_IDS.modalExerciseCloseBtn}/>
-                }
+                closeIcon={<CloseOutlined data-test-id={TRAININGS_IDS.modalExerciseCloseBtn} />}
                 className='exercises-modal'
                 title={
                     <>
