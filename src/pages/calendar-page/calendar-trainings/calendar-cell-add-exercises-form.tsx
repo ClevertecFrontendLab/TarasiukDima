@@ -2,6 +2,7 @@ import { memo, useCallback, useContext } from 'react';
 import { Checkbox, Form, Input, InputNumber, Row } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { CellDayContext } from './calendar-cell-context';
+import { TRAININGS_IDS } from '@constants/index';
 import {
     TCellDayContext,
     TCellNewExercisesFormProps,
@@ -13,6 +14,7 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
     ({
         changeExercisesInfoCB,
         keyItem,
+        testIdIndex,
         name = '',
         weight = 0,
         approaches = 1,
@@ -92,7 +94,7 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
                 <Checkbox
                     onChange={changeChecked}
                     checked={isChecked}
-                    data-test-id={`modal-drawer-right-checkbox-exercise${keyItem}`}
+                    data-test-id={TRAININGS_IDS.modalExerciseCheckbox + testIdIndex}
                 />
             ) : null;
 
@@ -100,7 +102,7 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
             <Row align='stretch' className='exercise-fields' justify='space-between'>
                 <Input
                     disabled={isFinished}
-                    data-test-id={`modal-drawer-right-input-exercise${keyItem}`}
+                    data-test-id={TRAININGS_IDS.modalExerciseNameInput + testIdIndex}
                     addonAfter={innerInput}
                     placeholder='Упражнение'
                     value={name}
@@ -111,7 +113,7 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
                 <Form.Item colon={false} label='Подходы' className='exercise-fields__approaches'>
                     <InputNumber
                         disabled={isFinished}
-                        data-test-id={`modal-drawer-right-input-approach${keyItem}`}
+                        data-test-id={TRAININGS_IDS.modalExerciseApproachInput + testIdIndex}
                         addonBefore='+'
                         value={approaches}
                         step={1}
@@ -124,7 +126,7 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
                 <Form.Item colon={false} label='Вес, кг' className='exercise-fields__weight'>
                     <InputNumber
                         disabled={isFinished}
-                        data-test-id={`modal-drawer-right-input-weight${keyItem}`}
+                        data-test-id={TRAININGS_IDS.modalExerciseWeightInput + testIdIndex}
                         value={weight}
                         step={1}
                         min={0}
@@ -138,7 +140,7 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
                 <Form.Item colon={false} label='Количество' className='exercise-fields__replays'>
                     <InputNumber
                         disabled={isFinished}
-                        data-test-id={`modal-drawer-right-input-quantity${keyItem}`}
+                        data-test-id={TRAININGS_IDS.modalExerciseQuantityInput + testIdIndex}
                         value={replays}
                         step={1}
                         min={1}

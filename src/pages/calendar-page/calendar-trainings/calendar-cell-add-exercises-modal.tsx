@@ -1,7 +1,7 @@
 import { memo, useCallback, useContext, useMemo, useState } from 'react';
 import { useGetCurrentDayInfo } from '@hooks/index';
 import { getTrainingBadgeStatusColor } from '@utils/index';
-import { DATE_FORMAT_TO_VIEW } from '@constants/index';
+import { DATE_FORMAT_TO_VIEW, TRAININGS_IDS } from '@constants/index';
 import { CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Badge, Button, Drawer, Row } from 'antd';
 import Paragraph from 'antd/lib/typography/Paragraph';
@@ -25,10 +25,17 @@ const emptyExercise: TTrainingExerciseItem = {
 };
 
 export const CellExercisesModal: React.FC<TCellAddNewExercisesProps> = memo(
-    ({ isShow, isEditExercises, closeAddExercises, setChangedPersonalTraining, curDay }) => {
+    ({ isShow, isEditExercises, closeAddExercises, setChangedPersonalTraining }) => {
         const { getDateNeededFormat } = useGetCurrentDayInfo();
-        const { isFutureDay, isFinishedItem, isEdit, dayData, date, chosenVariantTraining } =
-            useContext(CellDayContext) as TCellDayContext;
+        const {
+            isFutureDay,
+            isFinishedItem,
+            isEdit,
+            dayData,
+            date,
+            curDay,
+            chosenVariantTraining,
+        } = useContext(CellDayContext) as TCellDayContext;
 
         const dayToView = getDateNeededFormat(date);
         const isCantEdit = !dayData[chosenVariantTraining as string]?.isImplementation || false;
@@ -85,7 +92,7 @@ export const CellExercisesModal: React.FC<TCellAddNewExercisesProps> = memo(
                         ...prev,
                         [key]: { ...prev[key] },
                     };
-                    newData[key][keyTraining] = newTrainingData;
+                    newData[key][keyTraining] = { ...newTrainingData, isChanged: true };
                     return newData;
                 });
             },
@@ -110,8 +117,10 @@ export const CellExercisesModal: React.FC<TCellAddNewExercisesProps> = memo(
 
         return (
             <Drawer
-                data-test-id='modal-drawer-right'
-                closeIcon={<CloseOutlined data-test-id='modal-drawer-right-button-close' />}
+                data-test-id={TRAININGS_IDS.modalExercise}
+                closeIcon={
+                    <CloseOutlined data-test-id={TRAININGS_IDS.modalExerciseCloseBtn}/>
+                }
                 className='exercises-modal'
                 title={
                     <>
@@ -140,6 +149,7 @@ export const CellExercisesModal: React.FC<TCellAddNewExercisesProps> = memo(
                             isFinished={isFinishedItem}
                             key={index + dayToView}
                             keyItem={index}
+                            testIdIndex={index}
                             changeExercisesInfoCB={changeExercisesInfoCB}
                             name={name}
                             weight={weight}

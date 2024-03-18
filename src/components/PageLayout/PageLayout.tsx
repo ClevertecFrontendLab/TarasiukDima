@@ -1,13 +1,13 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import classNames from 'classnames';
 import { changeShowTrainingListError } from '@redux/index';
 import { useAppSelector } from '@hooks/index';
-import classNames from 'classnames';
 import { ResultStatusType } from 'antd/lib/result';
-import { ROUTES_LINKS, STATUS_CODES } from '@constants/index';
 import { Button, Layout, Result } from 'antd';
 import { ModalPage, Sidebar, Spinner } from '@components/index';
+import { MODALS_STYLE, ROUTES_LINKS, STATUS_CODES, TRAININGS_IDS } from '@constants/index';
 import { TClsAndChildProps } from '@app_types/index';
 
 import './page-layout.scss';
@@ -48,7 +48,8 @@ export const PageLayout: React.FC<TPageLayoutProps> = ({
                 <ModalPage
                     variant='error'
                     open={isShowTrainingListError}
-                    dataTestId='modal-no-review'
+                    dataTestId={TRAININGS_IDS.modalTrainingError}
+                    maskStyle={MODALS_STYLE.maskStyleBig}
                 >
                     <Result
                         status={STATUS_CODES.serverError as ResultStatusType}

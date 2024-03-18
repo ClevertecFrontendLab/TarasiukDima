@@ -1,6 +1,7 @@
 import { memo } from 'react';
-import { Row, Spin } from 'antd';
 import classNames from 'classnames';
+import { Row, Spin } from 'antd';
+import { LOADER_ID } from '@constants/index';
 
 import './spinner.scss';
 
@@ -13,7 +14,7 @@ export const Spinner: React.FC<TSpinnerProps> = memo(({ className = '' }) => (
         className={classNames('spinner', {
             [className]: className,
         })}
-        data-test-id='loader'
+        data-test-id={LOADER_ID}
     >
         <Spin size='large' />
     </Row>

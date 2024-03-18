@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useLazyGetTrainingsListQuery } from '@services/index';
+import { CloseOutlined } from '@ant-design/icons';
 import { Modal } from 'antd';
 import { PageContent, PageHeader, PageLayout } from '@components/index';
 import { CalendarTraining } from './calendar-trainings/calendar-trainings';
-import { ROUTES_LINKS } from '@constants/index';
+import { MODALS_STYLE, ROUTES_LINKS, TRAININGS_IDS } from '@constants/index';
 
 import './calendar-page.scss';
-import { CloseOutlined } from '@ant-design/icons';
 
 const routes = [
     {
@@ -41,26 +41,27 @@ export const CalendarPage = () => {
             Modal.error({
                 centered: true,
                 closable: true,
+                closeIcon: <CloseOutlined data-test-id={TRAININGS_IDS.modalErrorUserCloseBtn} />,
                 title: (
-                    <span data-test-id='modal-error-user-training-title'>
+                    <span data-test-id={TRAININGS_IDS.modalErrorUserTitle}>
                         При открытии данных
                         <br /> произошла ошибка
                     </span>
                 ),
                 content: (
-                    <span data-test-id='modal-error-user-training-subtitle'>
+                    <span data-test-id={TRAININGS_IDS.modalErrorUserSubTitle}>
                         Попробуйте ещё раз.
                     </span>
                 ),
-                closeIcon: <CloseOutlined data-test-id='modal-error-user-training-button-close' />,
                 okText: 'Обновить',
                 onOk: repeatGetVariantsList,
                 className: 'modal-page modal-variants',
+                maskStyle: MODALS_STYLE.maskStyleSmall,
                 okButtonProps: {
                     className: 'right-btn',
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
-                    'data-test-id': 'modal-error-user-training-button',
+                    'data-test-id': TRAININGS_IDS.modalErrorUserBtn,
                 },
             });
         }

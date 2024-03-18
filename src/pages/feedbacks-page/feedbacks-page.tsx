@@ -10,6 +10,7 @@ import { FeedbacksPageEmpty } from './feedbacks-page-empty';
 import { FeedbacksPageContent } from './feedbacks-page-content';
 import { ModalsInfo } from './modals-info';
 import {
+    FEEDBACKS_IDS,
     REPEAT_FEEDBACKS_REQUEST,
     ROUTES_LINKS,
     STATUS_CODES,
@@ -159,7 +160,7 @@ export const FeedbacksPage = () => {
                 closeSuccessFeedbackCB={closeModalOkFeedback}
                 isErrorAddFeedbackOpen={isErrorAddFeedbackOpen}
                 closeErrorAddFeedbackCB={closeErrorAddFeedback}
-                repeateWriteShowModalFeedback={repeateWriteFeedback}
+                repeatWriteShowModalFeedback={repeateWriteFeedback}
             />
 
             <ModalPage
@@ -179,7 +180,7 @@ export const FeedbacksPage = () => {
                             (!Boolean(feedbackStar) && !feedbackText) || isFeedbackAddLoading
                         }
                         onClick={postFeedback}
-                        data-test-id='new-review-submit-button'
+                        data-test-id={FEEDBACKS_IDS.newSubmitBtn}
                     >
                         Опубликовать
                     </Button>

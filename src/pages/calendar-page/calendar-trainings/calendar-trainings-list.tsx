@@ -2,6 +2,7 @@ import { memo } from 'react';
 import { EditFilled, EditOutlined } from '@ant-design/icons';
 import { Badge, Button, List, Row } from 'antd';
 import { getTrainingBadgeStatusColor } from '@utils/index';
+import { TRAININGS_IDS } from '@constants/index';
 import { TCalendarTrainingListProps } from './types';
 
 export const CalendarTrainingList: React.FC<TCalendarTrainingListProps> = memo(
@@ -21,7 +22,7 @@ export const CalendarTrainingList: React.FC<TCalendarTrainingListProps> = memo(
                         {needButtonEdit && (
                             <Button
                                 className='edit-training'
-                                data-test-id={`modal-update-training-edit-button${index}`}
+                                data-test-id={TRAININGS_IDS.modalTrainingEditBtn + index}
                                 onClick={() => {
                                     editButtonCb && editButtonCb(name, isFinished);
                                 }}

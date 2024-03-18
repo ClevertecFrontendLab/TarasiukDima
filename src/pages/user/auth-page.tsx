@@ -15,7 +15,7 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { EyeInvisibleOutlined, EyeTwoTone, GooglePlusOutlined } from '@ant-design/icons';
 import { UserLayout, Logo } from '@components/index';
 import { AuthNavButtons } from './AuthNavButtons';
-import { ROUTES_LINKS, SERVICE_API_URL, TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
+import { ROUTES_LINKS, SERVICE_API_URL, TOKEN_AUTH_LOCALSTORAGE, USER_IDS } from '@constants/index';
 import { TServerErrorResponse } from '@app_types/responses';
 
 import './auth.scss';
@@ -191,7 +191,7 @@ export const AuthPage = () => {
                     validateStatus={isEmailError ? 'error' : 'success'}
                     className='form__email'
                     name='email'
-                    data-test-id='login-email'
+                    data-test-id={USER_IDS.loginEmail}
                 >
                     <Input addonBefore='e-mail:' type='email' onChange={emailChangeHandler} />
                 </Form.Item>
@@ -207,13 +207,16 @@ export const AuthPage = () => {
                         iconRender={(visible) =>
                             visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                         }
-                        data-test-id='login-password'
+                        data-test-id={USER_IDS.loginPassword}
                     />
                 </Form.Item>
 
                 <Row justify='space-between' align='middle'>
                     <Form.Item name='remember' valuePropName='checked' className='remember-item'>
-                        <Checkbox onChange={rememberChangeHandler} data-test-id='login-remember'>
+                        <Checkbox
+                            onChange={rememberChangeHandler}
+                            data-test-id={USER_IDS.loginRemember}
+                        >
                             Запомнить меня
                         </Checkbox>
                     </Form.Item>
@@ -223,7 +226,7 @@ export const AuthPage = () => {
                         type='link'
                         color='primaryColor'
                         className='forgot-btn'
-                        data-test-id='login-forgot-button'
+                        data-test-id={USER_IDS.loginForgot}
                     >
                         Забыли пароль?
                     </Button>
@@ -232,7 +235,7 @@ export const AuthPage = () => {
                 <Button
                     htmlType='submit'
                     className='btn form__submit'
-                    data-test-id='login-submit-button'
+                    data-test-id={USER_IDS.loginSubmit}
                 >
                     Войти
                 </Button>

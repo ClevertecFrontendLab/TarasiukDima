@@ -1,13 +1,10 @@
-import { memo, useCallback, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { ConfigProvider } from 'antd';
 import { Dayjs } from 'dayjs';
 import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
 import { useIsMobile, useGetCurrentDayInfo, useAppSelector } from '@hooks/index';
 import generateCalendar from 'antd/es/calendar/generateCalendar';
 import locale from 'antd/es/locale/ru_RU';
-// import localeRu from 'dayjs/locale/ru';
-// import utc from 'dayjs/plugin/utc';
-// import isLeapYear from 'dayjs/plugin/isLeapYear';
 import { compareDates, updatedNeededLengthValue } from '@utils/index';
 import { CellModals } from './calendar-cell-modals';
 import { CalendarCell } from './calendar-cell';
@@ -17,10 +14,6 @@ import {
     TCalendarTrainingListItem,
     TChangedTrainingState,
 } from './types';
-
-// dayjs.extend(isLeapYear);
-// dayjs.extend(utc);
-// dayjs.locale('ru', localeRu);
 
 const Calendar = generateCalendar<Dayjs>(dayjsGenerateConfig);
 
@@ -40,21 +33,23 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
         const [selectedYear, setSelectedYear] = useState(updatedNeededLengthValue(currentYear));
         const [isSelected, setIsSelected] = useState<boolean>(false);
 
-        const [changedPersonalTraining, setChangedPersonalTraining] =
-            useState<TChangedTrainingState>(() => {
-                const newState: TChangedTrainingState = {};
-                personalTraining.forEach((item) => {
-                    const dateItem = getDateNeededFormat(item.date);
+        const initialChangedState = useMemo(() => {
+            const newState: TChangedTrainingState = {};
+            personalTraining.forEach((item) => {
+                const dateItem = getDateNeededFormat(item.date);
 
-                    if (!newState[dateItem]) {
-                        newState[dateItem] = {};
-                    }
+                if (!newState[dateItem]) {
+                    newState[dateItem] = {};
+                }
 
-                    newState[dateItem][item.name] = item;
-                });
-
-                return newState;
+                newState[dateItem][item.name] = { ...item, isChanged: false };
             });
+
+            return newState;
+        }, [personalTraining, getDateNeededFormat]);
+
+        const [changedPersonalTraining, setChangedPersonalTraining] =
+            useState<TChangedTrainingState>(initialChangedState);
         const [isCellModalShow, setIsCellModalShow] = useState(false);
 
         const hideCellModal = useCallback(() => {
@@ -87,17 +82,6 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
                         index++;
                     }
                 }
-                // else {
-                // personalTraining.filter((item, index) => {
-                //     if (dayjs(item.date).local().format(DATE_FORMAT) === cellDay) {
-                //         addedTrainingNames.push({
-                //             name: item.name,
-                //             index: index,
-                //             isFinished: item.isImplementation,
-                //         });
-                //     }
-                // });
-                // }
 
                 return (
                     <CalendarCell addRefItemCB={addRefCellItem} date={cellDay}>

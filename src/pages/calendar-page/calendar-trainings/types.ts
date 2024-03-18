@@ -17,6 +17,7 @@ export type TCalendarTrainingVariants = {
 export type TCellDayContext = {
     dayData: TTrainingDayData;
     date: Dayjs;
+    curDay: string;
     trainingVariants: TTrainingVariants;
     isFutureDay: boolean;
     isEdit: boolean;
@@ -58,8 +59,6 @@ export type TCellTrainingModalProps = {
     refEl: HTMLElement;
     isShow: boolean;
     isLoading: boolean;
-    isCanSaveExercises: boolean;
-    daySavedTraining: TTraining[];
 
     closeCb: TSimpleFn;
     saveExercisesCb: TSimpleFn;
@@ -69,9 +68,7 @@ export type TCellTrainingModalProps = {
 
 export type TCellDayModalProps = {
     isShow: boolean;
-    isEmptyDay: boolean;
     refEl: HTMLElement;
-    addedTrainingNames: string[];
 
     closeCb: TSimpleFn;
     editTrainingCb: TTrainingEditButtonCb;
@@ -83,7 +80,6 @@ export type TCellAddNewExercisesProps = {
     isEditExercises: boolean;
     closeAddExercises: TSimpleFn;
     setChangedPersonalTraining: TChangedTrainingCb;
-    curDay: string;
 };
 
 export type TCellNewExercisesFormProps = {
@@ -92,6 +88,7 @@ export type TCellNewExercisesFormProps = {
     approaches?: number;
     replays?: number;
     keyItem: number;
+    testIdIndex: number;
     isChecked?: boolean;
     isFinished?: boolean;
 
@@ -107,14 +104,17 @@ export type TExerciseInfo = Omit<TTrainingExercise, 'isImplementation'> & {
     isChecked: boolean;
 };
 
+export type TChangedItem = TTraining & {
+    isChanged?: boolean;
+};
 export type TChangedTrainingState = {
     [key: string]: {
-        [key: string]: TTraining;
+        [key: string]: TChangedItem;
     };
 };
 
 export type TTrainingDayData = {
-    [key: string]: TTraining;
+    [key: string]: TChangedItem;
 };
 
 export type TChangedTrainingCb = React.Dispatch<React.SetStateAction<TChangedTrainingState>>;

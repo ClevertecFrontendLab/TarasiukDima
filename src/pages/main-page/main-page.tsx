@@ -4,7 +4,7 @@ import { Button, Card, List, Row } from 'antd';
 import Paragraph from 'antd/lib/typography/Paragraph';
 import { PageContent, PageFooter, PageHeader, PageLayout } from '@components/index';
 import { cardsData, listData } from './home-data';
-import { ROUTES_LINKS } from '@constants/index';
+import { NAVIGATION_IDS, ROUTES_LINKS } from '@constants/index';
 
 import './main-page.scss';
 
@@ -60,7 +60,7 @@ export const MainPage = () => (
                 <Link
                     to={ROUTES_LINKS.feedbacks}
                     className='home-footer__reviews'
-                    data-test-id='see-reviews'
+                    data-test-id={NAVIGATION_IDS.homeSeeReviewsBtn}
                 >
                     Смотреть отзывы
                 </Link>

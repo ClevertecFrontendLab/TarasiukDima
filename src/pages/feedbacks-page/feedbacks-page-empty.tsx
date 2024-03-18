@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { Button, Result } from 'antd';
 import { PageContent } from '@components/index';
+import { FEEDBACKS_IDS } from '@constants/index';
 import { TSimpleFn } from '@app_types/common';
 
 export const FeedbacksPageEmpty: React.FC<{ addCommentModalHandler: TSimpleFn }> = memo(
@@ -24,7 +25,7 @@ export const FeedbacksPageEmpty: React.FC<{ addCommentModalHandler: TSimpleFn }>
                 type='primary'
                 className='button-page'
                 onClick={addCommentModalHandler}
-                data-test-id='write-review'
+                data-test-id={FEEDBACKS_IDS.addReview}
             >
                 Написать отзыв
             </Button>

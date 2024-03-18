@@ -12,13 +12,10 @@ import { ROUTES_LINKS } from '@constants/index';
 export const useGetPersonalTrainings = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [needLoader, setNeedLoader] = useState(false);
 
-    const [ needLoader, setNeedLoader] = useState(false);
-
-    const [
-        getPersonalTrainingsTrigger,
-        { isError, isSuccess, data, isLoading },
-    ] = useLazyGetTrainingQuery();
+    const [getPersonalTrainingsTrigger, { isError, isSuccess, currentData, isLoading }] =
+        useLazyGetTrainingQuery();
 
     useEffect(() => {
         if (needLoader && isLoading) {
@@ -34,14 +31,14 @@ export const useGetPersonalTrainings = () => {
     }, [isError, dispatch]);
 
     useEffect(() => {
-        if (isSuccess && data) {
-            dispatch(changePersonalTrainingList(data));
+        if (isSuccess && currentData) {
+            dispatch(changePersonalTrainingList(currentData));
             dispatch(changeShowLoader(false));
             navigate(ROUTES_LINKS.calendar);
         }
-    }, [isSuccess, data, dispatch, navigate]);
+    }, [isSuccess, currentData, dispatch, navigate]);
 
-    const getPersonalTrainings = (withLoader=false) => {
+    const getPersonalTrainings = (withLoader = false) => {
         setNeedLoader(withLoader);
         getPersonalTrainingsTrigger(null);
     };
