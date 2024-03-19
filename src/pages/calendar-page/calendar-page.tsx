@@ -26,8 +26,6 @@ const getCommonErrorModalOptions = (
     okId: string,
     className = '',
 ) => ({
-    // transitionName: '',
-    // maskTransitionName: '',
     centered: true,
     closable: true,
     closeIcon: <CloseOutlined data-test-id={closeId} />,
@@ -81,6 +79,7 @@ export const CalendarPage = () => {
                     TRAININGS_IDS.modalErrorUserBtn,
                     'modal-page modal-error-save',
                 ),
+                open: isVariantsError,
                 title: (
                     <span data-test-id={TRAININGS_IDS.modalErrorUserTitle}>
                         При открытии данных
@@ -110,6 +109,7 @@ export const CalendarPage = () => {
                     TRAININGS_IDS.modalErrorUserBtn,
                     'modal-page',
                 ),
+                open: showErrorModalSave,
                 title: (
                     <span data-test-id={TRAININGS_IDS.modalErrorUserTitle}>
                         При сохранении данных произошла ошибка

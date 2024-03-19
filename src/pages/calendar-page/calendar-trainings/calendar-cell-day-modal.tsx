@@ -39,8 +39,6 @@ export const CellDayModal: React.FC<TCellDayModalProps> = memo(
 
         return (
             <Modal
-                // transitionName=''
-                // maskTransitionName=''
                 destroyOnClose
                 data-test-id={TRAININGS_IDS.modalTraining}
                 className='cell-content__modal day-modal'
