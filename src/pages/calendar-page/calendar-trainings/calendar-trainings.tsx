@@ -1,10 +1,10 @@
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { ConfigProvider } from 'antd';
 import { Dayjs } from 'dayjs';
 import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
-import { useIsMobile, useGetCurrentDayInfo, useAppSelector } from '@hooks/index';
-import generateCalendar from 'antd/es/calendar/generateCalendar';
 import locale from 'antd/es/locale/ru_RU';
+import generateCalendar from 'antd/es/calendar/generateCalendar';
+import { useIsMobile, useGetCurrentDayInfo, useAppSelector } from '@hooks/index';
 import { compareDates, updatedNeededLengthValue } from '@utils/index';
 import { CellModals } from './calendar-cell-modals';
 import { CalendarCell } from './calendar-cell';
@@ -18,27 +18,28 @@ import {
 const Calendar = generateCalendar<Dayjs>(dayjsGenerateConfig);
 
 export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
-    ({ trainingVariants }) => {
-        const [cellItems, setCellItems] = useState<{
-            [key: string]: React.MutableRefObject<HTMLDivElement | null>;
-        }>({});
+    ({ trainingVariants, showErrorModalCb }) => {
+        const isMobile = useIsMobile();
+        const { personalTraining } = useAppSelector((state) => state.app);
         const { currentMonth, currentYear, getDateNeededFormat, currentDate } =
             useGetCurrentDayInfo();
 
-        const isMobile = useIsMobile();
-        const { personalTraining } = useAppSelector((state) => state.app);
-
-        const [selectedDay, setSelectedDay] = useState(currentDate);
-        const [selectedMonth, setSelectedMonth] = useState(updatedNeededLengthValue(currentMonth));
-        const [selectedYear, setSelectedYear] = useState(updatedNeededLengthValue(currentYear));
-        const [isSelected, setIsSelected] = useState<boolean>(false);
+        const [cellItems, setCellItems] = useState<{
+            [key: string]: React.MutableRefObject<HTMLDivElement | null>;
+        }>({});
 
         const [changedPersonalTraining, setChangedPersonalTraining] =
             useState<TChangedTrainingState>({});
 
+        const [selectedDay, setSelectedDay] = useState(currentDate);
+        const [selectedMonth, setSelectedMonth] = useState(updatedNeededLengthValue(currentMonth));
+        const [selectedYear, setSelectedYear] = useState(updatedNeededLengthValue(currentYear));
+
         const dataForShow = useMemo(() => {
             const data: TChangedTrainingState = {};
-            personalTraining.forEach((item) => {
+            const arrayWithData = trainingVariants.length ? personalTraining : [];
+
+            arrayWithData.forEach((item) => {
                 const dateItem = getDateNeededFormat(item.date);
 
                 if (!data[dateItem]) {
@@ -51,14 +52,14 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
             for (const dayKey in changedPersonalTraining) {
                 for (const trainingName in changedPersonalTraining[dayKey]) {
                     if (!data[dayKey]) {
-                        data[dayKey] = {}
+                        data[dayKey] = {};
                     }
                     data[dayKey][trainingName] = changedPersonalTraining[dayKey][trainingName];
                 }
             }
 
             return data;
-        }, [personalTraining, getDateNeededFormat, changedPersonalTraining]);
+        }, [personalTraining, getDateNeededFormat, changedPersonalTraining, trainingVariants]);
 
         const [isCellModalShow, setIsCellModalShow] = useState(false);
 
@@ -93,9 +94,15 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
                     }
                 }
 
+                const trainingInDayExist = Boolean(addedTrainingNames.length);
+
                 return (
-                    <CalendarCell addRefItemCB={addRefCellItem} date={cellDay}>
-                        {Boolean(addedTrainingNames.length) && (
+                    <CalendarCell
+                        addRefItemCB={addRefCellItem}
+                        date={cellDay}
+                        className={isMobile && trainingInDayExist ? 'is-mobile' : ''}
+                    >
+                        {!isMobile && trainingInDayExist && (
                             <CalendarTrainingList
                                 items={addedTrainingNames}
                                 className='cell-content__training'
@@ -104,19 +111,15 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
                     </CalendarCell>
                 );
             },
-            [getDateNeededFormat, addRefCellItem, dataForShow],
+            [getDateNeededFormat, addRefCellItem, dataForShow, isMobile],
         );
 
         const onSelect = useCallback(
             (date: Dayjs) => {
-                if (!isSelected) {
-                    setIsSelected(true);
-                }
-
                 setSelectedDay(getDateNeededFormat(date));
 
                 let withoutModal = false;
-                const clickYear = getDateNeededFormat(date, 'Y');
+                const clickYear = getDateNeededFormat(date, 'YYYY');
                 if (clickYear !== selectedYear) {
                     setSelectedYear(clickYear);
                     withoutModal = true;
@@ -135,7 +138,7 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
 
                 setIsCellModalShow(true);
             },
-            [selectedMonth, selectedYear, isMobile, isSelected, getDateNeededFormat],
+            [selectedMonth, selectedYear, isMobile, getDateNeededFormat],
         );
 
         return (
@@ -147,8 +150,9 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
                     className='training-calendar'
                 />
 
-                {isCellModalShow && (
+                {Boolean(trainingVariants.length) && isCellModalShow && (
                     <CellModals
+                        isShow={isCellModalShow}
                         curRef={cellItems[selectedDay]}
                         curDay={selectedDay}
                         trainingVariants={trainingVariants}
@@ -157,6 +161,7 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
                         dayFullInfo={dataForShow[selectedDay]}
                         setChangedPersonalTraining={setChangedPersonalTraining}
                         closeModalCb={hideCellModal}
+                        showModalErrorCb={showErrorModalCb}
                     />
                 )}
             </ConfigProvider>

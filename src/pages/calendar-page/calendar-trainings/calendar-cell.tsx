@@ -1,9 +1,10 @@
 import { memo, useEffect, useRef } from 'react';
+import classNames from 'classnames';
 import { Row } from 'antd';
 import { TCalendarCellContent } from './types';
 
 export const CalendarCell: React.FC<TCalendarCellContent> = memo(
-    ({ addRefItemCB, date, children }) => {
+    ({ addRefItemCB, date, children, className = '' }) => {
         const cellRef = useRef<HTMLDivElement | null>(null);
 
         useEffect(() => {
@@ -11,7 +12,12 @@ export const CalendarCell: React.FC<TCalendarCellContent> = memo(
         }, [addRefItemCB, date]);
 
         return (
-            <Row className='cell-content' ref={cellRef}>
+            <Row
+                className={classNames('cell-content', {
+                    [className]: className,
+                })}
+                ref={cellRef}
+            >
                 {children}
             </Row>
         );

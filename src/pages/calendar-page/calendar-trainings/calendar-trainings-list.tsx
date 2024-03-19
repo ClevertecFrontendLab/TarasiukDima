@@ -27,6 +27,7 @@ export const CalendarTrainingList: React.FC<TCalendarTrainingListProps> = memo(
                                     editButtonCb && editButtonCb(name, isFinished);
                                 }}
                                 aria-label={`Редактировать тренировку - '${name}'`}
+                                disabled={isFinished}
                             >
                                 {isFinished ? <EditFilled /> : <EditOutlined />}
                             </Button>

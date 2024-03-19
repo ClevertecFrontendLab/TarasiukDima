@@ -18,6 +18,7 @@ export const ModalPage: React.FC<TModalPageProps> = memo(
     ({
         variant = 'info',
         blur = 'dark',
+        className='',
         children,
         footer = null,
         title = null,
@@ -26,7 +27,9 @@ export const ModalPage: React.FC<TModalPageProps> = memo(
         ...lastProps
     }) => (
         <Modal
-            className={classNames(`${variant}-modal`, {}, [blur])}
+            className={classNames(`${variant}-modal`, {
+                [className]: className
+            }, [blur])}
             closable={closable}
             footer={footer}
             title={title}

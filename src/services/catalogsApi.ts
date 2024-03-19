@@ -26,7 +26,13 @@ export const catalogsApi = createApi({
             query: () => ({
                 url: queryEndpoints.trainingList,
             }),
-            providesTags: [{ type: API_TAGS.catalogs, id: 'LIST' }],
+            providesTags: (result) =>
+                result
+                    ? [
+                          ...result.map(({ key }) => ({ type: API_TAGS.catalogs, id: key })),
+                          { type: API_TAGS.catalogs, id: 'LIST' },
+                      ]
+                    : [{ type: API_TAGS.catalogs, id: 'LIST' }],
         }),
     }),
 });

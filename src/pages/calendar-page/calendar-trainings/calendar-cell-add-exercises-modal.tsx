@@ -2,7 +2,7 @@ import { memo, useCallback, useContext, useMemo, useState } from 'react';
 import { useGetCurrentDayInfo, useGetSavedTraining } from '@hooks/index';
 import { getTrainingBadgeStatusColor, isTwoSameExerciseArrays } from '@utils/index';
 import { DATE_FORMAT_TO_VIEW, TRAININGS_IDS } from '@constants/index';
-import { CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { CloseOutlined, EditOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Badge, Button, Drawer, Row } from 'antd';
 import Paragraph from 'antd/lib/typography/Paragraph';
 import { CellAddNewExercises } from './calendar-cell-add-exercises-form';
@@ -39,6 +39,7 @@ export const CellExercisesModal: React.FC<TCellAddNewExercisesProps> = memo(
 
         const dayToView = getDateNeededFormat(date);
         const isCantEdit = !dayFullInfo[chosenVariantTraining as string]?.isImplementation || false;
+
         const { getSavedTrainingByName } = useGetSavedTraining();
 
         const [exercises, setExercises] = useState<TTrainingExerciseItem[]>(() => {
@@ -152,13 +153,16 @@ export const CellExercisesModal: React.FC<TCellAddNewExercisesProps> = memo(
 
         return (
             <Drawer
+                destroyOnClose
                 data-test-id={TRAININGS_IDS.modalExercise}
                 closeIcon={<CloseOutlined data-test-id={TRAININGS_IDS.modalExerciseCloseBtn} />}
                 className='exercises-modal'
                 title={
                     <>
-                        <PlusOutlined />
-                        <span className='exercises-title'>Добавление упражнений</span>
+                        {isEdit ? <EditOutlined /> : <PlusOutlined />}
+                        <span className='exercises-title'>
+                            {isEdit ? 'Редактирование' : 'Добавление упражнений'}
+                        </span>
                     </>
                 }
                 placement='right'

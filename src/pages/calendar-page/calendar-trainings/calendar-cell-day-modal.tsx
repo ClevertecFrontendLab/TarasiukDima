@@ -1,5 +1,5 @@
 import { memo, useContext, useMemo } from 'react';
-import { useGetCurrentDayInfo } from '@hooks/index';
+import { useGetCurrentDayInfo, useIsMobile } from '@hooks/index';
 import { CellDayContext } from './calendar-cell-context';
 import { Button, Modal } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
@@ -11,6 +11,7 @@ import { TCalendarTrainingListItem, TCellDayContext, TCellDayModalProps } from '
 
 export const CellDayModal: React.FC<TCellDayModalProps> = memo(
     ({ isShow, refEl, closeCb, addNewTrainingCb, editTrainingCb }) => {
+        const isMobile = useIsMobile();
         const { getDateNeededFormat } = useGetCurrentDayInfo();
         const { date, dayFullInfo, isFutureDay, trainingVariants } = useContext(
             CellDayContext,
@@ -38,14 +39,21 @@ export const CellDayModal: React.FC<TCellDayModalProps> = memo(
 
         return (
             <Modal
+                // transitionName=''
+                // maskTransitionName=''
+                destroyOnClose
                 data-test-id={TRAININGS_IDS.modalTraining}
-                className='cell-content__modal training-modal'
+                className='cell-content__modal day-modal'
                 open={isShow}
                 closable
                 closeIcon={<CloseOutlined data-test-id={TRAININGS_IDS.modalTrainingCloseBtn} />}
-                getContainer={refEl}
+                getContainer={isMobile ? false : refEl}
+                centered={isMobile ? true : false}
                 onCancel={closeCb}
                 title={`Тренировки на ${getDateNeededFormat(date, DATE_FORMAT_TO_VIEW)}`}
+                maskStyle={{
+                    backgroundColor: 'transparent',
+                }}
                 footer={
                     <Button
                         type='primary'
@@ -53,7 +61,8 @@ export const CellDayModal: React.FC<TCellDayModalProps> = memo(
                         onClick={addNewTrainingCb}
                         className='btn add-training'
                     >
-                        {isEmptyDay ? 'Создать тренировку' : 'Добавить тренировку'}
+                        Создать тренировку
+                        {/* {isEmptyDay ? 'Создать тренировку' : 'Добавить тренировку'} */}
                     </Button>
                 }
             >

@@ -4,6 +4,7 @@
 body .calendar-page .calendar-page__header {
     padding-bottom: 0;
 }
+
 .calendar-page {
     .calendar-page__content {
         flex-grow: 0;
@@ -18,6 +19,23 @@ body .calendar-page .calendar-page__header {
     .ant-picker-cell-inner {
         background-color: $white;
     }
+
+    .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner,
+    .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
+    .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner {
+        background: $primary;
+    }
+
+    .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner:before,
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child {
+        border-color: $primary;
+    }
+
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover,
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+        color: $primary;
+        border-color: $primary;
+    }
 }
 
 div.training-calendar.ant-picker-calendar-full {
@@ -27,7 +45,8 @@ div.training-calendar.ant-picker-calendar-full {
 
     .ant-picker-calendar-date-content {
         height: auto;
-        min-height: 86px;
+        min-height: 92px;
+        overflow-y: initial !important;
     }
 
     .ant-picker-content tr {
@@ -77,6 +96,16 @@ div.training-calendar.ant-picker-calendar-full {
     }
 }
 
+.cell-content {
+    width: 100%;
+
+    .cell-content__training {
+        width: 100%;
+        text-wrap: nowrap;
+        overflow: hidden;
+    }
+}
+
 .ant-list-items .isFinished {
     .ant-badge-status-text {
         color: $lightGrey;
@@ -84,6 +113,7 @@ div.training-calendar.ant-picker-calendar-full {
 
     .edit-training {
         color: $lightGrey;
+        background-color: $white;
 
         svg {
             fill: currentColor;
@@ -97,6 +127,16 @@ div.training-calendar.ant-picker-calendar-full {
     .cell-content__training {
         font-size: $fontSizeSmaller;
         line-height: $lineHeight;
+    }
+}
+
+.modal-page {
+    .ant-modal-confirm-title {
+        color: $black;
+    }
+
+    .ant-modal-confirm-content {
+        color: $grey;
     }
 }
 
@@ -128,23 +168,22 @@ div.training-calendar.ant-picker-calendar-full {
     .back-button {
         width: 28px;
         height: 28px;
-        padding: 0;
+        padding: 5px;
         line-height: $lineHeightSmall;
 
+        svg,
         .anticon {
-            width: 16px;
-            height: 16px;
+            width: 100%;
+            height: 100%;
+        }
 
-            svg {
-                width: 100%;
-                height: 100%;
-                fill: currentColor;
-            }
+        svg {
+            fill: currentColor;
         }
     }
 }
 
-.training-modal {
+.day-modal {
     .ant-modal-header {
         padding: $indentMin2 36px 0 $indentSmall;
         border-bottom: none;
@@ -182,6 +221,7 @@ div.training-calendar.ant-picker-calendar-full {
     .ant-modal-header {
         padding: $indentSmall;
     }
+
     .ant-modal-body {
         padding-top: $indentSmall;
     }
@@ -197,7 +237,7 @@ div.training-calendar.ant-picker-calendar-full {
     .ant-select {
         flex-grow: 1;
 
-        .ant-select-selector {
+        &-selector {
             color: $black !important;
             border: none !important;
             background: $white !important;
@@ -212,8 +252,8 @@ div.training-calendar.ant-picker-calendar-full {
 
     .save-btn {
         margin-top: 8px;
-        border: none;
         margin-left: 0 !important;
+        border: none;
 
         &:disabled {
             background-color: transparent;
@@ -281,8 +321,13 @@ div.training-calendar.ant-picker-calendar-full {
     .exercise-fields {
         padding-top: $indentMid;
 
+        .ant-input-number {
+            width: 100%;
+        }
+
         input {
             color: $black;
+            height: 24px;
 
             &::placeholder {
                 color: $lightGrey;
@@ -331,16 +376,14 @@ div.training-calendar.ant-picker-calendar-full {
             }
         }
 
-        &__weight {
-            width: 90px;
-        }
-
+        &__weight,
         &__replays {
             width: 90px;
         }
     }
 
     .buttons-wrapper {
+        flex-shrink: 0;
         border-radius: 0 0 $borderRadiusBig $borderRadiusBig;
         overflow: hidden;
     }
@@ -348,11 +391,11 @@ div.training-calendar.ant-picker-calendar-full {
     .remove,
     .add-more {
         flex-grow: 1;
-        height: auto;
         width: 50%;
-        text-align: left;
+        height: auto;
         margin-top: $indentMid;
         padding: $indentSmallest 13px;
+        text-align: left;
         color: $primary;
         background: $lightWhite;
     }
@@ -374,24 +417,117 @@ div.training-calendar.ant-picker-calendar-full {
     }
 }
 
-.modal-page {
-    .ant-modal-confirm-title {
-        color: $black;
-    }
-
-    .ant-modal-confirm-content {
-        color: $grey;
-    }
+.modal-error-save .ant-modal-confirm-body-wrapper svg {
+    fill: $primary;
 }
 
-.modal-variants {
-    .ant-modal-confirm-body-wrapper svg {
-        fill: $primary;
+.error-modal.calendar-error-modal {
+    .ant-result {
+        padding-top: 64px;
+        padding-bottom: 56px;
     }
 }
 
 @include tablet() {
+    div.training-calendar.ant-picker-calendar-full {
+        .ant-picker-content tr {
+            td:nth-child(6) {
+                .ant-modal-root {
+                    left: auto;
+                    right: 0;
+                }
+            }
+        }
+    }
+}
+
+@include small-tablet() {
+    .calendar-page {
+        .calendar-page__content {
+            padding-left: $indentMid;
+            padding-right: $indentMid;
+
+            .ant-picker-calendar-header {
+                display: flex;
+
+                .ant-picker-calendar-mode-switch {
+                    margin-top: 0;
+                    margin-left: $indentSmallest;
+
+                    & > label {
+                        width: fit-content;
+                        max-width: 100%;
+                    }
+                }
+
+                .ant-picker-calendar-mode-switch,
+                .ant-picker-calendar-month-select,
+                .ant-picker-calendar-year-select {
+                    width: auto;
+                }
+            }
+
+            .ant-picker-cell .ant-picker-cell-inner {
+                min-width: $calendarCellMobileHeight;
+                height: $calendarCellMobileHeight;
+                line-height: $calendarCellMobileHeight;
+            }
+        }
+
+        .ant-picker-cell-selected .ant-picker-calendar-date-value {
+            color: $black;
+        }
+
+        .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner {
+            border: 1px solid $primary;
+            background: $white;
+        }
+
+        .cell-content.is-mobile {
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            background: $lightWhite;
+        }
+    }
+
+    .ant-modal.modal-page,
+    .ant-modal.calendar-error-modal {
+        max-width: calc(100vw - 32px);
+    }
+
+    .error-modal.calendar-error-modal {
+        .ant-result-subtitle span {
+            display: block;
+        }
+    }
 }
 
 @include mobile() {
+    .cell-content__modal {
+        width: calc(100% - 48px) !important;
+    }
+
+    .exercises-modal {
+        .ant-drawer-content-wrapper {
+            width: 100% !important;
+            margin-top: 85px;
+            border-radius: $borderRadiusLarge $borderRadiusLarge 0 0;
+            overflow: hidden;
+        }
+
+        .ant-drawer-header {
+            padding-top: $indentMid;
+            padding-left: $indentMin2;
+            padding-right: $indentMin2;
+        }
+
+        .ant-drawer-body {
+            padding-left: $indentMin2;
+            padding-right: $indentMin2;
+        }
+    }
 }

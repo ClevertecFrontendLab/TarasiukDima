@@ -1,8 +1,8 @@
-import { memo, useContext, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { useGetSavedTraining } from '@hooks/index';
+import { useGetSavedTraining, useIsMobile } from '@hooks/index';
 import { DEFAULT_TRAINING_NAME_VARIANT, TRAININGS_IDS } from '@constants/index';
-import { ArrowLeftOutlined, CloseOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Button, Modal, Row, Select } from 'antd';
 import { CellDayContext } from './calendar-cell-context';
 import { CalendarTrainingList } from './calendar-trainings-list';
@@ -33,11 +33,13 @@ export const CellTrainingModal: React.FC<TCellTrainingModalProps> = memo(
             chosenVariantTraining,
             changeTrainingVariantCb,
         } = useContext(CellDayContext) as TCellDayContext;
+        const isMobile = useIsMobile();
         const { getSavedTrainingByDay } = useGetSavedTraining();
 
         const [defaultSelectValue, setDefaultSelectValue] = useState(
             chosenVariantTraining ?? DEFAULT_TRAINING_NAME_VARIANT,
         );
+        const [isShowSelect, setIsShowSelect] = useState(false);
 
         const savedTrainings = getSavedTrainingByDay(curDay);
         const addedTrainingNames = Object.keys(dayFullInfo);
@@ -116,27 +118,52 @@ export const CellTrainingModal: React.FC<TCellTrainingModalProps> = memo(
             }
         }, [chosenVariantTraining]);
 
+        const changeVisibleSelect = useCallback(() => {
+            setIsShowSelect((prev) => !prev);
+        }, []);
+
         return (
             <Modal
+                transitionName=''
+                maskTransitionName=''
+                maskStyle={{
+                    backgroundColor: 'transparent',
+                }}
+                destroyOnClose
                 data-test-id={TRAININGS_IDS.modalCreate}
                 className='cell-content__modal add-new-modal'
                 open={isShow}
-                closeIcon={<CloseOutlined data-test-id={TRAININGS_IDS.modalCreateCloseBtn} />}
                 closable={false}
-                getContainer={refEl}
+                getContainer={isMobile ? false : refEl}
+                centered={isMobile ? true : false}
                 onCancel={closeCb}
                 title={
-                    <Row justify='start' align='middle' className='add-new-modal__head'>
-                        <Button type='text' className='back-button' onClick={closeCb}>
+                    <Row
+                        justify='start'
+                        align='middle'
+                        className='add-new-modal__head'
+                        id='select-wrapper'
+                    >
+                        <Button
+                            type='text'
+                            className='back-button'
+                            onClick={closeCb}
+                            data-test-id={TRAININGS_IDS.modalCreateCloseBtn}
+                        >
                             <ArrowLeftOutlined />
                         </Button>
 
                         <Select
+                            open={isShowSelect}
+                            onChange={changeTrainingVariantCb}
+                            onClick={changeVisibleSelect}
                             data-test-id={TRAININGS_IDS.modalCreateSelect}
                             value={defaultSelectValue as TVariantChosenItem}
                             disabled={isDisabledChoseTrainingName}
-                            onChange={changeTrainingVariantCb}
                             options={variantsTrainingForChoose}
+                            getPopupContainer={() =>
+                                document.getElementById('select-wrapper') as HTMLDivElement
+                            }
                         />
                     </Row>
                 }
@@ -160,7 +187,7 @@ export const CellTrainingModal: React.FC<TCellTrainingModalProps> = memo(
                             onClick={saveExercisesCb}
                             disabled={disabledSaveBtn}
                         >
-                            Сохранить
+                            Сохранить изменения
                         </Button>
                     </>
                 }

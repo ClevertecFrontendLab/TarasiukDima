@@ -12,6 +12,7 @@ export type TTrainingEditButtonCb = (trainingName: string, isFinished?: boolean)
 
 export type TCalendarTrainingVariants = {
     trainingVariants: TTrainingVariants;
+    showErrorModalCb: TSimpleFn,
 };
 
 export type TCellDayContext = {
@@ -28,12 +29,14 @@ export type TCellDayContext = {
 };
 
 export type TCellModals = {
-    curRef: React.MutableRefObject<HTMLDivElement | null>;
+    curRef: React.MutableRefObject<HTMLDivElement | null> | null;
     curDay: string;
     trainingVariants: TTrainingVariants;
     isFutureDay: boolean;
     dayChangedInfo: TTrainingDayData;
     dayFullInfo: TTrainingDayData;
+    isShow: boolean;
+    showModalErrorCb: TSimpleFn,
 
     closeModalCb: () => void;
     setChangedPersonalTraining: TChangedTrainingCb;

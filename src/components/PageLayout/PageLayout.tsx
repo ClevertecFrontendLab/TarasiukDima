@@ -46,6 +46,7 @@ export const PageLayout: React.FC<TPageLayoutProps> = ({
 
             {isShowTrainingListError && (
                 <ModalPage
+                    className='calendar-error-modal'
                     variant='error'
                     open={isShowTrainingListError}
                     dataTestId={TRAININGS_IDS.modalTrainingError}
@@ -54,7 +55,11 @@ export const PageLayout: React.FC<TPageLayoutProps> = ({
                     <Result
                         status={STATUS_CODES.serverError as ResultStatusType}
                         title='Что-то пошло не так'
-                        subTitle='Произошла ошибка, попробуйте ещё раз.'
+                        subTitle={
+                            <>
+                                <span>Произошла ошибка,</span> <span>попробуйте ещё раз.</span>
+                            </>
+                        }
                         extra={
                             <Button
                                 type='primary'
