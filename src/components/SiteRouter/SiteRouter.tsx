@@ -9,6 +9,7 @@ import {
     ConfirmEmailPage,
     ResultPage,
     FeedbacksPage,
+    CalendarPage,
 } from '@pages/index';
 import { NotAuth, RequiredAuth } from '@components/index';
 import { ROUTES_LINKS } from '@constants/index';
@@ -32,6 +33,15 @@ export const SiteRouter = () => (
                 element={
                     <RequiredAuth redirect={ROUTES_LINKS.auth}>
                         <FeedbacksPage />
+                    </RequiredAuth>
+                }
+            />
+
+            <Route
+                path={ROUTES_LINKS.calendar}
+                element={
+                    <RequiredAuth redirect={ROUTES_LINKS.auth}>
+                        <CalendarPage />
                     </RequiredAuth>
                 }
             />

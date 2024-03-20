@@ -1,11 +1,11 @@
 export const ROUTES_LINKS = {
     home: '/main',
-    calendar: '/#',
-    training: '/#',
-    progress: '/#',
+    calendar: '/calendar',
+    training: '/training',
+    progress: '/progress',
     feedbacks: '/feedbacks',
 
-    profile: '/#',
+    profile: '/profile',
     auth: '/auth',
     registration: '/auth/registration',
     changePassword: '/auth/change-password',

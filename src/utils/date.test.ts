@@ -1,4 +1,50 @@
-import { sortArrayByDate, getCorrectDateForShow } from './date';
+import {
+    sortArrayByDate,
+    getCorrectDateForShow,
+    compareDates,
+    updatedNeededLengthValue,
+} from './date';
+
+describe('compareDates', () => {
+    const day1 = '2024-03-04T12:55:12.250Z';
+    const day2 = '2024-03-03T12:55:12.250Z';
+
+    test('get first day elder return -1', () => {
+        expect(compareDates(day1, day2)).toEqual(-1);
+    });
+
+    test('get first day earlier return 1', () => {
+        expect(compareDates(day2, day1)).toEqual(1);
+    });
+
+    test('get days equals', () => {
+        expect(compareDates(day1, day1)).toEqual(-1);
+    });
+});
+
+describe('updatedNeededLengthValue', () => {
+    test('get value less needed length', () => {
+        expect(updatedNeededLengthValue(2, 3, '*')).toEqual('**2');
+    });
+
+    test('get value(number) without args', () => {
+        expect(updatedNeededLengthValue(2)).toEqual('02');
+    });
+
+    test('get value(string) without args', () => {
+        expect(updatedNeededLengthValue('2')).toEqual('02');
+    });
+
+    test('get value equal needed length', () => {
+        const value = 222;
+        expect(updatedNeededLengthValue(value, 3, '*')).toEqual(value.toString());
+    });
+
+    test('get value more needed length', () => {
+        const value = 222;
+        expect(updatedNeededLengthValue(value, 1, '*')).toEqual(value.toString());
+    });
+});
 
 describe('sortArrayByDate', () => {
     const mockItems = [

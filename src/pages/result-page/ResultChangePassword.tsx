@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from 'antd';
 import { ResultComponent } from '@components/index';
-import { ROUTES_LINKS } from '@constants/index';
+import { ROUTES_LINKS, USER_IDS } from '@constants/index';
 
 type TResultChangePasswordProps = {
     state?: {
@@ -29,7 +29,7 @@ export const ResultChangePassword: React.FC<TResultChangePasswordProps> = ({ sta
                         className='link'
                         type='primary'
                         onClick={repeatChangePasswordHandler}
-                        data-test-id='change-retry-button'
+                        data-test-id={USER_IDS.changeResultRetryBtn}
                     >
                         Повторить
                     </Button>
@@ -49,7 +49,11 @@ export const ResultChangePassword: React.FC<TResultChangePasswordProps> = ({ sta
                 </>
             }
             extra={
-                <Link className='link' to={ROUTES_LINKS.auth} data-test-id='change-entry-button'>
+                <Link
+                    className='link'
+                    to={ROUTES_LINKS.auth}
+                    data-test-id={USER_IDS.changeResultEntryBtn}
+                >
                     Вход
                 </Link>
             }

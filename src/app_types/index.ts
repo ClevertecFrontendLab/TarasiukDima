@@ -10,3 +10,13 @@ export type {
     TServerErrorResponse,
     TServerResponse,
 } from './responses';
+
+export type {
+    TTrainingParameters,
+    TTrainingExercise,
+    TTrainingRequired,
+    TTrainingBody,
+    TTraining,
+} from './training';
+
+export type { TTrainingListItem, TTrainingVariants } from './catalogs';

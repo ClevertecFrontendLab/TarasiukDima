@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ResultComponent } from '@components/index';
 import { Button } from 'antd';
-import { ROUTES_LINKS } from '@constants/index';
+import { ROUTES_LINKS, USER_IDS } from '@constants/index';
 import { IResultItemProps } from './type';
 
 export const ResultRegistration: React.FC<IResultItemProps> = ({ state }) => {
@@ -28,7 +28,7 @@ export const ResultRegistration: React.FC<IResultItemProps> = ({ state }) => {
                     <Link
                         className='link'
                         to={ROUTES_LINKS.auth}
-                        data-test-id='registration-enter-button'
+                        data-test-id={USER_IDS.registrationResultEnterBtn}
                     >
                         Войти
                     </Link>
@@ -47,7 +47,7 @@ export const ResultRegistration: React.FC<IResultItemProps> = ({ state }) => {
                     <Link
                         className='link'
                         to={ROUTES_LINKS.registration}
-                        data-test-id='registration-back-button'
+                        data-test-id={USER_IDS.registrationResultBackBtn}
                     >
                         Назад к регистрации
                     </Link>
@@ -71,7 +71,7 @@ export const ResultRegistration: React.FC<IResultItemProps> = ({ state }) => {
                     onClick={clickRepeatRegistrationHandler}
                     type='primary'
                     className='link'
-                    data-test-id='registration-retry-button'
+                    data-test-id={USER_IDS.registrationResultRetryBtn}
                 >
                     Повторить
                 </Button>

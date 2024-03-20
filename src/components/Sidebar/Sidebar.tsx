@@ -6,7 +6,7 @@ import { Button, Col } from 'antd';
 import Sider from 'antd/lib/layout/Sider';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { Logo, SiteNavigation } from '@components/index';
-import { TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
+import { NAVIGATION_IDS, TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
 import ExitIcon from '@public/img/exit.svg?react';
 
 import './sidebar.scss';
@@ -34,13 +34,17 @@ export const Sidebar = memo(() => {
             className='sider'
             trigger={null}
         >
-            <button onClick={toggleSidebar} className='trigger big' data-test-id='sider-switch'>
+            <button
+                onClick={toggleSidebar}
+                className='trigger big'
+                data-test-id={NAVIGATION_IDS.sidebarTriggerScreen}
+            >
                 {isShowSidebar ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </button>
             <button
                 onClick={toggleSidebar}
                 className='trigger mobile'
-                data-test-id='sider-switch-mobile'
+                data-test-id={NAVIGATION_IDS.sidebarTriggerMobile}
             >
                 {isShowSidebar ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </button>

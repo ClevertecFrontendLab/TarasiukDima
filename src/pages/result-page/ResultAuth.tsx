@@ -1,8 +1,8 @@
+import { useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from 'antd';
 import { ResultComponent } from '@components/index';
-import { ROUTES_LINKS } from '@constants/index';
-import { useCallback } from 'react';
+import { ROUTES_LINKS, USER_IDS } from '@constants/index';
 
 type TResultAuthProps = {
     state?: {
@@ -29,7 +29,11 @@ export const ResultAuth: React.FC<TResultAuthProps> = ({ state }) => {
                     </>
                 }
                 extra={
-                    <Link className='link' to={ROUTES_LINKS.auth} data-test-id='check-retry-button'>
+                    <Link
+                        className='link'
+                        to={ROUTES_LINKS.auth}
+                        data-test-id={USER_IDS.checkResultRetryBtn}
+                    >
                         Попробовать снова
                     </Link>
                 }
@@ -48,7 +52,7 @@ export const ResultAuth: React.FC<TResultAuthProps> = ({ state }) => {
                         className='small-link'
                         type='primary'
                         onClick={repeatCheckEmailHandler}
-                        data-test-id='check-back-button'
+                        data-test-id={USER_IDS.checkResultBackBtn}
                     >
                         Назад
                     </Button>
@@ -63,7 +67,11 @@ export const ResultAuth: React.FC<TResultAuthProps> = ({ state }) => {
             title='Вход не выполнен'
             subTitle='Что-то пошло не так. Попробуйте еще раз'
             extra={
-                <Link className='link' to={ROUTES_LINKS.auth} data-test-id='login-retry-button'>
+                <Link
+                    className='link'
+                    to={ROUTES_LINKS.auth}
+                    data-test-id={USER_IDS.checkResultLoginBtn}
+                >
                     Повторить
                 </Link>
             }

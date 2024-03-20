@@ -1,11 +1,11 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
+import { useAppDispatch, useAppSelector } from '@hooks/index';
 import { changeShowTokenError } from '@redux/index';
 import { Button, Result, Row } from 'antd';
 import { ResultStatusType } from 'antd/lib/result';
 import { ModalPage } from '@components/index';
-import { ROUTES_LINKS, STATUS_CODES } from '@constants/index';
+import { FEEDBACKS_IDS, ROUTES_LINKS, STATUS_CODES } from '@constants/index';
 
 type TFeedbacksPageProps = {
     isErrorOpen: boolean;
@@ -16,7 +16,7 @@ type TFeedbacksPageProps = {
 
     isErrorAddFeedbackOpen: boolean;
     closeErrorAddFeedbackCB: () => void;
-    repeateWriteShowModalFeedback: () => void;
+    repeatWriteShowModalFeedback: () => void;
 };
 
 export const ModalsInfo: React.FC<TFeedbacksPageProps> = ({
@@ -26,7 +26,7 @@ export const ModalsInfo: React.FC<TFeedbacksPageProps> = ({
     closeSuccessFeedbackCB,
     isErrorAddFeedbackOpen,
     closeErrorAddFeedbackCB,
-    repeateWriteShowModalFeedback,
+    repeatWriteShowModalFeedback,
 }) => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -45,7 +45,7 @@ export const ModalsInfo: React.FC<TFeedbacksPageProps> = ({
         <>
             <ModalPage variant='error' open={isErrorOpen}>
                 <Result
-                    status={STATUS_CODES.server_error as ResultStatusType}
+                    status={STATUS_CODES.serverError as ResultStatusType}
                     title='Что-то пошло не так'
                     subTitle={
                         <>
@@ -105,8 +105,8 @@ export const ModalsInfo: React.FC<TFeedbacksPageProps> = ({
                             <Button
                                 type='primary'
                                 className='button-page'
-                                onClick={repeateWriteShowModalFeedback}
-                                data-test-id='write-review-not-saved-modal'
+                                onClick={repeatWriteShowModalFeedback}
+                                data-test-id={FEEDBACKS_IDS.errorModalAddReviewBtn}
                             >
                                 Написать отзыв
                             </Button>

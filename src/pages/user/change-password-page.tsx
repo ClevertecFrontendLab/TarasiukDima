@@ -8,7 +8,7 @@ import { Button, Form, Input } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { UserLayout } from '@components/index';
-import { ROUTES_LINKS } from '@constants/index';
+import { ROUTES_LINKS, USER_IDS } from '@constants/index';
 
 import './auth.scss';
 
@@ -148,7 +148,7 @@ export const ChangePasswordPage = () => {
                         iconRender={(visible) =>
                             visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                         }
-                        data-test-id='change-password'
+                        data-test-id={USER_IDS.changePassword}
                     />
                 </Form.Item>
 
@@ -163,14 +163,14 @@ export const ChangePasswordPage = () => {
                         iconRender={(visible) =>
                             visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                         }
-                        data-test-id='change-confirm-password'
+                        data-test-id={USER_IDS.changePassword2}
                     />
                 </Form.Item>
 
                 <Button
                     htmlType='submit'
                     className='btn form__submit'
-                    data-test-id='change-submit-button'
+                    data-test-id={USER_IDS.changeSubmitBtn}
                 >
                     Сохранить
                 </Button>

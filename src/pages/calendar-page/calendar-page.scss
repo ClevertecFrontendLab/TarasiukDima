@@ -1,0 +1,533 @@
+@import "@assets/scss/variables";
+@import "@assets/scss/mixins";
+
+body .calendar-page .calendar-page__header {
+    padding-bottom: 0;
+}
+
+.calendar-page {
+    .calendar-page__content {
+        flex-grow: 0;
+        background-color: $primaryLight;
+    }
+
+    .ant-picker-calendar,
+    .ant-picker-calendar-full .ant-picker-panel {
+        background-color: transparent;
+    }
+
+    .ant-picker-cell-inner {
+        background-color: $white;
+    }
+
+    .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner,
+    .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
+    .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner {
+        background: $primary;
+    }
+
+    .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner:before,
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child {
+        border-color: $primary;
+    }
+
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover,
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+        color: $primary;
+        border-color: $primary;
+    }
+}
+
+div.training-calendar.ant-picker-calendar-full {
+    .ant-picker-cell-selected .ant-picker-cell-inner {
+        background-color: $lightWhite;
+    }
+
+    .ant-picker-calendar-date-content {
+        height: auto;
+        min-height: 92px;
+        overflow-y: initial !important;
+    }
+
+    .ant-picker-content tr {
+        td:not(:last-child) {
+            .ant-modal-root {
+                left: 0;
+                right: auto;
+            }
+        }
+
+        td:last-child {
+            .ant-modal-root {
+                right: 0;
+                left: auto;
+            }
+        }
+    }
+
+    .ant-modal-root {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 100;
+    }
+
+    .ant-modal-mask {
+        display: none;
+    }
+
+    .ant-modal-wrap {
+        position: relative;
+        top: 0;
+        bottom: auto;
+        overflow: initial;
+    }
+
+    .cell-content__modal {
+        top: 0;
+        left: 0;
+        margin: 0;
+        padding: 0;
+    }
+
+    .ant-picker-cell-inner {
+        z-index: inherit;
+        padding-bottom: 20px;
+    }
+}
+
+.cell-content {
+    width: 100%;
+
+    .cell-content__training {
+        width: 100%;
+        text-wrap: nowrap;
+        overflow: hidden;
+    }
+}
+
+.ant-list-items .isFinished {
+    .ant-badge-status-text {
+        color: $lightGrey;
+    }
+
+    .edit-training {
+        color: $lightGrey;
+        background-color: $white;
+
+        svg {
+            fill: currentColor;
+        }
+    }
+}
+
+.ant-picker-cell {
+    position: relative;
+
+    .cell-content__training {
+        font-size: $fontSizeSmaller;
+        line-height: $lineHeight;
+    }
+}
+
+.modal-page {
+    .ant-modal-confirm-title {
+        color: $black;
+    }
+
+    .ant-modal-confirm-content {
+        color: $grey;
+    }
+}
+
+.cell-content__modal {
+    width: 264px !important;
+
+    .ant-modal-body {
+        padding: 0 $indentSmall $indentSmall;
+    }
+
+    .ant-modal-footer {
+        padding: $indentSmall;
+    }
+
+    .training__list {
+        &.training__info_list {
+            margin-top: 30px;
+        }
+
+        .edit-training {
+            border: none;
+        }
+
+        svg {
+            fill: $primary;
+        }
+    }
+
+    .back-button {
+        width: 28px;
+        height: 28px;
+        padding: 5px;
+        line-height: $lineHeightSmall;
+
+        svg,
+        .anticon {
+            width: 100%;
+            height: 100%;
+        }
+
+        svg {
+            fill: currentColor;
+        }
+    }
+}
+
+.day-modal {
+    .ant-modal-header {
+        padding: $indentMin2 36px 0 $indentSmall;
+        border-bottom: none;
+    }
+
+    .ant-modal-close {
+        top: 18px;
+        right: $indentSmall;
+    }
+
+    .ant-modal-close-x {
+        width: 16px;
+        height: 16px;
+        line-height: $lineHeightSmall;
+    }
+
+    .ant-modal-title {
+        font-size: $fontSizeMin;
+        font-weight: $weightBold;
+    }
+
+    .modal-no-text {
+        color: $grey;
+        margin-bottom: $indentMin2;
+    }
+
+    .add-training {
+        width: 100%;
+        padding-top: $indentSmallest;
+        padding-bottom: $indentSmallest;
+    }
+}
+
+.add-new-modal {
+    .ant-modal-header {
+        padding: $indentSmall;
+    }
+
+    .ant-modal-body {
+        padding-top: $indentSmall;
+    }
+
+    .ant-badge-status-text {
+        color: $grey;
+    }
+
+    .ant-badge-status-dot {
+        display: none;
+    }
+
+    .ant-select {
+        flex-grow: 1;
+
+        &-selector {
+            color: $black !important;
+            border: none !important;
+            background: $white !important;
+        }
+    }
+
+    .save-btn,
+    .add-training {
+        width: 100%;
+        color: $black;
+    }
+
+    .save-btn {
+        margin-top: 8px;
+        margin-left: 0 !important;
+        border: none;
+
+        &:disabled {
+            background-color: transparent;
+        }
+
+        &.is-loading {
+            color: $blueLoading;
+        }
+    }
+}
+
+.exercises-modal {
+    .ant-drawer-content-wrapper {
+        width: 408px !important;
+    }
+
+    .ant-drawer-mask {
+        background: transparent;
+    }
+
+    .ant-drawer-close {
+        order: 2;
+        margin-right: 0;
+    }
+
+    .ant-drawer-title {
+        font-size: 20px;
+        color: $black;
+
+        .anticon {
+            width: $indentSmall;
+            height: $indentSmall;
+            margin-right: $indentSmall;
+        }
+
+        svg {
+            fill: currentColor;
+        }
+    }
+
+    .ant-drawer-header {
+        border-bottom: none;
+    }
+
+    .ant-drawer-body {
+        display: flex;
+        flex-direction: column;
+        padding: 0 $indentBig $indentBig;
+    }
+
+    .exercises-modal__var-info {
+        font-size: $fontSizeMin;
+        font-weight: $weightMedium;
+
+        &_badge .ant-badge-status-text {
+            color: $grey;
+        }
+
+        &_date {
+            margin-bottom: 0;
+            color: $grey;
+        }
+    }
+
+    .exercise-fields {
+        padding-top: $indentMid;
+
+        .ant-input-number {
+            width: 100%;
+        }
+
+        input {
+            color: $black;
+            height: 24px;
+
+            &::placeholder {
+                color: $lightGrey;
+            }
+
+            &:disabled {
+                background: $white;
+            }
+        }
+
+        &__name {
+            width: 100%;
+            line-height: $lineHeight;
+            margin-bottom: $indentSmallest;
+        }
+
+        &__weight,
+        &__replays,
+        &__approaches {
+            margin-bottom: 0;
+        }
+
+        &__approaches {
+            width: 120px;
+            margin-right: auto;
+        }
+
+        .multiply {
+            flex-shrink: 0;
+            align-self: flex-end;
+            margin: 0 2px 5px;
+            font-size: $fontSizeSmall;
+            color: $lightGrey;
+        }
+
+        .ant-form-item-label {
+            width: 100%;
+            margin-bottom: 6px;
+            padding: 1px $indentSmallest;
+            text-align: left;
+            background-color: $lightDividers;
+
+            label {
+                height: auto;
+                font-size: $fontSizeSmaller;
+            }
+        }
+
+        &__weight,
+        &__replays {
+            width: 90px;
+        }
+    }
+
+    .buttons-wrapper {
+        flex-shrink: 0;
+        border-radius: 0 0 $borderRadiusBig $borderRadiusBig;
+        overflow: hidden;
+    }
+
+    .remove,
+    .add-more {
+        flex-grow: 1;
+        width: 50%;
+        height: auto;
+        margin-top: $indentMid;
+        padding: $indentSmallest 13px;
+        text-align: left;
+        color: $primary;
+        background: $lightWhite;
+    }
+
+    .add-more {
+        color: $primary;
+    }
+
+    .remove {
+        color: $black;
+    }
+
+    .last-chance-edit {
+        margin-top: auto;
+        line-height: $lineHeight;
+        font-size: $fontSizeSmaller;
+        text-align: center;
+        color: $grey;
+    }
+}
+
+.modal-error-save .ant-modal-confirm-body-wrapper svg {
+    fill: $primary;
+}
+
+.error-modal.calendar-error-modal {
+    .ant-result {
+        padding-top: 64px;
+        padding-bottom: 56px;
+    }
+}
+
+@include tablet() {
+    div.training-calendar.ant-picker-calendar-full {
+        .ant-picker-content tr {
+            td:nth-child(6) {
+                .ant-modal-root {
+                    left: auto;
+                    right: 0;
+                }
+            }
+        }
+    }
+}
+
+@include small-tablet() {
+    .calendar-page {
+        .calendar-page__content {
+            padding-left: $indentMid;
+            padding-right: $indentMid;
+
+            .ant-picker-calendar-header {
+                display: flex;
+
+                .ant-picker-calendar-mode-switch {
+                    margin-top: 0;
+                    margin-left: $indentSmallest;
+
+                    & > label {
+                        width: fit-content;
+                        max-width: 100%;
+                    }
+                }
+
+                .ant-picker-calendar-mode-switch,
+                .ant-picker-calendar-month-select,
+                .ant-picker-calendar-year-select {
+                    width: auto;
+                }
+            }
+
+            .ant-picker-cell .ant-picker-cell-inner {
+                min-width: $calendarCellMobileHeight;
+                height: $calendarCellMobileHeight;
+                line-height: $calendarCellMobileHeight;
+            }
+        }
+
+        .ant-picker-cell-selected .ant-picker-calendar-date-value {
+            color: $black;
+        }
+
+        .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner {
+            border: 1px solid $primary;
+            background: $white;
+        }
+
+        .cell-content.is-mobile {
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            background: $lightWhite;
+        }
+    }
+
+    .ant-modal.modal-page,
+    .ant-modal.calendar-error-modal {
+        max-width: calc(100vw - 32px);
+    }
+
+    .error-modal.calendar-error-modal {
+        .ant-result-subtitle span {
+            display: block;
+        }
+    }
+}
+
+@include mobile() {
+    .cell-content__modal {
+        width: calc(100% - 48px) !important;
+    }
+
+    .exercises-modal {
+        .ant-drawer-content-wrapper {
+            width: 100% !important;
+            margin-top: 85px;
+            border-radius: $borderRadiusLarge $borderRadiusLarge 0 0;
+            overflow: hidden;
+        }
+
+        .ant-drawer-header {
+            padding-top: $indentMid;
+            padding-left: $indentMin2;
+            padding-right: $indentMin2;
+        }
+
+        .ant-drawer-body {
+            padding-left: $indentMin2;
+            padding-right: $indentMin2;
+        }
+    }
+}

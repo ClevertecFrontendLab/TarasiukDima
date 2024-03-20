@@ -8,3 +8,13 @@ export {
 } from './userApi';
 
 export { useGetFeedbackQuery, useAddFeedbackMutation, feedbackApi } from './feedbackApi';
+
+export {
+    trainingApi,
+    useAddTrainingMutation,
+    useDeleteTrainingMutation,
+    useLazyGetTrainingQuery,
+    useUpdateTrainingMutation,
+} from './trainingApi';
+
+export { useLazyGetTrainingsListQuery, catalogsApi } from './catalogsApi';

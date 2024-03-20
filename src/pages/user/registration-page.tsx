@@ -8,7 +8,7 @@ import { validateEmail, validatePassword } from '@utils/index';
 import { EyeInvisibleOutlined, EyeTwoTone, GooglePlusOutlined } from '@ant-design/icons';
 import { UserLayout, Logo } from '@components/index';
 import { AuthNavButtons } from './AuthNavButtons';
-import { ROUTES_LINKS } from '@constants/index';
+import { ROUTES_LINKS, USER_IDS } from '@constants/index';
 import { TServerErrorResponse } from '@app_types/responses';
 
 import './auth.scss';
@@ -161,7 +161,7 @@ export const RegistrationPage = () => {
                         addonBefore='e-mail:'
                         type='email'
                         onChange={emailChangeHandler}
-                        data-test-id='registration-email'
+                        data-test-id={USER_IDS.registrationEmail}
                     />
                 </Form.Item>
 
@@ -177,7 +177,7 @@ export const RegistrationPage = () => {
                         iconRender={(visible) =>
                             visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                         }
-                        data-test-id='registration-password'
+                        data-test-id={USER_IDS.registrationPassword}
                     />
                 </Form.Item>
 
@@ -192,14 +192,14 @@ export const RegistrationPage = () => {
                         iconRender={(visible) =>
                             visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                         }
-                        data-test-id='registration-confirm-password'
+                        data-test-id={USER_IDS.registrationPassword2}
                     />
                 </Form.Item>
 
                 <Button
                     htmlType='submit'
                     className='btn form__submit'
-                    data-test-id='registration-submit-button'
+                    data-test-id={USER_IDS.registrationSubmitBtn}
                 >
                     Войти
                 </Button>

@@ -2,7 +2,7 @@ import { memo, useCallback, useMemo, useState } from 'react';
 import { sortArrayByDate } from '@utils/index';
 import { Button, Row } from 'antd';
 import { Feedbacks, PageContent, PageFooter } from '@components/index';
-import { COUNT_FEEDBACKS_TO_SHOW } from '@constants/index';
+import { COUNT_FEEDBACKS_TO_SHOW, FEEDBACKS_IDS } from '@constants/index';
 import { TSimpleFn, TFeedback } from '@app_types/index';
 
 type TFeedbacksPageContent = {
@@ -38,7 +38,7 @@ export const FeedbacksPageContent: React.FC<TFeedbacksPageContent> = memo(
                             type='primary'
                             className='button-page'
                             onClick={addCommentModalHandler}
-                            data-test-id='write-review'
+                            data-test-id={FEEDBACKS_IDS.addReview}
                         >
                             Написать отзыв
                         </Button>
@@ -48,7 +48,7 @@ export const FeedbacksPageContent: React.FC<TFeedbacksPageContent> = memo(
                                 type='link'
                                 className='show-all link'
                                 onClick={showAllFeedbacksHandler}
-                                data-test-id='all-reviews-button'
+                                data-test-id={FEEDBACKS_IDS.showAllBtn}
                             >
                                 {countItemsToShow ? 'Развернуть все отзывы' : 'Свернуть все отзывы'}
                             </Button>

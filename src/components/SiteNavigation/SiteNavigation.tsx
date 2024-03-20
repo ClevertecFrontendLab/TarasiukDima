@@ -1,53 +1,65 @@
 import { memo, useCallback } from 'react';
+import { useAppSelector, useGetPersonalTrainings } from '@hooks/index';
 import classNames from 'classnames';
 import { Menu, MenuProps } from 'antd';
 import { ROUTES_LINKS } from '@constants/index';
 import { HeartFilled, TrophyFilled } from '@ant-design/icons';
+import { SiteNavigationLink } from './SiteNavigationLink';
 import CalendarIcon from '@public/img/calendar.svg?react';
 import ProfileIcon from '@public/img/profile.svg?react';
+import { Location } from 'react-router-dom';
 
 import './site-navigation.scss';
-
-const items: MenuProps['items'] = [
-    {
-        label: 'Календарь',
-        icon: <CalendarIcon />,
-        key: '1' + ROUTES_LINKS.calendar,
-    },
-    {
-        label: 'Тренировки',
-        icon: <HeartFilled />,
-        key: '2' + ROUTES_LINKS.training,
-    },
-    {
-        label: 'Достижения',
-        icon: <TrophyFilled />,
-        key: '3' + ROUTES_LINKS.progress,
-    },
-    {
-        label: 'Профиль',
-        icon: <ProfileIcon />,
-        key: '4' + ROUTES_LINKS.profile,
-    },
-];
 
 type TSiteNavigationProps = {
     inlineCollapsed?: boolean;
     className?: string;
 };
+
+const links: MenuProps['items'] = [
+    {
+        label: 'Календарь',
+        icon: <CalendarIcon />,
+        key: ROUTES_LINKS.calendar,
+    },
+    {
+        label: <SiteNavigationLink link={ROUTES_LINKS.training} title='Тренировки' />,
+        icon: <HeartFilled />,
+        key: ROUTES_LINKS.training,
+    },
+    {
+        label: <SiteNavigationLink link={ROUTES_LINKS.progress} title='Достижения' />,
+        icon: <TrophyFilled />,
+        key: ROUTES_LINKS.progress,
+    },
+    {
+        label: <SiteNavigationLink link={ROUTES_LINKS.profile} title='Профиль' />,
+        icon: <ProfileIcon />,
+        key: ROUTES_LINKS.profile,
+    },
+];
+
 export const SiteNavigation: React.FC<TSiteNavigationProps> = memo(
     ({ inlineCollapsed = true, className = '' }) => {
-        const menuItemClick = useCallback(() => {
-            console.log('menu click');
-        }, []);
+        const { location } = useAppSelector((state) => state.router);
+        const { getPersonalTrainings } = useGetPersonalTrainings();
+
+        const menuClick = useCallback(
+            (menuInfo: { key: string }) => {
+                if (menuInfo.key === ROUTES_LINKS.calendar) {
+                    getPersonalTrainings(true);
+                }
+            },
+            [getPersonalTrainings],
+        );
 
         return (
             <Menu
                 inlineCollapsed={inlineCollapsed}
                 mode='inline'
-                onClick={menuItemClick}
-                selectedKeys={['calendar']}
-                items={items}
+                items={links}
+                onClick={menuClick}
+                selectedKeys={[(location as Location).pathname]}
                 className={classNames('navigation', {
                     [className]: className,
                 })}
