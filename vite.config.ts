@@ -6,6 +6,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
     plugins: [svgr(), react()],
+    base:"/ClevertecFrontendLab/TarasiukDima/",
     server: {
         host: true,
         port: 3000,
