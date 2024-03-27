@@ -3,7 +3,7 @@ import { API_TAGS, SERVICE_API_URL } from '@constants/index';
 import { RootState } from '@redux/index';
 import { TTrainingVariants } from '@app_types/index';
 
-const queryEndpoints = {
+const catalogQueryEndpoints = {
     trainingList: 'training-list',
 };
 
@@ -12,7 +12,7 @@ export const catalogsApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: `${SERVICE_API_URL}/catalogs`,
         prepareHeaders: (headers, { getState }) => {
-            const token = (getState() as RootState).user.token;
+            const token = (getState() as RootState).auth.token;
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`);
             }
@@ -24,7 +24,7 @@ export const catalogsApi = createApi({
     endpoints: (builder) => ({
         getTrainingsList: builder.query<TTrainingVariants, null>({
             query: () => ({
-                url: queryEndpoints.trainingList,
+                url: catalogQueryEndpoints.trainingList,
             }),
             providesTags: (result) =>
                 result

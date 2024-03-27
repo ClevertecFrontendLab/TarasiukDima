@@ -8,7 +8,7 @@ export const trainingApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: `${SERVICE_API_URL}/training`,
         prepareHeaders: (headers, { getState }) => {
-            const token = (getState() as RootState).user.token;
+            const token = (getState() as RootState).auth.token;
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`);
             }

@@ -1,8 +1,10 @@
 export {
     getClearLastRoutePath,
-    isTwoSameExerciseArrays,
+    isTwoSameExercisesArrays,
     getTrainingBadgeStatusColor,
+    checkIsLessFileSize,
 } from './common';
+
 export type { TPreviousLocations } from './common';
 
 export {

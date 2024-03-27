@@ -1,11 +1,11 @@
 export {
-    userApi,
+    authApi,
     useLoginMutation,
     useRegistrationMutation,
     useChangePasswordMutation,
     useCheckEmailMutation,
     useConfirmEmailMutation,
-} from './userApi';
+} from './authApi';
 
 export { useGetFeedbackQuery, useAddFeedbackMutation, feedbackApi } from './feedbackApi';
 
@@ -18,3 +18,12 @@ export {
 } from './trainingApi';
 
 export { useLazyGetTrainingsListQuery, catalogsApi } from './catalogsApi';
+
+export {
+    useGetUserInfoQuery,
+    useLazyGetUserInfoQuery,
+    userApi,
+    useUpdateUserInfoMutation,
+} from './userApi';
+
+export { useUploadFileMutation, filesQueryEndpoints, filesApi } from './filesApi';

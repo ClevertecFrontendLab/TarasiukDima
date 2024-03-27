@@ -6,19 +6,23 @@ import { Route } from 'antd/lib/breadcrumb/Breadcrumb';
 import './breadcrumbs.scss';
 
 export type TBreadcrumbsProps = {
-    routes: Route[];
+    routes: Route[] | null;
 };
 
-export const Breadcrumbs: React.FC<TBreadcrumbsProps> = memo(({ routes }) => (
-    <Breadcrumb
-        className='breadcrumbs'
-        style={{
-            width: '100%',
-        }}
-        routes={routes}
-        itemRender={itemRender}
-    />
-));
+export const Breadcrumbs: React.FC<TBreadcrumbsProps> = memo(({ routes }) => {
+    if (!routes || !routes.length) return null;
+
+    return (
+        <Breadcrumb
+            className='breadcrumbs'
+            style={{
+                width: '100%',
+            }}
+            routes={routes}
+            itemRender={itemRender}
+        />
+    );
+});
 
 const itemRender = (route: Route, _: unknown, routes: Route[]) => {
     const last = routes.indexOf(route) === routes.length - 1;

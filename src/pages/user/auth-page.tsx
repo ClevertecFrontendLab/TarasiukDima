@@ -30,7 +30,7 @@ export const AuthPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { previousLocations } = useAppSelector((state) => state.router);
-    const { email } = useAppSelector((state) => state.user);
+    const { email } = useAppSelector((state) => state.auth);
 
     const [
         loginUser,

@@ -1,12 +1,12 @@
 import path from 'path';
 
 import react from '@vitejs/plugin-react';
-import svgr from "vite-plugin-svgr";
+import svgr from 'vite-plugin-svgr';
 import { defineConfig } from 'vite';
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+    base: command === 'build' ? '/TarasiukDima/' : '/',
     plugins: [svgr(), react()],
-    base:"/ClevertecFrontendLab/TarasiukDima/",
     server: {
         host: true,
         port: 3000,
@@ -25,4 +25,4 @@ export default defineConfig({
             '@services': path.resolve(__dirname, 'src/services'),
         },
     },
-});
+}));

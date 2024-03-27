@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
-import { useChangePasswordMutation } from '@services/userApi';
+import { useAppDispatch, useAppSelector } from '@hooks/index';
+import { useChangePasswordMutation } from '@services/index';
 import { setPassword } from '@redux/index';
 import { TPreviousLocations, getClearLastRoutePath, validatePassword } from '@utils/index';
 import { Button, Form, Input } from 'antd';
@@ -20,7 +20,7 @@ type TFormFields = {
 export const ChangePasswordPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { password } = useAppSelector((state) => state.user);
+    const { password } = useAppSelector((state) => state.auth);
     const { previousLocations } = useAppSelector((state) => state.router);
 
     const [isPasswordError, setIsPasswordError] = useState<boolean>(false);

@@ -3,8 +3,9 @@ import { createReduxHistoryContext } from 'redux-first-history';
 import { createBrowserHistory } from 'history';
 
 import { appReducer } from './app-slice';
+import { authReducer } from './auth-slice';
 import { userReducer } from './user-slice';
-import { userApi, feedbackApi, trainingApi, catalogsApi } from '@services/index';
+import { userApi, feedbackApi, trainingApi, catalogsApi, authApi, filesApi } from '@services/index';
 
 const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
     history: createBrowserHistory(),
@@ -14,12 +15,15 @@ const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHisto
 export const store = configureStore({
     reducer: combineReducers({
         app: appReducer,
+        auth: authReducer,
         user: userReducer,
         router: routerReducer,
         [userApi.reducerPath]: userApi.reducer,
         [feedbackApi.reducerPath]: feedbackApi.reducer,
         [trainingApi.reducerPath]: trainingApi.reducer,
         [catalogsApi.reducerPath]: catalogsApi.reducer,
+        [authApi.reducerPath]: authApi.reducer,
+        [filesApi.reducerPath]: filesApi.reducer,
     }),
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(
@@ -28,6 +32,8 @@ export const store = configureStore({
             feedbackApi.middleware,
             trainingApi.middleware,
             catalogsApi.middleware,
+            authApi.middleware,
+            filesApi.middleware,
         ),
 });
 

@@ -65,3 +65,26 @@ export const TRAININGS_IDS = {
     modalExerciseWeightInput: 'modal-drawer-right-input-weight',
     modalExerciseQuantityInput: 'modal-drawer-right-input-quantity',
 };
+
+
+export const PROFILE_IDS = {
+    profileLinkOnHomePage: 'menu-button-profile',
+    formFirstName: 'profile-name',
+    formLastName: 'profile-surname',
+    formAvatar: 'profile-avatar',
+    formEmail: 'profile-email',
+    formBirthday: 'profile-birthday',
+    formPassword: 'profile-password',
+    formRepeatPassword: 'profile-repeat-password',
+    formSubmit: 'profile-submit',
+    formErrorClose: 'big-file-error-close',
+    formAlert: 'alert',
+};
+
+
+
+export const SETTINGS_IDS = {
+    headerBtn: 'header-settings',
+    headerBack: 'settings-back',
+
+};

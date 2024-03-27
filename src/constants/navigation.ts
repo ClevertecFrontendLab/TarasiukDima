@@ -4,6 +4,7 @@ export const ROUTES_LINKS = {
     training: '/training',
     progress: '/progress',
     feedbacks: '/feedbacks',
+    settings: '/settings',
 
     profile: '/profile',
     auth: '/auth',

@@ -1,6 +1,6 @@
 import { memo, useCallback, useContext, useMemo, useState } from 'react';
 import { useGetCurrentDayInfo, useGetSavedTraining } from '@hooks/index';
-import { getTrainingBadgeStatusColor, isTwoSameExerciseArrays } from '@utils/index';
+import { getTrainingBadgeStatusColor, isTwoSameExercisesArrays } from '@utils/index';
 import { DATE_FORMAT_TO_VIEW, TRAININGS_IDS } from '@constants/index';
 import { CloseOutlined, EditOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Badge, Button, Drawer, Row } from 'antd';
@@ -98,11 +98,11 @@ export const CellExercisesModal: React.FC<TCellAddNewExercisesProps> = memo(
             const newExercises = exercises.filter((item) => item.name);
 
             if (!savedItem || !changedItem || exercises.length !== changedItem.exercises.length) {
-                if (changedItem && isTwoSameExerciseArrays(newExercises, changedItem.exercises)) {
+                if (changedItem && isTwoSameExercisesArrays(newExercises, changedItem.exercises)) {
                     return;
                 }
 
-                if (!changedItem && isTwoSameExerciseArrays(newExercises, savedItem.exercises)) {
+                if (!changedItem && isTwoSameExercisesArrays(newExercises, savedItem.exercises)) {
                     return;
                 }
 

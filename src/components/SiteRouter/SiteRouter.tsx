@@ -10,6 +10,7 @@ import {
     ResultPage,
     FeedbacksPage,
     CalendarPage,
+    ProfilePage,
 } from '@pages/index';
 import { NotAuth, RequiredAuth } from '@components/index';
 import { ROUTES_LINKS } from '@constants/index';
@@ -54,6 +55,7 @@ export const SiteRouter = () => (
                     </NotAuth>
                 }
             />
+
             <Route
                 path={ROUTES_LINKS.registration}
                 element={
@@ -62,8 +64,20 @@ export const SiteRouter = () => (
                     </NotAuth>
                 }
             />
+
+            <Route
+                path={ROUTES_LINKS.profile}
+                element={
+                    <RequiredAuth redirect={ROUTES_LINKS.home}>
+                        <ProfilePage />
+                    </RequiredAuth>
+                }
+            />
+
             <Route path={ROUTES_LINKS.changePassword} element={<ChangePasswordPage />} />
+
             <Route path={ROUTES_LINKS.confirmEmail} element={<ConfirmEmailPage />} />
+
             <Route path={ROUTES_LINKS.resultAll} element={<ResultPage />} />
 
             <Route

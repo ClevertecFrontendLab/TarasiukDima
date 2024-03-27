@@ -4,7 +4,7 @@ import { ROUTES_LINKS } from '@constants/index';
 import { TCheckAuthProps } from './types';
 
 export const NotAuth: React.FC<TCheckAuthProps> = ({ children, redirect = ROUTES_LINKS.home }) => {
-    const { token } = useAppSelector((state) => state.user);
+    const { token } = useAppSelector((state) => state.auth);
 
     if (token) {
         return <Navigate to={redirect} replace />;

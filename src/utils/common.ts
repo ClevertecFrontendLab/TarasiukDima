@@ -32,7 +32,7 @@ export const getTrainingBadgeStatusColor = (key: string): string => {
     }
 };
 
-export const isTwoSameExerciseArrays = (arr1: TExerciseNewInfo[], arr2: TExerciseNewInfo[]) => {
+export const isTwoSameExercisesArrays = (arr1: TExerciseNewInfo[], arr2: TExerciseNewInfo[]) => {
     if (arr1.length !== arr2.length || (arr1 && !arr2) || (!arr1 && arr2)) return false;
 
     const keysForCheck = ['approaches', 'name', 'replays', 'weight'];
@@ -49,4 +49,8 @@ export const isTwoSameExerciseArrays = (arr1: TExerciseNewInfo[], arr2: TExercis
     }
 
     return true;
+};
+
+export const checkIsLessFileSize = (size: number, maxSize: number) => {
+    return size / 1024 / 1024 < maxSize;
 };

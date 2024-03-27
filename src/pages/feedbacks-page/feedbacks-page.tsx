@@ -1,7 +1,7 @@
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@hooks/typed-react-redux-hooks';
-import { useAddFeedbackMutation, useGetFeedbackQuery } from '@services/feedbackApi';
+import { useAddFeedbackMutation, useGetFeedbackQuery } from '@services/index';
 import { setToken } from '@redux/index';
 import { removeLocalStorageItem } from '@utils/storage';
 import { Button, Input } from 'antd';

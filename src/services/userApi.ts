@@ -1,99 +1,44 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from '@redux/index';
-import { getCookie } from '@utils/index';
 import { API_TAGS, SERVICE_API_URL } from '@constants/index';
-import { TRequestAnswer, TUserRegistration } from '@app_types/index';
+import { TUserInfo, TUserInfoUpdateBody } from '@app_types/index';
 
-const queryEndpoints = {
-    google: 'google',
-    login: 'login',
-    registration: 'registration',
-    checkEmail: 'check-email',
-    confirmEmail: 'confirm-email',
-    changePassword: 'change-password',
+const userQueryEndpoints = {
+    selfInfo: '/me',
+    update: '',
 };
 
 export const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: `${SERVICE_API_URL}/auth/`,
+        baseUrl: `${SERVICE_API_URL}/user`,
         credentials: 'include',
-        prepareHeaders: (headers, { getState, endpoint }) => {
-            const token = (getState() as RootState).user.token;
+        prepareHeaders: (headers, { getState }) => {
+            const token = (getState() as RootState).auth.token;
             if (token) {
                 headers.set('authorization', `Bearer ${token}`);
             }
-
-            if (endpoint === 'changePassword') {
-                const cookie = getCookie('email_token');
-                headers.set('set-cookie', cookie);
-            }
-
             return headers;
         },
     }),
-    tagTypes: [API_TAGS.users],
+    tagTypes: [API_TAGS.user],
     endpoints: (builder) => ({
-        login: builder.mutation<{ accessToken: string }, TUserRegistration>({
-            query: (body: TUserRegistration) => ({
-                url: queryEndpoints.login,
-                method: 'POST',
-                body,
-            }),
-        }),
-        loginGoogle: builder.query<{ accessToken: string }, null>({
+        getUserInfo: builder.query<TUserInfo, null>({
             query: () => ({
-                url: queryEndpoints.google,
+                url: userQueryEndpoints.selfInfo,
             }),
+            providesTags: [API_TAGS.user],
         }),
-        registration: builder.mutation<TRequestAnswer, TUserRegistration>({
-            query: (body: TUserRegistration) => ({
-                url: queryEndpoints.registration,
-                method: 'POST',
+
+        updateUserInfo: builder.mutation<TUserInfo, TUserInfoUpdateBody>({
+            query: (body) => ({
+                url: userQueryEndpoints.update,
+                method: 'PUT',
                 body,
             }),
-            transformResponse: () => {
-                return {
-                    status: 'success',
-                    data: {
-                        statusCode: 'success',
-                        error: '',
-                        message: '',
-                    },
-                };
-            },
-        }),
-        checkEmail: builder.mutation<{ email: string; message: string }, { email: string }>({
-            query: (body) => ({
-                url: queryEndpoints.checkEmail,
-                method: 'POST',
-                body,
-            }),
-        }),
-        confirmEmail: builder.mutation<{ email: string }, { email: string; code: string }>({
-            query: (body) => ({
-                url: queryEndpoints.confirmEmail,
-                method: 'POST',
-                body,
-                credentials: 'include',
-            }),
-        }),
-        changePassword: builder.mutation<{ message: string }, { password: string }>({
-            query: (body) => ({
-                url: queryEndpoints.changePassword,
-                method: 'POST',
-                body: { password: body.password, confirmPassword: body.password },
-                credentials: 'include',
-            }),
+            invalidatesTags: [API_TAGS.user],
         }),
     }),
 });
 
-export const {
-    useLoginMutation,
-    useRegistrationMutation,
-    useLazyLoginGoogleQuery,
-    useChangePasswordMutation,
-    useCheckEmailMutation,
-    useConfirmEmailMutation,
-} = userApi;
+export const { useGetUserInfoQuery, useLazyGetUserInfoQuery, useUpdateUserInfoMutation } = userApi;

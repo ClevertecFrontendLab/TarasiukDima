@@ -6,7 +6,9 @@ export const API_TAGS = {
     feedbacks: 'Feedbacks',
     training: 'Training',
     catalogs: 'Catalogs',
-    users: 'Users',
+    user: 'User',
+    auth: 'Auth',
+    files: 'Files',
 };
 
 export const STATUS_CODES = {

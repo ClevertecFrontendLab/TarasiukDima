@@ -22,7 +22,7 @@ type TFormFields = {
 export const RegistrationPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { email, password } = useAppSelector((state) => state.user);
+    const { email, password } = useAppSelector((state) => state.auth);
     const { previousLocations } = useAppSelector((state) => state.router);
 
     const [curPassword, setCurPassword] = useState<string>('');

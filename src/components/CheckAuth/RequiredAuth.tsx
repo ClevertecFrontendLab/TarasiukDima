@@ -7,7 +7,7 @@ export const RequiredAuth: React.FC<TCheckAuthProps> = ({
     children,
     redirect = ROUTES_LINKS.auth,
 }) => {
-    const { token } = useAppSelector((state) => state.user);
+    const { token } = useAppSelector((state) => state.auth);
 
     if (!token) {
         return <Navigate to={redirect} replace />;

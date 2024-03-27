@@ -1,0 +1,239 @@
+@import "@assets/scss/variables";
+@import "@assets/scss/mixins";
+
+.profile-page {
+    .page-layout {
+        .page-layout__header {
+            padding-top: 22px;
+            padding-bottom: $indentMid;
+
+            &_row {
+                margin-top: 0;
+                align-items: center;
+            }
+
+            &_title {
+                font-weight: $weightMedium;
+            }
+        }
+    }
+
+    .profile-page__content {
+        position: relative;
+        height: 100%;
+        padding: 24px;
+        border-radius: 8px;
+        background: $white;
+    }
+
+    .profile-form {
+        width: 100%;
+        max-width: 480px;
+
+        &_input {
+            margin-bottom: $indentMin2;
+
+            input {
+                height: $inputHeight;
+            }
+        }
+
+        &_email {
+            margin-bottom: $indentBig;
+
+            .ant-input-group {
+                height: $inputHeight;
+            }
+
+            input {
+                height: 100%;
+            }
+        }
+
+        &_password {
+            .ant-input-affix-wrapper {
+                height: $inputHeight;
+            }
+        }
+
+        &_submit {
+            margin-top: 54px;
+        }
+    }
+
+    .profile-form__block {
+       & ~ .profile-form__block {
+            margin-top: 40px;
+        }
+
+        &_title {
+            margin-bottom: $indentMid;
+            font-weight: $weightMedium;
+            font-size: $fontSizeSmall;
+            line-height: $lineHeight;
+        }
+    }
+
+    .upload-img {
+        width: $uploadItemSize;
+        height: $uploadItemSize;
+        font-weight: $weightNormal;
+        font-size: $fontSizeMin;
+        text-align: center;
+        background-color: $uploadBgWhite;
+
+        .ant-upload-list-picture-card .ant-upload,
+        .ant-upload-list-picture-card {
+            width: $uploadItemSize;
+            height: $uploadItemSize;
+            line-height: $lineHeight;
+        }
+
+        .ant-upload-list-picture-card .ant-upload {
+            display: block;
+        }
+    }
+
+    .upload-img__content {
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding-top: $indentSmall2;
+        color: $grey;
+
+        .anticon  {
+            color: $black;
+        }
+
+        .text {
+            display: block;
+            margin-top: $indentSmallest;
+            line-height: $lineHeight;
+        }
+    }
+
+    .user-personal-info {
+        width: 50%;
+        flex-grow: 1;
+        margin-left: $indentMid;
+    }
+
+    .profile-alert {
+        position: absolute;
+        width: 395px;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+@include tablet() {
+    .profile-page .page-layout .page-layout__header_settings .anticon {
+        display: inline-block;
+        margin-right: $indentSmallest;
+    }
+}
+
+@include mobile() {
+    .profile-page {
+        .page-layout  .page-layout__header {
+            padding-top: $indentMin2;
+            padding-bottom: $indentMin2;
+
+            &_row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            &_title {
+                font-weight: $weightNormal;
+                font-size: $fontSizeMin;
+            }
+
+            &_settings {
+                border: none;
+
+                .anticon {
+                    margin-right: 0;
+                }
+            }
+        }
+
+        .page-layout__content {
+            padding: 0;
+        }
+
+        .profile-form {
+            padding-top: $indentMin2;
+            padding-bottom: $indentMin2;
+            border-radius: 0;
+        }
+
+
+        .profile-form__block {
+            & ~ .profile-form__block {
+                margin-top: 36px;
+             }
+
+             &_title {
+                margin-bottom: 20px;
+             }
+         }
+
+        .upload-img {
+            order: 2;
+            width: 100%;
+            height: auto;
+
+            .ant-upload-list-item {
+                margin-top: 0;
+            }
+
+            .ant-upload-span {
+                justify-content: space-between;
+            }
+
+            .ant-upload-list-item-name {
+                display: none;
+            }
+
+            .ant-upload {
+                width: 100%;
+            }
+
+            &__content-mobile {
+                width: 100%;
+                padding-top: 0;
+                color: $black;
+            }
+        }
+
+        .upload-text {
+            font-size: $fontSizeSmaller;
+        }
+
+        .upload-button {
+            height: auto;
+            padding: $indentSmallest 27px;
+
+            svg {
+                fill: $grey;
+            }
+        }
+
+        .user-personal-info {
+            width: 100%;
+            margin-left: 0;
+            margin-bottom: $indentMin2;
+        }
+
+        .profile-form_submit {
+            width: 100%;
+        }
+
+        .profile-alert {
+            width: calc(100% - 48px);
+            bottom: 48px;
+        }
+    }
+}

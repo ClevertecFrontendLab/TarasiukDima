@@ -8,7 +8,7 @@ export const feedbackApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: `${SERVICE_API_URL}/feedback`,
         prepareHeaders: (headers, { getState }) => {
-            const token = (getState() as RootState).user.token;
+            const token = (getState() as RootState).auth.token;
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`);
             }
