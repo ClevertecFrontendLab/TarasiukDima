@@ -9,3 +9,5 @@ export { ResultPage } from './result-page';
 export { CalendarPage } from './calendar-page';
 
 export { ProfilePage } from './profile-page';
+
+export { NotFoundPage } from './error-page';
