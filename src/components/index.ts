@@ -6,6 +6,7 @@ import { ResultComponent } from './ResultComponent';
 import { Spinner } from './Spinner';
 import { Breadcrumbs } from './Breadcrumbs';
 import { Feedbacks } from './Feedbacks';
+import { FeedbacksAddModals } from './FeedbacksAddModals';
 import { ModalPage } from './ModalPage';
 import { Rating } from './Rating';
 import { PageLayout, PageHeader, PageContent, PageFooter } from './PageLayout';
@@ -26,6 +27,7 @@ export {
     PageContent,
     PageFooter,
     Breadcrumbs,
+    FeedbacksAddModals,
     Feedbacks,
     ModalPage,
     Rating,

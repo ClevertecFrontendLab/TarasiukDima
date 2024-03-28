@@ -5,7 +5,15 @@ import { createBrowserHistory } from 'history';
 import { appReducer } from './app-slice';
 import { authReducer } from './auth-slice';
 import { userReducer } from './user-slice';
-import { userApi, feedbackApi, trainingApi, catalogsApi, authApi, filesApi } from '@services/index';
+import {
+    userApi,
+    feedbackApi,
+    trainingApi,
+    catalogsApi,
+    authApi,
+    filesApi,
+    tariffsApi,
+} from '@services/index';
 
 const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
     history: createBrowserHistory(),
@@ -24,6 +32,7 @@ export const store = configureStore({
         [catalogsApi.reducerPath]: catalogsApi.reducer,
         [authApi.reducerPath]: authApi.reducer,
         [filesApi.reducerPath]: filesApi.reducer,
+        [tariffsApi.reducerPath]: tariffsApi.reducer,
     }),
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(
@@ -34,6 +43,7 @@ export const store = configureStore({
             catalogsApi.middleware,
             authApi.middleware,
             filesApi.middleware,
+            tariffsApi.middleware,
         ),
 });
 

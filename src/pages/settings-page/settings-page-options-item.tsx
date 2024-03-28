@@ -1,8 +1,10 @@
 import { FC, ReactNode, memo, useCallback, useState } from 'react';
+import classNames from 'classnames';
+import { useIsMobile } from '@hooks/index';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { Row, Switch, Tooltip } from 'antd';
 import Paragraph from 'antd/lib/typography/Paragraph';
-import classNames from 'classnames';
+import { MAX_WIDTH_FOR_MOBILE_PX } from '@constants/index';
 
 type TSettingsPageOptionsItemProps = {
     title: string;
@@ -10,9 +12,14 @@ type TSettingsPageOptionsItemProps = {
     checked: boolean;
     disabled: boolean;
     clickCb: (checked: boolean) => void;
+    dataTestSwitch?: string;
+    dataTestIcon?: string;
 };
+
 export const SettingsPageOptionsItem: FC<TSettingsPageOptionsItemProps> = memo(
-    ({ title, tooltip, checked, disabled, clickCb }) => {
+    ({ title, tooltip, checked, disabled, clickCb, dataTestSwitch = '', dataTestIcon = '' }) => {
+        const isMobile = useIsMobile(MAX_WIDTH_FOR_MOBILE_PX);
+
         const [selectedItem, setSelectedItem] = useState<boolean>(checked);
 
         const onChange = useCallback(
@@ -39,10 +46,12 @@ export const SettingsPageOptionsItem: FC<TSettingsPageOptionsItemProps> = memo(
                     arrowPointAtCenter
                     className='settings-block__option_tooltip'
                 >
-                    <ExclamationCircleOutlined />
+                    <ExclamationCircleOutlined data-test-id={dataTestIcon} />
                 </Tooltip>
 
                 <Switch
+                    size={isMobile ? 'small' : 'default'}
+                    data-test-id={dataTestSwitch}
                     className='settings-block__option_switch'
                     disabled={disabled}
                     checked={selectedItem}

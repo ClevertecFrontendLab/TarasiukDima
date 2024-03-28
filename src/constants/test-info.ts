@@ -66,7 +66,6 @@ export const TRAININGS_IDS = {
     modalExerciseQuantityInput: 'modal-drawer-right-input-quantity',
 };
 
-
 export const PROFILE_IDS = {
     profileLinkOnHomePage: 'menu-button-profile',
     formFirstName: 'profile-name',
@@ -81,10 +80,18 @@ export const PROFILE_IDS = {
     formAlert: 'alert',
 };
 
-
-
 export const SETTINGS_IDS = {
     headerBtn: 'header-settings',
     headerBack: 'settings-back',
-
+    proCard: 'pro-tariff-card',
+    proCardActivate: 'activate-tariff-btn',
+    switchTraining: 'tariff-trainings',
+    switchNotifications: 'tariff-notifications',
+    switchTheme: 'tariff-theme',
+    iconTraining: 'tariff-trainings-icon',
+    iconNotifications: 'tariff-notifications-icon',
+    iconTheme: 'tariff-theme-icon',
+    sidePanel: 'tariff-sider',
+    periodsPrice: 'tariff-cost',
+    successModalClose: 'tariff-modal-success',
 };

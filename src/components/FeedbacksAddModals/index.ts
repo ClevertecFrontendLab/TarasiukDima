@@ -1,0 +1,2 @@
+export { FeedbacksAddModals } from './FeedbacksAddModals';
+

@@ -1,26 +1,44 @@
-import { FC, memo, useCallback, useMemo } from 'react';
+import { memo, useCallback, useContext, useMemo } from 'react';
+import { useAppSelector } from '@hooks/index';
+import { useUpdateUserInfoMutation } from '@services/index';
 import { Col } from 'antd';
+import { SETTINGS_IDS } from '@constants/index';
 import { SettingsPageOptionsItem } from './settings-page-options-item';
-import { TTariffOptions } from '@app_types/index';
+import { SettingsContext } from './settings-page-context';
+import { TSettingsContext } from './types';
 
-type TSettingsPageOptionsProps = {
-    tariff: TTariffOptions | null;
-};
-export const SettingsPageOptions: FC<TSettingsPageOptionsProps> = memo(({ tariff }) => {
-    const teamTrainingCb = useCallback((checked: boolean) => {
-        console.log(`teamTrainingCb ${checked}`);
-    }, []);
+export const SettingsPageOptions = memo(() => {
+    const { userData } = useAppSelector((state) => state.user);
+    const { tariff } = useContext(SettingsContext) as TSettingsContext;
+    const [updateUserData, { isLoading: isLoadingUpdateUserData }] = useUpdateUserInfoMutation();
 
-    const notificationsCb = useCallback((checked: boolean) => {
-        console.log(`notificationsCb ${checked}`);
-    }, []);
+    const teamTrainingCb = useCallback(
+        (checked: boolean) => {
+            updateUserData({
+                readyForJointTraining: checked,
+            });
+        },
+        [updateUserData],
+    );
+
+    const notificationsCb = useCallback(
+        (checked: boolean) => {
+            updateUserData({
+                sendNotification: checked,
+            });
+        },
+        [updateUserData],
+    );
 
     const themeSwitchCb = useCallback((checked: boolean) => {
         console.log(`themeSwitchCb ${checked}`);
     }, []);
 
-    const options = useMemo(
-        () => [
+    const options = useMemo(() => {
+        const readyForJointTraining = userData?.readyForJointTraining ?? false;
+        const sendNotification = userData?.sendNotification ?? false;
+
+        return [
             {
                 title: 'Открыт для совместных тренировок',
                 tooltip: (
@@ -29,9 +47,11 @@ export const SettingsPageOptions: FC<TSettingsPageOptionsProps> = memo(({ tariff
                         позволит участвовать <br />в совместных тренировках
                     </>
                 ),
-                checked: false,
-                disabled: false,
+                checked: readyForJointTraining,
+                disabled: false || isLoadingUpdateUserData,
                 clickCb: teamTrainingCb,
+                dataTestSwitch: SETTINGS_IDS.switchTraining,
+                dataTestIcon: SETTINGS_IDS.iconTraining,
             },
             {
                 title: 'Уведомления',
@@ -44,9 +64,11 @@ export const SettingsPageOptions: FC<TSettingsPageOptionsProps> = memo(({ tariff
                         уведомления об активностях
                     </>
                 ),
-                checked: false,
-                disabled: false,
+                checked: sendNotification,
+                disabled: false || isLoadingUpdateUserData,
                 clickCb: notificationsCb,
+                dataTestSwitch: SETTINGS_IDS.switchNotifications,
+                dataTestIcon: SETTINGS_IDS.iconNotifications,
             },
             {
                 title: 'Тёмная тема',
@@ -58,12 +80,13 @@ export const SettingsPageOptions: FC<TSettingsPageOptionsProps> = memo(({ tariff
                     </>
                 ),
                 checked: false,
-                disabled: !tariff,
+                disabled: !tariff || isLoadingUpdateUserData,
                 clickCb: themeSwitchCb,
+                dataTestSwitch: SETTINGS_IDS.switchTheme,
+                dataTestIcon: SETTINGS_IDS.iconTheme,
             },
-        ],
-        [teamTrainingCb, notificationsCb, themeSwitchCb, tariff],
-    );
+        ];
+    }, [teamTrainingCb, notificationsCb, themeSwitchCb, tariff, userData, isLoadingUpdateUserData]);
 
     return (
         <Col className='settings-block'>

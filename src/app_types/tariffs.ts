@@ -1,6 +1,6 @@
-export type TTariffOptions =  {
-        tariffId: string;
-        expired: string;
+export type TTariffOptions = {
+    tariffId: string;
+    expired: string;
 };
 
 export type TTariffItemPeriod = {
@@ -13,4 +13,9 @@ export type TTariffItem = {
     _id: string;
     name: string;
     periods: TTariffItemPeriod[];
+};
+
+export type TTariffBuyBody = {
+    tariffId: string;
+    days: number;
 };

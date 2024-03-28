@@ -1,6 +1,6 @@
-import { FC, memo, useCallback, useState } from 'react';
+import { FC, memo, useCallback, useContext, useState } from 'react';
 import { useGetCurrentDayInfo } from '@hooks/index';
-import { Alert, Button, Col, Drawer, Radio, RadioChangeEvent, Row, Space, Table } from 'antd';
+import { Alert, Button, Col, Drawer, Radio, RadioChangeEvent, Row, Table } from 'antd';
 import {
     CheckCircleFilled,
     CheckCircleOutlined,
@@ -8,12 +8,13 @@ import {
     CloseOutlined,
 } from '@ant-design/icons';
 import Paragraph from 'antd/lib/typography/Paragraph';
-import { SETTINGS_IDS } from '@constants/test-info';
+import { SETTINGS_IDS, DATE_SHORT_FORMAT_TO_VIEW } from '@constants/index';
 import type { ColumnsType } from 'antd/es/table';
 import { TSimpleFn } from '@app_types/index';
-import { TSettingsPageTariffsProps } from './types';
+import { TSettingsContext } from './types';
+import { SettingsContext } from './settings-page-context';
 
-type TSettingsPageTariffsCompareProps = TSettingsPageTariffsProps & {
+type TSettingsPageTariffsCompareProps = {
     isShow: boolean;
     closeCompareCb: TSimpleFn;
 };
@@ -26,18 +27,21 @@ type DataType = {
 };
 
 export const SettingsPageTariffsCompare: FC<TSettingsPageTariffsCompareProps> = memo(
-    ({ items, tariff, isShow, closeCompareCb }) => {
+    ({ isShow, closeCompareCb }) => {
+        const { items, tariff, buyPlaneCb } = useContext(SettingsContext) as TSettingsContext;
+
         const { getDateNeededFormat } = useGetCurrentDayInfo();
 
-        const [chosenPeriod, setChosenPeriod] = useState<number | null>(null);
-        const paymentPeriodDisabled = !chosenPeriod;
-        const currentTariffInfo = items[0] ?? null;
-        // const currentTariffInfo = tariff
-        //     ? items.filter((item) => item._id === tariff?.tariffId)[0]
-        //     : null;
+        const [chosenPeriodDays, setChosenPeriodDays] = useState<number | null>(null);
+        const paymentPeriodDisabled = !chosenPeriodDays;
+        const periods = items[0]?.periods;
+
+        const currentTariffInfo = tariff
+            ? items.filter((item) => item._id === tariff?.tariffId)[0]
+            : null;
 
         const onChangePeriodCb = useCallback((event: RadioChangeEvent) => {
-            setChosenPeriod(event.target.value);
+            setChosenPeriodDays(event.target.value);
         }, []);
 
         const getRowIcon = useCallback(
@@ -126,9 +130,16 @@ export const SettingsPageTariffsCompare: FC<TSettingsPageTariffsCompareProps> = 
             },
         ];
 
+        const BuyPlaneBtnCb = useCallback(() => {
+            const id = items[0]._id;
+            buyPlaneCb(id, chosenPeriodDays as number);
+            setChosenPeriodDays(null);
+            closeCompareCb();
+        }, [items, buyPlaneCb, chosenPeriodDays, closeCompareCb]);
+
         return (
             <Drawer
-                // data-test-id={SETTINGS_IDS.}
+                data-test-id={SETTINGS_IDS.sidePanel}
                 className='drawer-site tariffs-compare'
                 destroyOnClose
                 closeIcon={<CloseOutlined data-test-id='' />}
@@ -137,30 +148,19 @@ export const SettingsPageTariffsCompare: FC<TSettingsPageTariffsCompareProps> = 
                 onClose={closeCompareCb}
                 closable
                 footer={
-                    // !currentTariffInfo ? (
-                    currentTariffInfo ? (
+                    !currentTariffInfo ? (
                         <Button
                             type='primary'
                             disabled={paymentPeriodDisabled}
                             className='button-page'
                             style={{ width: '100%' }}
+                            onClick={BuyPlaneBtnCb}
                         >
                             Выбрать и оплатить
                         </Button>
                     ) : null
                 }
             >
-                <Alert
-                    type='info'
-                    className='tariffs-compare__title'
-                    message={
-                        <>
-                            Ваш <span>Pro</span> tariff активен до{' '}
-                            {getDateNeededFormat('2024-04-30T09:07:01.499Z', 'DD.MM')}
-                        </>
-                    }
-                />
-
                 {currentTariffInfo && tariff && (
                     <Alert
                         type='info'
@@ -168,7 +168,7 @@ export const SettingsPageTariffsCompare: FC<TSettingsPageTariffsCompareProps> = 
                         message={
                             <>
                                 Ваш <span>{currentTariffInfo.name}</span> tariff активен до{' '}
-                                {getDateNeededFormat('2024-04-30T09:07:01.499Z', 'DD.MM')}
+                                {getDateNeededFormat(tariff.expired, DATE_SHORT_FORMAT_TO_VIEW)}
                             </>
                         }
                     />
@@ -184,21 +184,21 @@ export const SettingsPageTariffsCompare: FC<TSettingsPageTariffsCompareProps> = 
                     columns={tariffsColumns}
                 />
 
-                {/* {!currentTariffInfo && ( */}
-                {true && (
+                {!currentTariffInfo && periods && (
                     <Col className='tariffs-compare__order'>
                         <Paragraph className='tariffs-compare__order_title'>
                             Стоимость тарифа
                         </Paragraph>
 
                         <Radio.Group
+                            data-test-id={SETTINGS_IDS.periodsPrice}
                             className='tariffs-compare__order_periods'
                             onChange={onChangePeriodCb}
-                            value={chosenPeriod}
+                            value={chosenPeriodDays}
                             buttonStyle={'outline'}
                         >
-                            {currentTariffInfo?.periods.map(({ text, cost }) => (
-                                <Radio value={text} key={text} className='item-radio'>
+                            {periods.map(({ text, cost, days }) => (
+                                <Radio value={days} key={text} className='item-radio'>
                                     <span className='item-name'>{text}</span>
                                     <span className='item-price'>{cost}$</span>
                                 </Radio>

@@ -7,6 +7,7 @@ export const API_TAGS = {
     training: 'Training',
     catalogs: 'Catalogs',
     tariffs: 'Tariffs',
+    userTariff: 'UserTariff',
     user: 'User',
     auth: 'Auth',
     files: 'Files',

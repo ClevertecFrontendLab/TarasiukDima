@@ -8,6 +8,7 @@ type TTariffCartItemProps = TClsAndChildProps & {
     name: string;
     imgSrc?: string;
     clickMoreCb: TSimpleFn;
+    dataTestId?: string;
 };
 
 export const SettingsPageTariffsListItem: FC<TTariffCartItemProps> = memo(
@@ -17,6 +18,7 @@ export const SettingsPageTariffsListItem: FC<TTariffCartItemProps> = memo(
         imgSrc = 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
         clickMoreCb,
         className = '',
+        dataTestId = '',
     }) => {
         return (
             <Card
@@ -24,9 +26,12 @@ export const SettingsPageTariffsListItem: FC<TTariffCartItemProps> = memo(
                 className={classNames('tariffs-plans__item', {
                     [className]: className,
                 })}
+                data-test-id={dataTestId}
                 title={
                     <Row align='middle' justify='space-between'>
-                        <Paragraph style={{ margin: 0 }}>{name} tariff</Paragraph>
+                        <Paragraph style={{ margin: 0 }}>
+                            <span className='tariffs-plans__item_name'>{name}</span> tariff
+                        </Paragraph>
 
                         <Button onClick={clickMoreCb} type='link' className='more-btn'>
                             Подробнее

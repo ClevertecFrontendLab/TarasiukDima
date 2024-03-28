@@ -19,6 +19,8 @@ export {
 
 export { useLazyGetTrainingsListQuery, catalogsApi, useGetTariffsListQuery } from './catalogsApi';
 
+export { useBuyTariffMutation, tariffsApi } from './tariffsApi';
+
 export {
     useGetUserInfoQuery,
     useLazyGetUserInfoQuery,

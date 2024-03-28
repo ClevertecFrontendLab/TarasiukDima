@@ -1,9 +1,8 @@
-import { FC, memo, useCallback, useState } from 'react';
-import { TSettingsPageTariffsProps } from './types';
+import {  memo, useCallback, useState } from 'react';
 import { SettingsPageTariffsList } from './settings-page-tariffs-list';
 import { SettingsPageTariffsCompare } from './settings-page-tariffs-compare';
 
-export const SettingsPageTariffs: FC<TSettingsPageTariffsProps> = memo(({ items, tariff }) => {
+export const SettingsPageTariffs= memo(() => {
     const [isShowCompareTariffs, setIsShowCompareTariffs] = useState(false);
 
     const clickMoreCb = useCallback(() => {
@@ -21,16 +20,12 @@ export const SettingsPageTariffs: FC<TSettingsPageTariffsProps> = memo(({ items,
     return (
         <>
             <SettingsPageTariffsList
-                items={items}
-                tariff={tariff}
                 activateTariffCb={activateTariffCb}
                 clickMoreCb={clickMoreCb}
             />
 
             <SettingsPageTariffsCompare
-                items={items}
                 isShow={isShowCompareTariffs}
-                tariff={tariff}
                 closeCompareCb={closeCompareCb}
             />
         </>

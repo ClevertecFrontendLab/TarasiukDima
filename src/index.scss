@@ -72,8 +72,8 @@ a {
 .common-page-content {
     position: relative;
     height: 100%;
-    padding: 24px;
-    border-radius: 8px;
+    padding: $indentMid;
+    border-radius: $borderRadiusXMedium;
     background: $white;
 }
 
