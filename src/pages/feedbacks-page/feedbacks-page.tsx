@@ -110,7 +110,7 @@ export const FeedbacksPage = () => {
         setOpenModalFeedback(false);
     }, []);
 
-    const repeateWriteFeedback = useCallback(() => {
+    const repeatWriteFeedback = useCallback(() => {
         setOpenModalFeedback(true);
         setErrorAddFeedbackOpen(false);
     }, []);
@@ -160,7 +160,7 @@ export const FeedbacksPage = () => {
                 closeSuccessFeedbackCB={closeModalOkFeedback}
                 isErrorAddFeedbackOpen={isErrorAddFeedbackOpen}
                 closeErrorAddFeedbackCB={closeErrorAddFeedback}
-                repeatWriteShowModalFeedback={repeateWriteFeedback}
+                repeatWriteShowModalFeedback={repeatWriteFeedback}
             />
 
             <ModalPage

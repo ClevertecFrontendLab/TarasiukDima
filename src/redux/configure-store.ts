@@ -9,7 +9,7 @@ import { userApi, feedbackApi, trainingApi, catalogsApi, authApi, filesApi } fro
 
 const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
     history: createBrowserHistory(),
-    savePreviousLocations: 1,
+    savePreviousLocations: 2,
 });
 
 export const store = configureStore({

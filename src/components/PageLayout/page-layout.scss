@@ -37,8 +37,13 @@ body {
             }
 
             &_settings {
+                padding: 7px 15px;
                 margin-left: auto;
                 color: $black;
+
+                .button-text {
+                    margin-left: 10px;
+                }
             }
         }
 
@@ -74,7 +79,7 @@ body {
                     display: none;
                 }
 
-                .anticon + span {
+                .button-text {
                     margin: 0;
                 }
             }
@@ -106,12 +111,13 @@ body {
                     border: 1px solid $greyBorder;
                     border-radius: 50%;
 
-                    span:not(.anticon) {
-                        display: none;
-                    }
-
                     .anticon {
                         display: block;
+                        line-height: 32px;
+                    }
+
+                    .button-text {
+                        display: none;
                     }
                 }
             }

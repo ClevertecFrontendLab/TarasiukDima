@@ -78,7 +78,7 @@ export const ProfilePage = () => {
             />
 
             <PageContent>
-                <div className='profile-page__content'>
+                <div className='common-page-content'>
                     <ProfilePageUserContent
                         firstName={userData?.firstName}
                         lastName={userData?.lastName}

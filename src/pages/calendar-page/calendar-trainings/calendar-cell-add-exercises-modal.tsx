@@ -156,7 +156,7 @@ export const CellExercisesModal: React.FC<TCellAddNewExercisesProps> = memo(
                 destroyOnClose
                 data-test-id={TRAININGS_IDS.modalExercise}
                 closeIcon={<CloseOutlined data-test-id={TRAININGS_IDS.modalExerciseCloseBtn} />}
-                className='exercises-modal'
+                className='drawer-site exercises-modal'
                 title={
                     <>
                         {isEdit ? <EditOutlined /> : <PlusOutlined />}

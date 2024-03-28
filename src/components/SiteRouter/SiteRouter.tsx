@@ -12,6 +12,7 @@ import {
     CalendarPage,
     ProfilePage,
     NotFoundPage,
+    SettingsPage,
 } from '@pages/index';
 import { NotAuth, RequiredAuth } from '@components/index';
 import { ROUTES_LINKS } from '@constants/index';
@@ -71,6 +72,15 @@ export const SiteRouter = () => (
                 element={
                     <RequiredAuth redirect={ROUTES_LINKS.home}>
                         <ProfilePage />
+                    </RequiredAuth>
+                }
+            />
+
+            <Route
+                path={ROUTES_LINKS.settings}
+                element={
+                    <RequiredAuth redirect={ROUTES_LINKS.home}>
+                        <SettingsPage />
                     </RequiredAuth>
                 }
             />

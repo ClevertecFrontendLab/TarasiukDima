@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { API_TAGS, SERVICE_API_URL } from '@constants/index';
 import { RootState } from '@redux/index';
-import { TTrainingVariants } from '@app_types/index';
+import { TTariffItem, TTrainingVariants } from '@app_types/index';
 
 const catalogQueryEndpoints = {
     trainingList: 'training-list',
+    tariffsList: 'tariff-list',
 };
 
 export const catalogsApi = createApi({
@@ -20,7 +21,7 @@ export const catalogsApi = createApi({
             return headers;
         },
     }),
-    tagTypes: [API_TAGS.catalogs],
+    tagTypes: [API_TAGS.catalogs, API_TAGS.tariffs],
     endpoints: (builder) => ({
         getTrainingsList: builder.query<TTrainingVariants, null>({
             query: () => ({
@@ -34,7 +35,19 @@ export const catalogsApi = createApi({
                       ]
                     : [{ type: API_TAGS.catalogs, id: 'LIST' }],
         }),
+        getTariffsList: builder.query<TTariffItem[], null>({
+            query: () => ({
+                url: catalogQueryEndpoints.tariffsList,
+            }),
+            providesTags: (result) =>
+                result
+                    ? [
+                          ...result.map(({ _id }) => ({ type: API_TAGS.tariffs, id: _id })),
+                          { type: API_TAGS.tariffs, id: 'LIST' },
+                      ]
+                    : [{ type: API_TAGS.tariffs, id: 'LIST' }],
+        }),
     }),
 });
 
-export const { useLazyGetTrainingsListQuery } = catalogsApi;
+export const { useLazyGetTrainingsListQuery, useGetTariffsListQuery } = catalogsApi;

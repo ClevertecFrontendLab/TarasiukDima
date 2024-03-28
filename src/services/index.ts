@@ -17,7 +17,7 @@ export {
     useUpdateTrainingMutation,
 } from './trainingApi';
 
-export { useLazyGetTrainingsListQuery, catalogsApi } from './catalogsApi';
+export { useLazyGetTrainingsListQuery, catalogsApi, useGetTariffsListQuery } from './catalogsApi';
 
 export {
     useGetUserInfoQuery,

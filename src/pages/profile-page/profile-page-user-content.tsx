@@ -215,6 +215,22 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
         updateUserInfoCb,
     ]);
 
+    const clearStateAfterSend = useCallback(() => {
+        setImageForSaveChanged(false);
+        setNameUserChanged(false);
+        setLastNameUserChanged(false);
+        setBirthdayUserChanged(false);
+        setEmailUserChanged(false);
+        setPasswordsChanged(false);
+
+        setPasswordUser('');
+        setPassword2User('');
+
+        setIsEmailError(false);
+        setIsPasswordError(false);
+        setIsPasswordRepeatError(false);
+    }, []);
+
     const isNotValidFormItems = useCallback(() => {
         let errorExist = false;
 
@@ -237,7 +253,8 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
         }
 
         sendUserNewData();
-    }, [isNotValidFormItems, sendUserNewData]);
+        clearStateAfterSend();
+    }, [isNotValidFormItems, sendUserNewData, clearStateAfterSend]);
 
     return (
         <Form

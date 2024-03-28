@@ -6,8 +6,9 @@ import { SettingOutlined } from '@ant-design/icons';
 import { Breadcrumbs } from '@components/index';
 import { TBreadcrumbsProps } from '@components/Breadcrumbs';
 import Title from 'antd/lib/typography/Title';
-import { SETTINGS_IDS } from '@constants/index';
+import { ROUTES_LINKS, SETTINGS_IDS } from '@constants/index';
 import { TClsAndChildProps } from '@app_types/index';
+import { Link } from 'react-router-dom';
 
 type TPageHeaderProps = TClsAndChildProps &
     TBreadcrumbsProps & {
@@ -29,13 +30,13 @@ export const PageHeader: React.FC<TPageHeaderProps> = memo(
                     {title && <Title className='page-layout__header_title'>{title}</Title>}
 
                     {showSettingsButton && (
-                        <Button
+                        <Link
+                            to={ROUTES_LINKS.settings}
                             className='page-layout__header_settings'
-                            type='link'
                             data-test-id={SETTINGS_IDS.headerBtn}
                         >
-                            <SettingOutlined /> Настройки
-                        </Button>
+                            <SettingOutlined /> <span className='button-text'>Настройки</span>
+                        </Link>
                     )}
                 </Row>
             )}

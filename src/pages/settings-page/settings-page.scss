@@ -1,0 +1,286 @@
+@import "@assets/scss/variables";
+@import "@assets/scss/mixins";
+
+.settings-page {
+    .settings-page__header-button {
+        padding-left: 0;
+        padding-right: 0;
+        border: none;
+        background: transparent;
+    }
+
+    .settings-page__content {
+        position: relative;
+        height: 100%;
+        padding: 24px;
+        border-radius: 8px;
+        background: $white;
+
+        &_title {
+            margin-bottom: $indentMin2;
+            font-size: 24px;
+            font-weight: $weightMedium;
+        }
+    }
+
+    .tariffs-plans {
+        gap: 25px;
+
+        &__item {
+            display: flex;
+            flex-direction: column;
+            border-radius: $borderRadius;
+            width: 240px;
+            box-shadow: $shadowItem;
+            background: $white;
+        }
+
+        .ant-card-body {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tariffs-plans__item_text {
+            margin: 0;
+            text-align: center;
+        }
+
+        .text-date {
+            display: block;
+        }
+
+        .more-btn {
+            padding: 0;
+            color: $primary;
+        }
+
+        .button-page {
+            margin: 0 auto;
+        }
+    }
+
+    .settings-block {
+        margin-top: $indentLargeMin;
+        width: 505px;
+
+        &__option {
+            width: 100%;
+
+            &.disabled {
+                .settings-block__option_title {
+                    color: $grey;
+                }
+            }
+
+            & ~ .settings-block__option {
+                margin-top: $indentMidSmall;
+            }
+
+            &_title {
+                margin: 0;
+                font-size: $fontSizeMin;
+                font-weight: $weightBold;
+            }
+
+            &_tooltip {
+                margin-left: 4px;
+                color: $grey;
+
+                svg {
+                    width: $sizeIcon;
+                    height: $sizeIcon;
+                }
+            }
+
+            &_switch {
+                margin-left: auto;
+            }
+        }
+    }
+
+    &__review-buttons {
+        margin-top: 96px;
+
+        .page-button {
+            padding: 8px 15px;
+        }
+    }
+
+    .all-button {
+        height: auto;
+        border: none;
+        margin-left: 8px;
+        color: $primary;
+    }
+}
+
+.tariffs-compare {
+    .ant-drawer-content-wrapper {
+        border-radius: 8px 0 0 8px;
+        overflow: hidden;
+    }
+    .tariffs-compare__title {
+        margin-bottom: $indentMid;
+        font-weight: $weightMedium;
+        font-size: $indentMin2;
+        text-align: center;
+        border: none;
+        background: $primaryLight;
+
+        span {
+            text-transform: uppercase;
+        }
+    }
+
+    .ant-alert-message {
+        color: #030852;
+    }
+
+    .tariffs-compare__table {
+        padding-top: $indentMid;
+
+        .ant-table-cell {
+            background-color: $white;
+            border: none;
+
+            &:before {
+                display: none;
+            }
+
+            &:not(:first-child) {
+                min-width: 70px;
+                border-left: $indentSmall2 solid $white;
+                border-radius: 0;
+                text-align: center;
+            }
+        }
+
+        .row-title {
+            position: relative;
+            text-transform: uppercase;
+            padding-right: 0;
+            color: $blueLoading;
+
+            .anticon {
+                position: absolute;
+                top: 50%;
+                right: -5px;
+                color: $green;
+                transform: translateY(-50%);
+            }
+        }
+    }
+
+    .ant-table-thead .ant-table-cell {
+        font-size: 14px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+
+        &:nth-child(2) {
+            background-color: $lightDividers;
+        }
+
+        &:nth-child(3) {
+            background-color: $primaryLight;
+        }
+    }
+
+    .ant-table-tbody {
+        .icon-not,
+        .icon-ok {
+            svg {
+                width: $sizeIcon;
+                height: $sizeIcon;
+            }
+        }
+
+        .icon-not {
+            color: $lightGrey;
+        }
+
+        .tariffs-compare__table_row {
+            &:nth-child(1) .ant-table-cell {
+                padding-top: 24px;
+            }
+
+            .ant-table-cell {
+                padding-top: 8px;
+                padding-bottom: 8px;
+            }
+        }
+    }
+
+    .tariffs-compare__order {
+        margin-top: 80px;
+
+        &_title {
+            margin-bottom: $indentMid;
+            font-weight: $weightBold;
+            font-size: $fontSizeMin;
+        }
+
+        &_periods {
+            width: 100%;
+            font-size: 14px;
+            line-height: $lineHeight;
+
+            .item-name {
+                width: 177px;
+                flex-grow: 1;
+            }
+
+            .item-price {
+                font-weight: $weightMedium;
+            }
+        }
+
+        .ant-radio-wrapper {
+            width: 100%;
+            padding: 0;
+            margin: 0;
+
+            span:nth-child(2) {
+                display: flex;
+                flex-grow: 1;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0;
+            }
+        }
+
+        .item-radio {
+            width: 100%;
+
+            & ~ .item-radio {
+                margin-top: 22px;
+            }
+
+            .ant-radio {
+                flex-shrink: 0;
+                margin-left: $indentLargeMid;
+                margin-right: $indentMin2;
+                order: 2;
+            }
+
+            .ant-radio-inner {
+                margin: 0 auto;
+            }
+        }
+
+        .ant-radio-checked .ant-radio-inner {
+            border-color: $primary;
+
+            &:after {
+                background-color: $primary;
+            }
+        }
+    }
+}
+
+@include tablet() {
+}
+
+@include mobile() {
+}

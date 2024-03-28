@@ -1,3 +1,5 @@
+import { TTariffOptions } from '.';
+
 export type TUserRegistration = {
     email: string;
     password: string;
@@ -22,8 +24,5 @@ export type TUserInfoUpdateBody = Partial<TUserCommonInfo> & {
 };
 
 export type TUserInfo = TUserCommonInfo & {
-    tariff?: {
-        tariffId: string;
-        expired: string;
-    };
+    tariff?: TTariffOptions;
 };
