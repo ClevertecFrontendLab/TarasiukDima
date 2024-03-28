@@ -1,9 +1,9 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import locale from 'antd/es/locale/ru_RU';
 import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
 import generatePicker from 'antd/es/date-picker/generatePicker';
-import { useGetCurrentDayInfo } from '@hooks/index';
+import { useAppSelector, useGetCurrentDayInfo } from '@hooks/index';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { Button, Col, ConfigProvider, Form, Input, Row } from 'antd';
 import Title from 'antd/lib/typography/Title';
@@ -16,40 +16,32 @@ import { TUserInfoUpdateBody } from '@app_types/index';
 const DatePicker = generatePicker<Dayjs>(dayjsGenerateConfig);
 
 type TProfilePageUserContentProps = {
-    firstName?: string;
-    lastName?: string;
-    birthday?: string;
-    email?: string;
-    imgSrc?: string;
     isUpdatingUserInfo?: boolean;
     updateUserInfoCb: (newData: TUserInfoUpdateBody) => void;
 };
 export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
-    firstName = '',
-    lastName = '',
-    birthday = '',
-    email = '',
-    imgSrc = '',
     isUpdatingUserInfo = false,
     updateUserInfoCb,
 }) => {
+    const { userData } = useAppSelector((state) => state.user);
     const { getDateForSave } = useGetCurrentDayInfo();
 
     const [imageUrlForSave, setImageUrlForSave] = useState<string>('');
     const [imageForSaveChanged, setImageForSaveChanged] = useState<boolean>(false);
 
-    const [nameUser, setNameUser] = useState<string>(firstName);
+    const [nameUser, setNameUser] = useState<string>(userData?.firstName ?? '');
     const [nameUserChanged, setNameUserChanged] = useState<boolean>(false);
 
-    const [lastNameUser, setLastNameUser] = useState<string>(lastName);
+    const [lastNameUser, setLastNameUser] = useState<string>(userData?.lastName ?? '');
     const [lastNameUserChanged, setLastNameUserChanged] = useState<boolean>(false);
 
     const [birthdayUser, setBirthdayUser] = useState<Dayjs | null>(
-        birthday ? dayjs(birthday) : null,
+        userData?.birthday ? dayjs(userData.birthday) : null,
     );
     const [birthdayUserChanged, setBirthdayUserChanged] = useState<boolean>(false);
 
-    const [emailUser, setEmailUser] = useState<string>(email);
+    const [emailUser, setEmailUser] = useState<string>(userData?.email ?? '');
+
     const [emailUserChanged, setEmailUserChanged] = useState<boolean>(false);
     const [isEmailError, setIsEmailError] = useState<boolean>(false);
 
@@ -85,40 +77,48 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
         !isChangedFields ||
         isUpdatingUserInfo;
 
+    useEffect(() => {
+        setNameUser(userData?.firstName ?? '');
+        setLastNameUser(userData?.lastName ?? '');
+        setBirthdayUser(userData?.birthday ? dayjs(userData.birthday) : null);
+        setEmailUser(userData?.email ?? '');
+    }, [userData]);
+
     const changeImageForSave = useCallback(
         (newSrc: string) => {
             setImageUrlForSave(newSrc);
-            setImageForSaveChanged(newSrc !== imgSrc);
+            setImageForSaveChanged(newSrc !== userData?.imgSrc);
         },
-        [imgSrc],
+        [userData],
     );
 
     const nameChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback(
         (event) => {
             const value = event?.target?.value || '';
             setNameUser(value);
-            setNameUserChanged(firstName !== value);
+            setNameUserChanged(userData?.firstName !== value);
         },
-        [firstName],
+        [userData],
     );
 
     const lastNameChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback(
         (event) => {
             const value = event?.target?.value || '';
             setLastNameUser(value);
-            setLastNameUserChanged(lastName !== value);
+            setLastNameUserChanged(userData?.lastName !== value);
         },
-        [lastName],
+        [userData],
     );
 
+    const currentBirthDay = userData?.birthday
+        ? dayjs(userData.birthday).format(DATE_FORMAT_TO_VIEW)
+        : null;
     const birthdayChangeHandler = useCallback(
         (value: Dayjs | null) => {
             setBirthdayUser(value);
-            setBirthdayUserChanged(
-                dayjs(birthday).format(DATE_FORMAT_TO_VIEW) !== value?.format(DATE_FORMAT_TO_VIEW),
-            );
+            setBirthdayUserChanged(currentBirthDay !== value?.format(DATE_FORMAT_TO_VIEW));
         },
-        [birthday],
+        [currentBirthDay],
     );
 
     const emailChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback(
@@ -128,9 +128,9 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
 
             setIsEmailError(!isValidEmail);
             setEmailUser(value);
-            setEmailUserChanged(email !== value);
+            setEmailUserChanged(userData?.email !== value);
         },
-        [email],
+        [userData],
     );
 
     const comparePasswords = useCallback((pass1: string, pass2: string) => {
@@ -268,10 +268,10 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
                 </Title>
 
                 <Row align='top'>
-                    <ProfilePageUpload preview={imgSrc} changeCb={changeImageForSave} />
+                    <ProfilePageUpload changeCb={changeImageForSave} />
 
                     <Col className='user-personal-info'>
-                        <Form.Item name='name' className='profile-form_input'>
+                        <Form.Item className='profile-form_input'>
                             <Input
                                 data-test-id={PROFILE_IDS.formFirstName}
                                 type='text'
@@ -281,7 +281,7 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
                             />
                         </Form.Item>
 
-                        <Form.Item name='last_name' className='profile-form_input'>
+                        <Form.Item className='profile-form_input'>
                             <Input
                                 data-test-id={PROFILE_IDS.formLastName}
                                 type='text'
@@ -312,7 +312,6 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
                 </Title>
 
                 <Form.Item
-                    name='email'
                     className='profile-form_email'
                     validateStatus={isEmailError ? 'error' : 'success'}
                 >
@@ -328,7 +327,6 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
                 <Form.Item
                     validateStatus={isPasswordError ? 'error' : 'success'}
                     extra='Пароль не менее 8 символов, с заглавной буквой и цифрой'
-                    name='password'
                     className='profile-form_password'
                 >
                     <Input.Password
@@ -345,7 +343,6 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
                 <Form.Item
                     validateStatus={isPasswordRepeatError ? 'error' : 'success'}
                     extra={isPasswordRepeatError ? 'Пароли не совпадают' : ''}
-                    name='password2'
                     className='profile-form_password'
                 >
                     <Input.Password

@@ -23,7 +23,7 @@ export const SettingsPage = () => {
     const navigate = useNavigate();
     const { userData } = useAppSelector((state) => state.user);
 
-    const [isShowSuccessChangeTariffModal, setIsShowSuccessChangeTariffModal] = useState(true);
+    const [isShowSuccessChangeTariffModal, setIsShowSuccessChangeTariffModal] = useState(false);
 
     const { data: tariffsListInfo = [], isLoading: isLoadingGetTariffsList } =
         useGetTariffsListQuery(null);
@@ -76,7 +76,7 @@ export const SettingsPage = () => {
                 <Button
                     onClick={backCb}
                     className='settings-page__header-button'
-                    date-test-id={SETTINGS_IDS.headerBack}
+                    data-test-id={SETTINGS_IDS.headerBack}
                     icon={<ArrowLeftOutlined />}
                 >
                     <span className='btn-text'>Настройки</span>

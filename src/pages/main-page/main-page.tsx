@@ -18,14 +18,14 @@ const routes = [
 ];
 
 export const MainPage = () => {
-    const { userData } = useAppSelector((state) => state.user);
+    const { token } = useAppSelector((state) => state.auth);
     const { getUserInfo } = useGetUserDataInfo();
 
     useEffect(() => {
-        if (!userData) {
+        if (token) {
             getUserInfo();
         }
-    }, [getUserInfo]);
+    }, [getUserInfo, token]);
 
     return (
         <PageLayout className='home-page'>

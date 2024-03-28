@@ -19,22 +19,22 @@ import { RcFile } from 'antd/es/upload/interface';
 import type { UploadRequestOption as RcCustomRequestOptions } from 'rc-upload/lib/interface';
 
 type TProfileUploadProps = {
-    preview: string | null;
     changeCb: (newSrc: string) => void;
 };
 
-export const ProfilePageUpload: FC<TProfileUploadProps> = ({ preview, changeCb }) => {
+export const ProfilePageUpload: FC<TProfileUploadProps> = ({ changeCb }) => {
+    const { userData } = useAppSelector((state) => state.user);
     const { token } = useAppSelector((state) => state.auth);
     const isMobile = useIsMobile(MAX_WIDTH_FOR_MOBILE_PX);
 
     const [fileList, setFileList] = useState<UploadFile[]>(
-        preview
+        userData?.imgSrc
             ? [
                   {
                       name: 'avatar',
                       uid: 'avatar',
                       status: MEDIA_LOADING_STATUS.done,
-                      url: MEDIA_SERVER_URL + preview,
+                      url: MEDIA_SERVER_URL + userData.imgSrc,
                   },
               ]
             : [],
@@ -44,6 +44,21 @@ export const ProfilePageUpload: FC<TProfileUploadProps> = ({ preview, changeCb }
     const [savingPhotoData, setSavingPhotoData] = useState<TUserPhotoResponse | null>(null);
     const [isErrorSavePhoto, setIsErrorSavePhoto] = useState<boolean>(false);
     const [isLoadingSavePhoto, setIsLoadingSavePhoto] = useState<boolean>(false);
+
+    useEffect(() => {
+        setFileList(
+            userData?.imgSrc
+                ? [
+                      {
+                          name: 'avatar',
+                          uid: 'avatar',
+                          status: MEDIA_LOADING_STATUS.done,
+                          url: MEDIA_SERVER_URL + userData.imgSrc,
+                      },
+                  ]
+                : [],
+        );
+    }, [userData]);
 
     useEffect(() => {
         if (isErrorSavePhoto) {
@@ -167,39 +182,39 @@ export const ProfilePageUpload: FC<TProfileUploadProps> = ({ preview, changeCb }
     const isNotEmptyFileList = !Boolean(fileList.length);
 
     return (
-        <Upload
-            name='avatar'
-            customRequest={customRequestHandlerCb}
-            listType={isMobile ? 'picture' : 'picture-card'}
-            className='upload-img'
-            fileList={fileList}
-            onRemove={handleRemoveCb}
-            accept='image/*'
-            multiple={false}
-            data-test-id={PROFILE_IDS.formAvatar}
-        >
-            {isMobile
-                ? isNotEmptyFileList && (
-                      <Row
-                          className='upload-img__content-mobile'
-                          justify='space-between'
-                          align='middle'
-                      >
-                          <span className='upload-text'>Загрузить фото профиля:</span>
-                          <Button icon={<UploadOutlined />} className='upload-button'>
-                              Загрузить
-                          </Button>
-                      </Row>
-                  )
-                : isNotEmptyFileList && (
-                      <span className='upload-img__content'>
-                          <PlusOutlined />
-                          <span className='text'>
-                              Загрузить фото <br />
-                              профиля
+        <div className='upload-img' data-test-id={PROFILE_IDS.formAvatar}>
+            <Upload
+                name='avatar'
+                customRequest={customRequestHandlerCb}
+                listType={isMobile ? 'picture' : 'picture-card'}
+                fileList={fileList}
+                onRemove={handleRemoveCb}
+                accept='image/*'
+                multiple={false}
+            >
+                {isMobile
+                    ? isNotEmptyFileList && (
+                          <Row
+                              className='upload-img__content-mobile'
+                              justify='space-between'
+                              align='middle'
+                          >
+                              <span className='upload-text'>Загрузить фото профиля:</span>
+                              <Button icon={<UploadOutlined />} className='upload-button'>
+                                  Загрузить
+                              </Button>
+                          </Row>
+                      )
+                    : isNotEmptyFileList && (
+                          <span className='upload-img__content'>
+                              <PlusOutlined />
+                              <span className='text'>
+                                  Загрузить фото <br />
+                                  профиля
+                              </span>
                           </span>
-                      </span>
-                  )}
-        </Upload>
+                      )}
+            </Upload>
+        </div>
     );
 };

@@ -80,11 +80,6 @@ export const ProfilePage = () => {
             <PageContent>
                 <div className='common-page-content'>
                     <ProfilePageUserContent
-                        firstName={userData?.firstName}
-                        lastName={userData?.lastName}
-                        birthday={userData?.birthday}
-                        email={userData?.email}
-                        imgSrc={userData?.imgSrc}
                         isUpdatingUserInfo={isLoadingUpdateUserInfo}
                         updateUserInfoCb={updateUserInfo}
                     />
