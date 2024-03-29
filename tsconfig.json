@@ -17,7 +17,7 @@
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
         "allowJs": true,
-        "types": ["node", "cypress"],
+        "types": ["node", "jest", "cypress"],
         "baseUrl": ".",
         "paths": {
             "@public/*": ["./public/*"],
@@ -42,6 +42,7 @@
             }
         ]
     },
-    "include": ["**/*.ts"],
+    "include": ["src/**/*.ts"],
+    "exclude": ["cypress.config.ts", "cypress", "node_modules"],
     "references": [{ "path": "./tsconfig.node.json" }]
 }

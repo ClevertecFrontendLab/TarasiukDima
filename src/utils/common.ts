@@ -53,4 +53,5 @@ export const isTwoSameExercisesArrays = (arr1: TExerciseNewInfo[], arr2: TExerci
     return true;
 };
 
-export const checkIsLessFileSize = (size: number, maxSize: number) => size / 1024 / 1024 < maxSize;
+export const checkIsLessFileSize = (sizeBytes: number, maxSizeMb: number) =>
+    sizeBytes / 1024 / 1024 < maxSizeMb;
