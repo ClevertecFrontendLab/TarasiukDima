@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SettingsContext } from './settings-page-context';
-import { useAppDispatch, useAppSelector } from '@hooks/index';
+import { useAppDispatch, useAppSelector, useGetUserDataInfo } from '@hooks/index';
 import { setToken } from '@redux/index';
 import { useBuyTariffMutation, useGetTariffsListQuery } from '@services/index';
 import { ModalPage, PageContent, PageHeader, PageLayout } from '@components/index';
 import { Button, Result } from 'antd';
 import Title from 'antd/lib/typography/Title';
-import { ArrowLeftOutlined, CloseOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import { SETTINGS_IDS } from '@constants/index';
 import { SettingsPageTariffs } from './settings-page-tariffs';
 import { SettingsPageReviews } from './settings-page-reviews';
@@ -22,11 +22,18 @@ export const SettingsPage = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { userData } = useAppSelector((state) => state.user);
+    const { getUserInfo } = useGetUserDataInfo();
+
+    useEffect(() => {
+        if (!userData) {
+            getUserInfo();
+        }
+    }, [userData, getUserInfo]);
 
     const [isShowSuccessChangeTariffModal, setIsShowSuccessChangeTariffModal] = useState(false);
 
     const { data: tariffsListInfo = [], isLoading: isLoadingGetTariffsList } =
-        useGetTariffsListQuery(null);
+    useGetTariffsListQuery(null);
     const [buyUserPlane, { isLoading: isLoadingBuyUserPlane, isSuccess: isSuccessBuyUserPlane }] =
         useBuyTariffMutation();
 
@@ -42,7 +49,6 @@ export const SettingsPage = () => {
         removeLocalStorageItem(TOKEN_AUTH_LOCALSTORAGE);
     }, [dispatch]);
 
-    const currentTariff = userData?.tariff ?? null;
 
     const backCb = useCallback(() => {
         navigate(-1);
@@ -61,10 +67,10 @@ export const SettingsPage = () => {
     const settingsContextValue: TSettingsContext = useMemo(
         () => ({
             items: tariffsListInfo,
-            tariff: currentTariff,
+            tariff: userData?.tariff ?? null,
             buyPlaneCb: buyTariffPlaneCb,
         }),
-        [tariffsListInfo, currentTariff, buyTariffPlaneCb],
+        [tariffsListInfo, userData, buyTariffPlaneCb],
     );
 
     return (
@@ -100,19 +106,19 @@ export const SettingsPage = () => {
             <ModalPage
                 variant='content'
                 className='settings-ok-modal'
-                closeIcon={<CloseOutlined data-test-id={SETTINGS_IDS.successModalClose} />}
                 open={isShowSuccessChangeTariffModal}
                 closable
                 onCancel={closeSuccessModalCb}
+                centered
+                data-test-id={SETTINGS_IDS.successModal}
             >
                 <Result
                     status='success'
                     title='Чек для оплаты у вас на почте'
                     subTitle={
                         <>
-                            Мы отправили инструкцию для оплаты вам на e-mail{' '}
-                            <span>{userData?.email ?? ''}</span>. После подтверждения оплаты войдите
-                            в приложение заново.
+                            Мы отправили инструкцию для оплаты вам на e-mail {userData?.email ?? ''}
+                            . После подтверждения оплаты войдите в приложение заново.
                         </>
                     }
                     extra='Не пришло письмо? Проверьте папку Спам.'

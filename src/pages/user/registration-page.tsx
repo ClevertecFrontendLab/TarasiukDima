@@ -8,7 +8,7 @@ import { validateEmail, validatePassword } from '@utils/index';
 import { EyeInvisibleOutlined, EyeTwoTone, GooglePlusOutlined } from '@ant-design/icons';
 import { UserLayout, Logo } from '@components/index';
 import { AuthNavButtons } from './AuthNavButtons';
-import { ROUTES_LINKS, USER_IDS } from '@constants/index';
+import { ERROR_MESSAGES, ROUTES_LINKS, USER_IDS } from '@constants/index';
 import { TServerErrorResponse } from '@app_types/responses';
 
 import './auth.scss';
@@ -167,7 +167,7 @@ export const RegistrationPage = () => {
 
                 <Form.Item
                     validateStatus={isPasswordError ? 'error' : 'success'}
-                    extra='Пароль не менее 8 символов, с заглавной буквой и цифрой'
+                    extra={ERROR_MESSAGES.password1Error}
                     name='password'
                     className='password-item'
                 >
@@ -183,7 +183,7 @@ export const RegistrationPage = () => {
 
                 <Form.Item
                     validateStatus={isPasswordRepeatError ? 'error' : 'success'}
-                    extra='Пароли не совпадают'
+                    extra={ERROR_MESSAGES.password2Error}
                     name='password2'
                 >
                     <Input.Password

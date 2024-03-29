@@ -8,7 +8,7 @@ import { Button, Form, Input } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { UserLayout } from '@components/index';
-import { ROUTES_LINKS, USER_IDS } from '@constants/index';
+import { ERROR_MESSAGES, ROUTES_LINKS, USER_IDS } from '@constants/index';
 
 import './auth.scss';
 
@@ -138,7 +138,7 @@ export const ChangePasswordPage = () => {
             >
                 <Form.Item
                     validateStatus={isPasswordError ? 'error' : 'success'}
-                    extra='Пароль не менее 8 символов, с заглавной буквой и цифрой'
+                    extra={ERROR_MESSAGES.password1Error}
                     name='password'
                     className='password-item'
                 >
@@ -154,7 +154,7 @@ export const ChangePasswordPage = () => {
 
                 <Form.Item
                     validateStatus={isPasswordRepeatError ? 'error' : 'success'}
-                    extra='Пароли не совпадают'
+                    extra={ERROR_MESSAGES.password2Error}
                     name='password2'
                 >
                     <Input.Password

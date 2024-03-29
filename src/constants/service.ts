@@ -15,7 +15,9 @@ export const API_TAGS = {
 
 export const STATUS_CODES = {
     requestError: '400',
+    notAuth: '403',
+    notFound: '404',
+    badRequest: '409',
     maxRequests: '429',
-    not_auth: '403',
     serverError: '500',
 };

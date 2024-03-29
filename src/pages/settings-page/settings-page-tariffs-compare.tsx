@@ -142,7 +142,6 @@ export const SettingsPageTariffsCompare: FC<TSettingsPageTariffsCompareProps> = 
                 data-test-id={SETTINGS_IDS.sidePanel}
                 className='drawer-site tariffs-compare'
                 destroyOnClose
-                closeIcon={<CloseOutlined data-test-id='' />}
                 open={isShow}
                 title='Сравнить тарифы'
                 onClose={closeCompareCb}
@@ -155,6 +154,7 @@ export const SettingsPageTariffsCompare: FC<TSettingsPageTariffsCompareProps> = 
                             className='button-page'
                             style={{ width: '100%' }}
                             onClick={BuyPlaneBtnCb}
+                            data-test-id={SETTINGS_IDS.buyButton}
                         >
                             Выбрать и оплатить
                         </Button>
@@ -198,9 +198,11 @@ export const SettingsPageTariffsCompare: FC<TSettingsPageTariffsCompareProps> = 
                             buttonStyle={'outline'}
                         >
                             {periods.map(({ text, cost, days }) => (
-                                <Radio value={days} key={text} className='item-radio'>
+                                <Radio value={days} key={text} className='item-radio' data-test-id={`${SETTINGS_IDS.tariffPriceCheckbox}${cost}`}>
                                     <span className='item-name'>{text}</span>
-                                    <span className='item-price'>{cost}$</span>
+                                    <span className='item-price'>
+                                        {cost.toString().replace('.', ',')}$
+                                    </span>
                                 </Radio>
                             ))}
                         </Radio.Group>

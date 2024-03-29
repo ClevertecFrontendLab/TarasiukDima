@@ -4,6 +4,7 @@ export {
     TOKEN_AUTH_LOCALSTORAGE,
     MAX_SIZE_PHOTO_USER_MB,
     DEFAULT_TRAINING_NAME_VARIANT,
+    ERROR_MESSAGES,
 } from './common';
 
 export { ROUTES_LINKS } from './navigation';

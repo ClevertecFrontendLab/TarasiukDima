@@ -93,5 +93,7 @@ export const SETTINGS_IDS = {
     iconTheme: 'tariff-theme-icon',
     sidePanel: 'tariff-sider',
     periodsPrice: 'tariff-cost',
-    successModalClose: 'tariff-modal-success',
+    tariffPriceCheckbox: 'tariff-',
+    successModal: 'tariff-modal-success',
+    buyButton: 'tariff-submit',
 };

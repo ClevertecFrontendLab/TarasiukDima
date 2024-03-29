@@ -43,9 +43,18 @@
         }
 
         &_password {
+            margin-bottom: 0;
             .ant-input-affix-wrapper {
                 height: $inputHeight;
             }
+        }
+
+        .first-password {
+            margin-bottom: $indentBig;
+        }
+
+        .ant-form-item-margin-offset {
+            display: none;
         }
 
         &_submit {
@@ -54,7 +63,7 @@
     }
 
     .profile-form__block {
-       & ~ .profile-form__block {
+        & ~ .profile-form__block {
             margin-top: 40px;
         }
 
@@ -93,7 +102,7 @@
         padding-top: $indentSmall2;
         color: $grey;
 
-        .anticon  {
+        .anticon {
             color: $black;
         }
 
@@ -128,7 +137,7 @@
 
 @include mobile() {
     .profile-page {
-        .page-layout  .page-layout__header {
+        .page-layout .page-layout__header {
             padding-top: $indentMin2;
             padding-bottom: $indentMin2;
 
@@ -161,16 +170,15 @@
             border-radius: 0;
         }
 
-
         .profile-form__block {
             & ~ .profile-form__block {
                 margin-top: 36px;
-             }
+            }
 
-             &_title {
+            &_title {
                 margin-bottom: 20px;
-             }
-         }
+            }
+        }
 
         .upload-img {
             order: 2;

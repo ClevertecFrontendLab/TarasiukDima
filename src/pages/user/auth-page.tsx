@@ -15,7 +15,14 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { EyeInvisibleOutlined, EyeTwoTone, GooglePlusOutlined } from '@ant-design/icons';
 import { UserLayout, Logo } from '@components/index';
 import { AuthNavButtons } from './AuthNavButtons';
-import { ROUTES_LINKS, SERVICE_API_URL, TOKEN_AUTH_LOCALSTORAGE, USER_IDS } from '@constants/index';
+import {
+    ERROR_MESSAGES,
+    ROUTES_LINKS,
+    SERVICE_API_URL,
+    STATUS_CODES,
+    TOKEN_AUTH_LOCALSTORAGE,
+    USER_IDS,
+} from '@constants/index';
 import { TServerErrorResponse } from '@app_types/responses';
 
 import './auth.scss';
@@ -62,7 +69,11 @@ export const AuthPage = () => {
         if (isErrorCheckEmail && emailErrorData) {
             const { status, data } = emailErrorData as TServerErrorResponse;
 
-            if (data && data.message === 'Email не найден' && status.toString() === '404') {
+            if (
+                data &&
+                data.message === 'Email не найден' &&
+                status.toString() === STATUS_CODES.notAuth
+            ) {
                 navigate(ROUTES_LINKS.resultErrorNoUser, { state: { variantError: 'no-user' } });
                 return;
             }
@@ -198,7 +209,7 @@ export const AuthPage = () => {
 
                 <Form.Item
                     validateStatus={isPasswordError ? 'error' : 'success'}
-                    extra='Пароль не менее 8 символов, с заглавной буквой и цифрой'
+                    extra={ERROR_MESSAGES.password1Error}
                     name='password'
                 >
                     <Input.Password

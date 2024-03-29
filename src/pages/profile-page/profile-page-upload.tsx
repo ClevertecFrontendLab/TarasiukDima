@@ -12,6 +12,7 @@ import {
     MODALS_STYLE,
     PROFILE_IDS,
     SERVICE_API_URL,
+    STATUS_CODES,
 } from '@constants/index';
 import { filesQueryEndpoints } from '@services/index';
 import { TUserPhotoResponse } from '@app_types/index';
@@ -124,7 +125,7 @@ export const ProfilePageUpload: FC<TProfileUploadProps> = ({ changeCb }) => {
     }, [changeCb]);
 
     const savePhoto = useCallback(
-        (formData: FormData) => {
+        async (formData: FormData) => {
             setIsLoadingSavePhoto(true);
 
             const configRequest: AxiosRequestConfig<FormData> = {
@@ -146,8 +147,11 @@ export const ProfilePageUpload: FC<TProfileUploadProps> = ({ changeCb }) => {
                     setSavingPhotoData(response.data);
                     setIsErrorSavePhoto(false);
                 })
-                .catch(() => {
+                .catch((error) => {
                     setIsErrorSavePhoto(true);
+                    if (error.response.status.toString() === STATUS_CODES.badRequest) {
+                        setIsFileSizeError(true);
+                    }
                 })
                 .finally(() => {
                     setIsLoadingSavePhoto(false);
@@ -164,6 +168,7 @@ export const ProfilePageUpload: FC<TProfileUploadProps> = ({ changeCb }) => {
                 fileForLoad.size,
                 MAX_SIZE_PHOTO_USER_MB,
             );
+
             if (!isFileLessNeedSize) {
                 setIsFileSizeError(true);
                 return;

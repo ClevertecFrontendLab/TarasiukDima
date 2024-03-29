@@ -47,7 +47,9 @@
 
         .tariffs-plans__item_text {
             margin: 0;
+            font-weight: $weightMedium;
             text-align: center;
+            color: $blueDark2;
         }
 
         .text-date {
@@ -100,6 +102,9 @@
             &_switch {
                 margin-left: auto;
             }
+            .ant-switch-checked {
+                background-color: $primary;
+            }
         }
     }
 
@@ -141,7 +146,7 @@
     }
 
     .ant-alert-message {
-        color: #030852;
+        color: $blueDark2;
     }
 
     .tariffs-compare__table {
@@ -312,6 +317,10 @@
         padding-left: 0;
         padding-right: 0;
     }
+}
+
+.text-item {
+    display: block;
 }
 
 @include mobile() {

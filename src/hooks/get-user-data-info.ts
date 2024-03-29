@@ -1,4 +1,4 @@
-import { useCallback,  useEffect } from 'react';
+import { useCallback,  useLayoutEffect } from 'react';
 import { useLazyGetUserInfoQuery } from '@services/index';
 import { changeUserData } from '@redux/index';
 import { useAppDispatch } from '.';
@@ -19,7 +19,7 @@ export const useGetUserDataInfo = () => {
         getUserData(null);
     }, [getUserData]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (isGetUserInfoSuccess) {
             dispatch(changeUserData(userNewInfo));
         }

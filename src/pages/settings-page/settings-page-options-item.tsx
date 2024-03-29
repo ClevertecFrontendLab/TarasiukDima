@@ -1,4 +1,4 @@
-import { FC, ReactNode, memo, useCallback, useState } from 'react';
+import { FC, ReactNode, memo, useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useIsMobile } from '@hooks/index';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -22,6 +22,10 @@ export const SettingsPageOptionsItem: FC<TSettingsPageOptionsItemProps> = memo(
 
         const [selectedItem, setSelectedItem] = useState<boolean>(checked);
 
+        useEffect(() => {
+            setSelectedItem(checked)
+        }, [checked])
+
         const onChange = useCallback(
             (checked: boolean) => {
                 setSelectedItem(checked);
@@ -40,11 +44,11 @@ export const SettingsPageOptionsItem: FC<TSettingsPageOptionsItemProps> = memo(
                 <Paragraph className='settings-block__option_title'>{title}</Paragraph>
 
                 <Tooltip
+                    className='settings-block__option_tooltip'
                     placement='bottomLeft'
                     title={tooltip}
                     color='#000000'
                     arrowPointAtCenter
-                    className='settings-block__option_tooltip'
                 >
                     <ExclamationCircleOutlined data-test-id={dataTestIcon} />
                 </Tooltip>

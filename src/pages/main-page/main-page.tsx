@@ -22,9 +22,7 @@ export const MainPage = () => {
     const { getUserInfo } = useGetUserDataInfo();
 
     useEffect(() => {
-        if (token) {
-            getUserInfo();
-        }
+        getUserInfo();
     }, [getUserInfo, token]);
 
     return (

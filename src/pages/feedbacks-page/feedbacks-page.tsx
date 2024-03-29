@@ -50,7 +50,7 @@ export const FeedbacksPage = () => {
         if (isFeedbacksError && feedbacksErrorData) {
             const statusError = (feedbacksErrorData as TServerErrorResponse).status.toString();
 
-            if (statusError === STATUS_CODES.not_auth) {
+            if (statusError === STATUS_CODES.notAuth) {
                 dispatch(setToken(''));
                 removeLocalStorageItem(TOKEN_AUTH_LOCALSTORAGE);
 

@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import locale from 'antd/es/locale/ru_RU';
 import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
@@ -9,11 +9,27 @@ import { Button, Col, ConfigProvider, Form, Input, Row } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import { ProfilePageUpload } from './profile-page-upload';
 import { validateEmail, validatePassword } from '@utils/index';
-import { DATE_FORMAT_TO_VIEW, PROFILE_IDS } from '@constants/index';
+import { DATE_FORMAT_TO_VIEW, ERROR_MESSAGES, PROFILE_IDS } from '@constants/index';
 import DateIcon from '@public/img/dateIcon.svg?react';
-import { TUserInfoUpdateBody } from '@app_types/index';
+import { TUserInfo, TUserInfoUpdateBody } from '@app_types/index';
 
 const DatePicker = generatePicker<Dayjs>(dayjsGenerateConfig);
+
+interface FieldData {
+    name: string[];
+    value?: unknown;
+    touched?: boolean;
+    validating?: boolean;
+    errors?: string[];
+}
+
+type TProfileFormSate = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password1: string;
+    password2: string;
+};
 
 type TProfilePageUserContentProps = {
     isUpdatingUserInfo?: boolean;
@@ -26,88 +42,41 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
     const { userData } = useAppSelector((state) => state.user);
     const { getDateForSave } = useGetCurrentDayInfo();
 
+    const [form] = Form.useForm<TProfileFormSate>();
+
+    const [disabledSave, setDisabledSave] = useState<boolean>(true);
     const [imageUrlForSave, setImageUrlForSave] = useState<string>('');
-    const [imageForSaveChanged, setImageForSaveChanged] = useState<boolean>(false);
-
-    const [nameUser, setNameUser] = useState<string>(userData?.firstName ?? '');
-    const [nameUserChanged, setNameUserChanged] = useState<boolean>(false);
-
-    const [lastNameUser, setLastNameUser] = useState<string>(userData?.lastName ?? '');
-    const [lastNameUserChanged, setLastNameUserChanged] = useState<boolean>(false);
-
+    const [imageUrlForSaveChanged, setImageUrlForSaveChanged] = useState<boolean>(false);
     const [birthdayUser, setBirthdayUser] = useState<Dayjs | null>(
         userData?.birthday ? dayjs(userData.birthday) : null,
     );
     const [birthdayUserChanged, setBirthdayUserChanged] = useState<boolean>(false);
 
-    const [emailUser, setEmailUser] = useState<string>(userData?.email ?? '');
-
-    const [emailUserChanged, setEmailUserChanged] = useState<boolean>(false);
-    const [isEmailError, setIsEmailError] = useState<boolean>(false);
-
-    const [passwordUser, setPasswordUser] = useState<string>('');
-    const [isPasswordError, setIsPasswordError] = useState<boolean>(false);
-    const [passwordsChanged, setPasswordsChanged] = useState<boolean>(false);
-
-    const [password2User, setPassword2User] = useState<string>('');
-    const [isPasswordRepeatError, setIsPasswordRepeatError] = useState<boolean>(false);
-
-    const isChangedFields = useMemo(() => {
-        return (
-            nameUserChanged ||
-            lastNameUserChanged ||
-            birthdayUserChanged ||
-            emailUserChanged ||
-            imageForSaveChanged ||
-            passwordsChanged
-        );
-    }, [
-        nameUserChanged,
-        lastNameUserChanged,
-        birthdayUserChanged,
-        emailUserChanged,
-        imageForSaveChanged,
-        passwordsChanged,
-    ]);
-
-    const disabledSend =
-        isEmailError ||
-        isPasswordError ||
-        isPasswordRepeatError ||
-        !isChangedFields ||
-        isUpdatingUserInfo;
-
     useEffect(() => {
-        setNameUser(userData?.firstName ?? '');
-        setLastNameUser(userData?.lastName ?? '');
-        setBirthdayUser(userData?.birthday ? dayjs(userData.birthday) : null);
-        setEmailUser(userData?.email ?? '');
-    }, [userData]);
+        if (userData) {
+            form.setFieldValue('firstName', userData?.firstName ?? '');
+            form.setFieldValue('lastName', userData?.lastName ?? '');
+            form.setFieldValue('birthday', userData?.birthday ? dayjs(userData.birthday) : null);
+            form.setFieldValue('email', userData?.email ?? '');
+            form.validateFields(['email']);
+        }
+    }, [userData, form]);
+
+    const isFormErrorsExist = useCallback(() => {
+        const formErrors = form.getFieldsError(['email', 'password1', 'password2']);
+
+        return formErrors.filter((item) => item.errors.length).length > 0;
+    }, [form]);
 
     const changeImageForSave = useCallback(
         (newSrc: string) => {
             setImageUrlForSave(newSrc);
-            setImageForSaveChanged(newSrc !== userData?.imgSrc);
+            setImageUrlForSaveChanged(newSrc !== userData?.imgSrc);
+            if (!isFormErrorsExist()) {
+                setDisabledSave(false);
+            }
         },
-        [userData],
-    );
-
-    const nameChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback(
-        (event) => {
-            const value = event?.target?.value || '';
-            setNameUser(value);
-            setNameUserChanged(userData?.firstName !== value);
-        },
-        [userData],
-    );
-
-    const lastNameChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback(
-        (event) => {
-            const value = event?.target?.value || '';
-            setLastNameUser(value);
-            setLastNameUserChanged(userData?.lastName !== value);
-        },
-        [userData],
+        [userData, isFormErrorsExist],
     );
 
     const currentBirthDay = userData?.birthday
@@ -117,150 +86,106 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
         (value: Dayjs | null) => {
             setBirthdayUser(value);
             setBirthdayUserChanged(currentBirthDay !== value?.format(DATE_FORMAT_TO_VIEW));
+
+            if (!isFormErrorsExist()) {
+                setDisabledSave(false);
+            }
         },
-        [currentBirthDay],
+        [currentBirthDay, isFormErrorsExist],
     );
 
-    const emailChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback(
-        (event) => {
-            const value = event?.target?.value || '';
-            const isValidEmail = validateEmail(value);
+    const checkIsNeedAddFormField = useCallback(
+        (val: string, formKey: keyof TUserInfo) => {
+            const currentUserFieldInfo = userData ? userData[formKey] ?? '' : '';
 
-            setIsEmailError(!isValidEmail);
-            setEmailUser(value);
-            setEmailUserChanged(userData?.email !== value);
+            return val !== currentUserFieldInfo;
         },
         [userData],
     );
 
-    const comparePasswords = useCallback((pass1: string, pass2: string) => {
-        setIsPasswordRepeatError(pass1 !== pass2);
-    }, []);
+    const onFinish = useCallback(
+        ({ email, firstName, lastName, password1 }: TProfileFormSate) => {
+            const updatedData: TUserInfoUpdateBody = {
+                email: email,
+            };
 
-    const passwordChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback(
-        (event) => {
-            const value = event?.target?.value || '';
-            const isValidPassword = validatePassword(value);
-
-            setPasswordUser(value);
-            comparePasswords(password2User, value);
-
-            if (!value && !password2User) {
-                setPasswordsChanged(false);
-                setIsPasswordError(false);
-                return;
+            if (imageUrlForSaveChanged && checkIsNeedAddFormField(imageUrlForSave, 'imgSrc')) {
+                updatedData['imgSrc'] = imageUrlForSave;
+            }
+            if (checkIsNeedAddFormField(firstName, 'firstName')) {
+                updatedData['firstName'] = firstName;
             }
 
-            setIsPasswordError(!isValidPassword);
-            setPasswordsChanged(true);
+            if (checkIsNeedAddFormField(lastName, 'lastName')) {
+                updatedData['firstName'] = lastName;
+            }
+
+            if (birthdayUserChanged) {
+                updatedData['birthday'] = getDateForSave(birthdayUser);
+            }
+
+            if (password1 && validatePassword(password1)) {
+                updatedData['password'] = password1;
+            }
+
+            setDisabledSave(true);
+            updateUserInfoCb(updatedData);
+            setImageUrlForSave('');
+            setBirthdayUserChanged(false);
+            setImageUrlForSaveChanged(false);
         },
-        [password2User, comparePasswords],
+        [
+            checkIsNeedAddFormField,
+            birthdayUser,
+            birthdayUserChanged,
+            getDateForSave,
+            imageUrlForSave,
+            imageUrlForSaveChanged,
+            updateUserInfoCb,
+        ],
     );
 
-    const passwordRepeatChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback(
-        (event) => {
-            const value = event?.target?.value || '';
+    const onFieldsChange = useCallback(
+        (_: FieldData[], allFields: FieldData[]) => {
+            if (isFormErrorsExist()) {
+                setDisabledSave(true);
+                return false;
+            }
 
-            setPasswordsChanged(true);
-            setPassword2User(value);
-            comparePasswords(passwordUser, value);
+            if (imageUrlForSaveChanged || birthdayUserChanged) {
+                setDisabledSave(false);
+                return false;
+            }
+
+            let dataChanged = false;
+            allFields.forEach((item) => {
+                const nameField = item.name[0] ?? '';
+                const curValue = item.value ?? '';
+                const curUserValue = userData ? userData[nameField as keyof TUserInfo] ?? '' : '';
+
+                if (curValue !== curUserValue) {
+                    dataChanged = true;
+                }
+            });
+
+            setDisabledSave(!dataChanged);
+            return true;
         },
-        [passwordUser, comparePasswords],
+        [userData, birthdayUserChanged, imageUrlForSaveChanged, isFormErrorsExist],
     );
-
-    const sendUserNewData = useCallback(() => {
-        const updatedData: TUserInfoUpdateBody = {
-            email: emailUser,
-        };
-
-        if (imageForSaveChanged) {
-            updatedData['imgSrc'] = imageUrlForSave;
-        }
-
-        if (nameUserChanged) {
-            updatedData['firstName'] = nameUser;
-        }
-
-        if (lastNameUserChanged) {
-            updatedData['lastName'] = lastNameUser;
-        }
-
-        if (birthdayUserChanged) {
-            updatedData['birthday'] = getDateForSave(birthdayUser);
-        }
-
-        if (emailUserChanged && validateEmail(emailUser)) {
-            updatedData['email'] = emailUser;
-        }
-
-        if (passwordsChanged && validatePassword(passwordUser)) {
-            updatedData['password'] = passwordUser;
-        }
-
-        updateUserInfoCb(updatedData);
-    }, [
-        birthdayUser,
-        birthdayUserChanged,
-        emailUser,
-        emailUserChanged,
-        getDateForSave,
-        imageForSaveChanged,
-        imageUrlForSave,
-        lastNameUser,
-        lastNameUserChanged,
-        nameUser,
-        nameUserChanged,
-        passwordUser,
-        passwordsChanged,
-        updateUserInfoCb,
-    ]);
-
-    const clearStateAfterSend = useCallback(() => {
-        setImageForSaveChanged(false);
-        setNameUserChanged(false);
-        setLastNameUserChanged(false);
-        setBirthdayUserChanged(false);
-        setEmailUserChanged(false);
-        setPasswordsChanged(false);
-
-        setPasswordUser('');
-        setPassword2User('');
-
-        setIsEmailError(false);
-        setIsPasswordError(false);
-        setIsPasswordRepeatError(false);
-    }, []);
-
-    const isNotValidFormItems = useCallback(() => {
-        let errorExist = false;
-
-        if (!validateEmail(emailUser)) {
-            setIsEmailError(true);
-            errorExist = true;
-        }
-
-        if (passwordsChanged && !validatePassword(passwordUser)) {
-            setIsPasswordError(true);
-            errorExist = true;
-        }
-
-        return errorExist;
-    }, [emailUser, passwordUser, passwordsChanged]);
-
-    const onSubmitForm = useCallback(() => {
-        if (isNotValidFormItems()) {
-            return;
-        }
-
-        sendUserNewData();
-        clearStateAfterSend();
-    }, [isNotValidFormItems, sendUserNewData, clearStateAfterSend]);
 
     return (
         <Form
+            form={form}
+            name='profile-form'
             className='profile-form'
-            onFinish={onSubmitForm}
-            initialValues={{ email: emailUser ?? '' }}
+            onFieldsChange={onFieldsChange}
+            onFinish={onFinish}
+            initialValues={{
+                firstName: userData?.firstName ?? '',
+                lastName: userData?.lastName ?? '',
+                email: userData?.email ?? '',
+            }}
         >
             <Col className='profile-form__block'>
                 <Title level={2} className='profile-form__block_title'>
@@ -271,35 +196,32 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
                     <ProfilePageUpload changeCb={changeImageForSave} />
 
                     <Col className='user-personal-info'>
-                        <Form.Item className='profile-form_input'>
+                        <Form.Item name='firstName' className='profile-form_input'>
                             <Input
-                                data-test-id={PROFILE_IDS.formFirstName}
                                 type='text'
-                                value={nameUser}
-                                onChange={nameChangeHandler}
                                 placeholder='Имя'
+                                data-test-id={PROFILE_IDS.formFirstName}
                             />
                         </Form.Item>
 
-                        <Form.Item className='profile-form_input'>
+                        <Form.Item name='lastName' className='profile-form_input'>
                             <Input
-                                data-test-id={PROFILE_IDS.formLastName}
                                 type='text'
-                                value={lastNameUser}
-                                onChange={lastNameChangeHandler}
                                 placeholder='Фамилия'
+                                data-test-id={PROFILE_IDS.formLastName}
                             />
                         </Form.Item>
 
                         <ConfigProvider locale={locale}>
                             <DatePicker
-                                data-test-id={PROFILE_IDS.formBirthday}
+                                name='birthday'
                                 placeholder='Дата рождения'
                                 value={birthdayUser}
-                                onChange={birthdayChangeHandler}
                                 format={DATE_FORMAT_TO_VIEW}
-                                style={{ width: '100%', height: 40 }}
                                 suffixIcon={<DateIcon />}
+                                onChange={birthdayChangeHandler}
+                                style={{ width: '100%', height: 40 }}
+                                data-test-id={PROFILE_IDS.formBirthday}
                             />
                         </ConfigProvider>
                     </Col>
@@ -312,47 +234,77 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
                 </Title>
 
                 <Form.Item
+                    name='email'
                     className='profile-form_email'
-                    validateStatus={isEmailError ? 'error' : 'success'}
+                    required
+                    rules={[
+                        {
+                            validator: (_, value) =>
+                                value && validateEmail(value)
+                                    ? Promise.resolve()
+                                    : Promise.reject(new Error(ERROR_MESSAGES.emailError)),
+                        },
+                    ]}
                 >
                     <Input
-                        data-test-id={PROFILE_IDS.formEmail}
-                        addonBefore='e-mail:'
                         type='email'
-                        value={emailUser}
-                        onChange={emailChangeHandler}
+                        addonBefore='e-mail:'
+                        data-test-id={PROFILE_IDS.formEmail}
                     />
                 </Form.Item>
 
                 <Form.Item
-                    validateStatus={isPasswordError ? 'error' : 'success'}
-                    extra='Пароль не менее 8 символов, с заглавной буквой и цифрой'
-                    className='profile-form_password'
+                    name='password1'
+                    initialValue=''
+                    className='profile-form_password first-password'
+                    help={ERROR_MESSAGES.password1Error}
+                    required={false}
+                    rules={[
+                        {
+                            validator: (_, value) => {
+                                if (!value) return Promise.resolve();
+
+                                const isValidPassword = validatePassword(value);
+                                return isValidPassword ? Promise.resolve() : Promise.reject();
+                            },
+                        },
+                    ]}
                 >
                     <Input.Password
-                        data-test-id={PROFILE_IDS.formPassword}
+                        autoComplete=''
                         placeholder='Пароль'
-                        value={passwordUser}
-                        onChange={passwordChangeHandler}
                         iconRender={(visible) =>
                             visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                         }
+                        data-test-id={PROFILE_IDS.formPassword}
                     />
                 </Form.Item>
 
                 <Form.Item
-                    validateStatus={isPasswordRepeatError ? 'error' : 'success'}
-                    extra={isPasswordRepeatError ? 'Пароли не совпадают' : ''}
+                    name='password2'
+                    initialValue=''
                     className='profile-form_password'
+                    required={false}
+                    dependencies={['password1']}
+                    rules={[
+                        ({ getFieldValue }) => ({
+                            validator: (_, value) => {
+                                const password1 = getFieldValue('password1');
+
+                                return (!password1 && !value) || password1 === value
+                                    ? Promise.resolve()
+                                    : Promise.reject(new Error(ERROR_MESSAGES.password2Error));
+                            },
+                        }),
+                    ]}
                 >
                     <Input.Password
-                        data-test-id={PROFILE_IDS.formRepeatPassword}
-                        value={password2User}
-                        onChange={passwordRepeatChangeHandler}
+                        autoComplete=''
                         placeholder='Повторите пароль'
                         iconRender={(visible) =>
                             visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                         }
+                        data-test-id={PROFILE_IDS.formRepeatPassword}
                     />
                 </Form.Item>
 
@@ -361,7 +313,7 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
                     type='primary'
                     className='button-page profile-form_submit'
                     htmlType='submit'
-                    disabled={disabledSend}
+                    disabled={isUpdatingUserInfo || disabledSave}
                 >
                     Сохранить изменения
                 </Button>
