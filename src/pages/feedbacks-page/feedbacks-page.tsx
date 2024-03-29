@@ -1,21 +1,22 @@
-import { useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '@hooks/index';
-import { useGetFeedbackQuery } from '@services/index';
-import { setToken } from '@redux/index';
-import { removeLocalStorageItem } from '@utils/storage';
-import { Button, Result } from 'antd';
-import { PageLayout, PageHeader, ModalPage, FeedbacksAddModals } from '@components/index';
-import { FeedbacksPageEmpty } from './feedbacks-page-empty';
-import { FeedbacksPageContent } from './feedbacks-page-content';
+import { FeedbacksAddModals, ModalPage, PageHeader, PageLayout } from '@components/index';
 import {
     REPEAT_FEEDBACKS_REQUEST,
     ROUTES_LINKS,
     STATUS_CODES,
     TOKEN_AUTH_LOCALSTORAGE,
 } from '@constants/index';
+import { useAppDispatch } from '@hooks/index';
+import { setToken } from '@redux/index';
+import { useGetFeedbackQuery } from '@services/index';
+import { removeLocalStorageItem } from '@utils/index';
+import { Button, Result } from 'antd';
 import { ResultStatusType } from 'antd/lib/result';
-import { TServerErrorResponse } from '@app_types/index';
+import { TServerErrorResponse } from 'src/app-types/index';
+
+import { FeedbacksPageContent } from './feedbacks-page-content';
+import { FeedbacksPageEmpty } from './feedbacks-page-empty';
 
 import './feedbacks-page.scss';
 
@@ -55,6 +56,7 @@ export const FeedbacksPage = () => {
                 removeLocalStorageItem(TOKEN_AUTH_LOCALSTORAGE);
 
                 navigate(ROUTES_LINKS.auth);
+
                 return;
             }
 
@@ -98,10 +100,10 @@ export const FeedbacksPage = () => {
                     status={STATUS_CODES.serverError as ResultStatusType}
                     title='Что-то пошло не так'
                     subTitle={
-                        <>
+                        <Fragment>
                             Произошла ошибка, <br />
                             попробуйте ещё раз.
-                        </>
+                        </Fragment>
                     }
                     extra={
                         <Button

@@ -22,3 +22,5 @@ export {
 } from './storage';
 
 export { validateEmail, validatePassword } from './validators';
+
+export { visiblePasswordRenderIcon } from './view';

@@ -1,10 +1,10 @@
-import { FC, ReactNode, memo, useCallback, useEffect, useState } from 'react';
-import classNames from 'classnames';
-import { useIsMobile } from '@hooks/index';
+import { FC, memo, ReactNode, useCallback, useEffect, useState } from 'react';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { MAX_WIDTH_FOR_MOBILE_PX } from '@constants/index';
+import { useIsMobile } from '@hooks/index';
 import { Row, Switch, Tooltip } from 'antd';
 import Paragraph from 'antd/lib/typography/Paragraph';
-import { MAX_WIDTH_FOR_MOBILE_PX } from '@constants/index';
+import classNames from 'classnames';
 
 type TSettingsPageOptionsItemProps = {
     title: string;
@@ -23,13 +23,13 @@ export const SettingsPageOptionsItem: FC<TSettingsPageOptionsItemProps> = memo(
         const [selectedItem, setSelectedItem] = useState<boolean>(checked);
 
         useEffect(() => {
-            setSelectedItem(checked)
-        }, [checked])
+            setSelectedItem(checked);
+        }, [checked]);
 
         const onChange = useCallback(
-            (checked: boolean) => {
-                setSelectedItem(checked);
-                clickCb(checked);
+            (checkedItem: boolean) => {
+                setSelectedItem(checkedItem);
+                clickCb(checkedItem);
             },
             [clickCb],
         );
@@ -37,7 +37,7 @@ export const SettingsPageOptionsItem: FC<TSettingsPageOptionsItemProps> = memo(
         return (
             <Row
                 className={classNames('settings-block__option', {
-                    disabled: disabled,
+                    disabled,
                 })}
                 align='middle'
             >
@@ -48,7 +48,7 @@ export const SettingsPageOptionsItem: FC<TSettingsPageOptionsItemProps> = memo(
                     placement='bottomLeft'
                     title={tooltip}
                     color='#000000'
-                    arrowPointAtCenter
+                    arrowPointAtCenter={true}
                 >
                     <ExclamationCircleOutlined data-test-id={dataTestIcon} />
                 </Tooltip>

@@ -1,19 +1,19 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SettingsContext } from './settings-page-context';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { ModalPage, PageContent, PageHeader, PageLayout } from '@components/index';
+import { SETTINGS_IDS, TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
 import { useAppDispatch, useAppSelector, useGetUserDataInfo } from '@hooks/index';
 import { setToken } from '@redux/index';
 import { useBuyTariffMutation, useGetTariffsListQuery } from '@services/index';
-import { ModalPage, PageContent, PageHeader, PageLayout } from '@components/index';
+import { removeLocalStorageItem } from '@utils/index';
 import { Button, Result } from 'antd';
 import Title from 'antd/lib/typography/Title';
-import { ArrowLeftOutlined } from '@ant-design/icons';
-import { SETTINGS_IDS } from '@constants/index';
-import { SettingsPageTariffs } from './settings-page-tariffs';
-import { SettingsPageReviews } from './settings-page-reviews';
+
+import { SettingsContext } from './settings-page-context';
 import { SettingsPageOptions } from './settings-page-options';
-import { TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
-import { removeLocalStorageItem } from '@utils/index';
+import { SettingsPageReviews } from './settings-page-reviews';
+import { SettingsPageTariffs } from './settings-page-tariffs';
 import { TSettingsContext } from './types';
 
 import './settings-page.scss';
@@ -33,7 +33,7 @@ export const SettingsPage = () => {
     const [isShowSuccessChangeTariffModal, setIsShowSuccessChangeTariffModal] = useState(false);
 
     const { data: tariffsListInfo = [], isLoading: isLoadingGetTariffsList } =
-    useGetTariffsListQuery(null);
+        useGetTariffsListQuery(null);
     const [buyUserPlane, { isLoading: isLoadingBuyUserPlane, isSuccess: isSuccessBuyUserPlane }] =
         useBuyTariffMutation();
 
@@ -49,7 +49,6 @@ export const SettingsPage = () => {
         removeLocalStorageItem(TOKEN_AUTH_LOCALSTORAGE);
     }, [dispatch]);
 
-
     const backCb = useCallback(() => {
         navigate(-1);
     }, [navigate]);
@@ -57,8 +56,8 @@ export const SettingsPage = () => {
     const buyTariffPlaneCb = useCallback(
         (tariffId: string, days: number) => {
             buyUserPlane({
-                tariffId: tariffId,
-                days: days,
+                tariffId,
+                days,
             });
         },
         [buyUserPlane],
@@ -107,19 +106,19 @@ export const SettingsPage = () => {
                 variant='content'
                 className='settings-ok-modal'
                 open={isShowSuccessChangeTariffModal}
-                closable
+                closable={true}
                 onCancel={closeSuccessModalCb}
-                centered
+                centered={true}
                 data-test-id={SETTINGS_IDS.successModal}
             >
                 <Result
                     status='success'
                     title='Чек для оплаты у вас на почте'
                     subTitle={
-                        <>
+                        <Fragment>
                             Мы отправили инструкцию для оплаты вам на e-mail {userData?.email ?? ''}
                             . После подтверждения оплаты войдите в приложение заново.
-                        </>
+                        </Fragment>
                     }
                     extra='Не пришло письмо? Проверьте папку Спам.'
                 />

@@ -1,6 +1,7 @@
 export const setLocalStorageItem = (key: string, value: unknown) => {
     try {
         const valueToSave = JSON.stringify(value);
+
         localStorage.setItem(key, valueToSave);
     } catch (error) {
         console.log('Ошибка сохранения в localStorage.', error);
@@ -10,6 +11,7 @@ export const setLocalStorageItem = (key: string, value: unknown) => {
 export const getLocalStorageItem = (key: string) => {
     try {
         const result = localStorage.getItem(key);
+
         return result ? JSON.parse(result) : '';
     } catch (error) {
         return '';
@@ -35,7 +37,7 @@ const getCookieValueIfCorrectKey = (key: string, cookieLine: string) => {
 };
 
 export const getCookie = (key: string) => {
-    const nameCookie = key + '=';
+    const nameCookie = `${key}=`;
     const cookies = document.cookie.split(';');
 
     for (let i = 0; i < cookies.length; i++) {

@@ -1,7 +1,7 @@
 import {
-    sortArrayByDate,
-    getCorrectDateForShow,
     compareDates,
+    getCorrectDateForShow,
+    sortArrayByDate,
     updatedNeededLengthValue,
 } from './date';
 
@@ -37,11 +37,13 @@ describe('updatedNeededLengthValue', () => {
 
     test('get value equal needed length', () => {
         const value = 222;
+
         expect(updatedNeededLengthValue(value, 3, '*')).toEqual(value.toString());
     });
 
     test('get value more needed length', () => {
         const value = 222;
+
         expect(updatedNeededLengthValue(value, 1, '*')).toEqual(value.toString());
     });
 });

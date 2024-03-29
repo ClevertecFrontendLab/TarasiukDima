@@ -1,7 +1,8 @@
+/* eslint-disable import/no-extraneous-dependencies */
+import { DATE_FORMAT } from '@constants/date';
 import dayjs, { Dayjs } from 'dayjs';
 import localeRu from 'dayjs/locale/ru';
 import utc from 'dayjs/plugin/utc';
-import { DATE_FORMAT } from '@constants/date';
 
 dayjs.extend(utc);
 dayjs.locale('ru', localeRu);
@@ -16,6 +17,7 @@ export const useGetCurrentDayInfo = () => {
         if (date) {
             return dayjs(date).local().format(dateFormat);
         }
+
         return now.format(dateFormat);
     };
 

@@ -36,12 +36,14 @@ export const isTwoSameExercisesArrays = (arr1: TExerciseNewInfo[], arr2: TExerci
     if (arr1.length !== arr2.length || (arr1 && !arr2) || (!arr1 && arr2)) return false;
 
     const keysForCheck = ['approaches', 'name', 'replays', 'weight'];
+
     for (let index = 0; index < arr1.length; index++) {
         const item1 = arr1[index];
         const item2 = arr2[index];
 
         for (let indKey = 0; indKey < keysForCheck.length; indKey++) {
             const key = keysForCheck[indKey] as keyof TExerciseNewInfo;
+
             if (item1[key] !== item2[key]) {
                 return false;
             }
@@ -51,6 +53,4 @@ export const isTwoSameExercisesArrays = (arr1: TExerciseNewInfo[], arr2: TExerci
     return true;
 };
 
-export const checkIsLessFileSize = (size: number, maxSize: number) => {
-    return size / 1024 / 1024 < maxSize;
-};
+export const checkIsLessFileSize = (size: number, maxSize: number) => size / 1024 / 1024 < maxSize;

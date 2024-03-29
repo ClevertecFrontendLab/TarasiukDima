@@ -1,9 +1,10 @@
-import { memo, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import classNames from 'classnames';
-import { useGetSavedTraining, useIsMobile } from '@hooks/index';
-import { DEFAULT_TRAINING_NAME_VARIANT, TRAININGS_IDS } from '@constants/index';
+import { Fragment, memo, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import { DEFAULT_TRAINING_NAME_VARIANT, TRAININGS_IDS } from '@constants/index';
+import { useGetSavedTraining, useIsMobile } from '@hooks/index';
 import { Button, Modal, Row, Select } from 'antd';
+import classNames from 'classnames';
+
 import { CellDayContext } from './calendar-cell-context';
 import { CalendarTrainingList } from './calendar-trainings-list';
 import { EmptyIcon } from './empty';
@@ -46,12 +47,14 @@ export const CellTrainingModal: React.FC<TCellTrainingModalProps> = memo(
 
         const trainingItems = useMemo(() => {
             const items: TCalendarTrainingListItem[] = [];
+
             if (
                 chosenVariantTraining &&
                 (dayChangedInfo[chosenVariantTraining] || dayFullInfo[chosenVariantTraining])
             ) {
                 const trainingDay =
                     dayChangedInfo[chosenVariantTraining] ?? dayFullInfo[chosenVariantTraining];
+
                 trainingDay.exercises.forEach((exerciseItem, index) => {
                     items.push({
                         name: exerciseItem.name,
@@ -63,45 +66,49 @@ export const CellTrainingModal: React.FC<TCellTrainingModalProps> = memo(
             return items;
         }, [chosenVariantTraining, dayChangedInfo, dayFullInfo]);
 
-        const variantsTrainingForChoose = useMemo(() => {
-            return trainingVariants
-                .map((item) => {
-                    return {
+        const variantsTrainingForChoose = useMemo(
+            () =>
+                trainingVariants
+                    .map((item) => ({
                         value: item.name,
                         label: item.name,
-                    };
-                })
-                .filter((item) => !addedTrainingNames.includes(item.label));
-        }, [addedTrainingNames, trainingVariants]);
+                    }))
+                    .filter((item) => !addedTrainingNames.includes(item.label)),
+            [addedTrainingNames, trainingVariants],
+        );
 
         const { isDisabledChoseTrainingName, isTrainingVariantExist } = useMemo(() => {
-            let isTrainingVariantExist = false;
-
+            let trainingVariantExist = false;
             let isDisabled = false;
+
             savedTrainings.forEach((item) => {
                 if (item.name === defaultSelectValue) {
                     isDisabled = true;
-                    isTrainingVariantExist = true;
+                    trainingVariantExist = true;
                 }
             });
 
-            return { isDisabledChoseTrainingName: isDisabled, isTrainingVariantExist };
+            return {
+                isDisabledChoseTrainingName: isDisabled,
+                isTrainingVariantExist: trainingVariantExist,
+            };
         }, [savedTrainings, defaultSelectValue]);
 
         const isCanSaveExercises =
             dayChangedInfo[chosenVariantTraining as string]?.isChanged || false;
 
         const disabledSaveBtn = useMemo(() => {
-            const disabledSaveBtn = !isCanSaveExercises || isLoading;
+            const disabledBtn = !isCanSaveExercises || isLoading;
 
             if (isTrainingVariantExist || !chosenVariantTraining) {
-                return disabledSaveBtn;
+                return disabledBtn;
             }
 
             const exercises = dayChangedInfo[chosenVariantTraining]?.exercises || [];
             // eslint-disable-next-line no-extra-boolean-cast
             const emptyExercises = exercises ? !Boolean(exercises.length) : true;
-            return disabledSaveBtn || emptyExercises;
+
+            return disabledBtn || emptyExercises;
         }, [
             isTrainingVariantExist,
             chosenVariantTraining,
@@ -129,13 +136,13 @@ export const CellTrainingModal: React.FC<TCellTrainingModalProps> = memo(
                 maskStyle={{
                     backgroundColor: 'transparent',
                 }}
-                destroyOnClose
+                destroyOnClose={true}
                 data-test-id={TRAININGS_IDS.modalCreate}
                 className='cell-content__modal add-new-modal'
                 open={isShow}
                 closable={false}
                 getContainer={isMobile ? false : refEl}
-                centered={isMobile ? true : false}
+                centered={!!isMobile}
                 onCancel={closeCb}
                 title={
                     <Row
@@ -168,7 +175,7 @@ export const CellTrainingModal: React.FC<TCellTrainingModalProps> = memo(
                     </Row>
                 }
                 footer={
-                    <>
+                    <Fragment>
                         <Button
                             type='default'
                             className='add-training'
@@ -181,7 +188,7 @@ export const CellTrainingModal: React.FC<TCellTrainingModalProps> = memo(
                         <Button
                             type='default'
                             className={classNames('save-btn', {
-                                ['is-loading']: isLoading,
+                                'is-loading': isLoading,
                             })}
                             loading={isLoading}
                             onClick={saveExercisesCb}
@@ -189,7 +196,7 @@ export const CellTrainingModal: React.FC<TCellTrainingModalProps> = memo(
                         >
                             Сохранить изменения
                         </Button>
-                    </>
+                    </Fragment>
                 }
             >
                 {
@@ -200,7 +207,7 @@ export const CellTrainingModal: React.FC<TCellTrainingModalProps> = memo(
                         <CalendarTrainingList
                             items={trainingItems}
                             editButtonCb={showEditExerciseCb}
-                            needButtonEdit
+                            needButtonEdit={true}
                             className='training__list'
                         />
                     )

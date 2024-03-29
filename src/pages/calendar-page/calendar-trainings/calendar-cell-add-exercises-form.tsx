@@ -1,8 +1,9 @@
 import { memo, useCallback, useContext } from 'react';
+import { TRAININGS_IDS } from '@constants/index';
 import { Checkbox, Form, Input, InputNumber, Row } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
+
 import { CellDayContext } from './calendar-cell-context';
-import { TRAININGS_IDS } from '@constants/index';
 import {
     TCellDayContext,
     TCellNewExercisesFormProps,
@@ -28,11 +29,11 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
             (key: keyof TExerciseInfo, val: unknown) => {
                 if (isFinished) return;
                 const itemData: TExerciseNewInfo = {
-                    name: name,
+                    name,
                     approaches: approaches || 1,
                     replays: replays || 1,
                     weight: weight || 0,
-                    isChecked: isChecked,
+                    isChecked,
                 };
 
                 itemData[key] = val as never;
@@ -53,6 +54,7 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
         const changeName: React.ChangeEventHandler<HTMLInputElement> = useCallback(
             (event) => {
                 const newValue = event.target.value || '';
+
                 updateData('name', newValue);
             },
             [updateData],
@@ -68,6 +70,7 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
         const changeApproaches = useCallback(
             (newApproach: number | null) => {
                 const newValue = newApproach || 1;
+
                 updateData('approaches', +newValue);
             },
             [updateData],
@@ -76,6 +79,7 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
         const changeWeight = useCallback(
             (newWeight: number | null) => {
                 const newValue = newWeight || 0;
+
                 updateData('weight', +newValue);
             },
             [updateData],
@@ -84,6 +88,7 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
         const changeReplays = useCallback(
             (newReplays: number | null) => {
                 const newValue = newReplays || 1;
+
                 updateData('replays', +newValue);
             },
             [updateData],

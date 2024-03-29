@@ -50,7 +50,7 @@
         }
 
         .first-password {
-            margin-bottom: $indentBig;
+            margin-bottom: $indentMid;
         }
 
         .ant-form-item-margin-offset {
@@ -172,7 +172,7 @@
 
         .profile-form__block {
             & ~ .profile-form__block {
-                margin-top: 36px;
+                margin-top: $indentBig2;
             }
 
             &_title {
@@ -233,7 +233,7 @@
 
         .profile-alert {
             width: calc(100% - 48px);
-            bottom: 48px;
+            bottom: $indentLargeMid;
         }
     }
 }

@@ -1,9 +1,9 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
+import { SiteRouter } from '@components/index';
 import { store } from '@redux/index';
 import { ConfigProvider } from 'antd';
-import { SiteRouter } from '@components/index';
 
 import 'antd/dist/antd.min.css';
 import 'normalize.css';

@@ -1,12 +1,13 @@
-import { useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppSelector, useGetUserDataInfo } from '@hooks/index';
 import { AndroidFilled, AppleFilled } from '@ant-design/icons';
+import { PageContent, PageFooter, PageHeader, PageLayout } from '@components/index';
+import { NAVIGATION_IDS, ROUTES_LINKS } from '@constants/index';
+import { useAppSelector, useGetUserDataInfo } from '@hooks/index';
 import { Button, Card, List, Row } from 'antd';
 import Paragraph from 'antd/lib/typography/Paragraph';
-import { PageContent, PageFooter, PageHeader, PageLayout } from '@components/index';
+
 import { cardsData, listData } from './home-data';
-import { NAVIGATION_IDS, ROUTES_LINKS } from '@constants/index';
 
 import './main-page.scss';
 
@@ -30,14 +31,14 @@ export const MainPage = () => {
             <PageHeader
                 className='home-header'
                 routes={routes}
-                showSettingsButton
+                showSettingsButton={true}
                 title={
-                    <>
+                    <Fragment>
                         Приветствуем тебя <br /> в CleverFit — приложении, которое поможет тебе
                         добиться своей мечты!
-                    </>
+                    </Fragment>
                 }
-            ></PageHeader>
+            />
 
             <PageContent className='home-content'>
                 <Paragraph className='home-content__item able-item'>
@@ -82,10 +83,10 @@ export const MainPage = () => {
                     <Card
                         className='home-footer__downloads'
                         title={
-                            <>
+                            <Fragment>
                                 <Link to='#'>Скачать на телефон</Link>
                                 <Paragraph>Доступно в PRO-тарифе</Paragraph>
-                            </>
+                            </Fragment>
                         }
                     >
                         <Button type='link' className='downloads__link'>

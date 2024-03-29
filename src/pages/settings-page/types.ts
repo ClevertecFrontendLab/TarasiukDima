@@ -1,10 +1,9 @@
-import { TTariffItem, TTariffOptions } from '@app_types/index';
+import { TTariffItem, TTariffOptions } from 'src/app-types/index';
 
 export type TSettingsPageTariffsProps = {
     items: TTariffItem[];
     tariff: TTariffOptions | null;
 };
-
 
 export type TSettingsContext = {
     items: TTariffItem[];

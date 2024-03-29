@@ -1,18 +1,14 @@
-import { FC, memo, useCallback, useContext, useState } from 'react';
+import { FC, Fragment, memo, useCallback, useContext, useState } from 'react';
+import { CheckCircleFilled, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import { DATE_SHORT_FORMAT_TO_VIEW, SETTINGS_IDS } from '@constants/index';
 import { useGetCurrentDayInfo } from '@hooks/index';
 import { Alert, Button, Col, Drawer, Radio, RadioChangeEvent, Row, Table } from 'antd';
-import {
-    CheckCircleFilled,
-    CheckCircleOutlined,
-    CloseCircleOutlined,
-    CloseOutlined,
-} from '@ant-design/icons';
-import Paragraph from 'antd/lib/typography/Paragraph';
-import { SETTINGS_IDS, DATE_SHORT_FORMAT_TO_VIEW } from '@constants/index';
 import type { ColumnsType } from 'antd/es/table';
-import { TSimpleFn } from '@app_types/index';
-import { TSettingsContext } from './types';
+import Paragraph from 'antd/lib/typography/Paragraph';
+import { TSimpleFn } from 'src/app-types/index';
+
 import { SettingsContext } from './settings-page-context';
+import { TSettingsContext } from './types';
 
 type TSettingsPageTariffsCompareProps = {
     isShow: boolean;
@@ -68,17 +64,14 @@ export const SettingsPageTariffsCompare: FC<TSettingsPageTariffsCompareProps> = 
             },
             ...items.map((item) => ({
                 key: item.name,
-                title: (
-                    <>
-                        {tariff && tariff.tariffId === item._id ? (
-                            <Row className='row-title'>
-                                {item.name} <CheckCircleOutlined />
-                            </Row>
-                        ) : (
-                            item.name
-                        )}
-                    </>
-                ),
+                title:
+                    tariff && tariff.tariffId === item._id ? (
+                        <Row className='row-title'>
+                            {item.name} <CheckCircleOutlined />
+                        </Row>
+                    ) : (
+                        item.name
+                    ),
                 dataIndex: item.name,
                 render: (_: string, options: DataType) =>
                     getRowIcon(options[item.name.toLocaleLowerCase() as keyof DataType] as boolean),
@@ -132,6 +125,7 @@ export const SettingsPageTariffsCompare: FC<TSettingsPageTariffsCompareProps> = 
 
         const BuyPlaneBtnCb = useCallback(() => {
             const id = items[0]._id;
+
             buyPlaneCb(id, chosenPeriodDays as number);
             setChosenPeriodDays(null);
             closeCompareCb();
@@ -141,11 +135,11 @@ export const SettingsPageTariffsCompare: FC<TSettingsPageTariffsCompareProps> = 
             <Drawer
                 data-test-id={SETTINGS_IDS.sidePanel}
                 className='drawer-site tariffs-compare'
-                destroyOnClose
+                destroyOnClose={true}
                 open={isShow}
                 title='Сравнить тарифы'
                 onClose={closeCompareCb}
-                closable
+                closable={true}
                 footer={
                     !currentTariffInfo ? (
                         <Button
@@ -166,10 +160,10 @@ export const SettingsPageTariffsCompare: FC<TSettingsPageTariffsCompareProps> = 
                         type='info'
                         className='tariffs-compare__title'
                         message={
-                            <>
+                            <Fragment>
                                 Ваш <span>{currentTariffInfo.name}</span> tariff активен до{' '}
                                 {getDateNeededFormat(tariff.expired, DATE_SHORT_FORMAT_TO_VIEW)}
-                            </>
+                            </Fragment>
                         }
                     />
                 )}
@@ -195,10 +189,15 @@ export const SettingsPageTariffsCompare: FC<TSettingsPageTariffsCompareProps> = 
                             className='tariffs-compare__order_periods'
                             onChange={onChangePeriodCb}
                             value={chosenPeriodDays}
-                            buttonStyle={'outline'}
+                            buttonStyle='outline'
                         >
                             {periods.map(({ text, cost, days }) => (
-                                <Radio value={days} key={text} className='item-radio' data-test-id={`${SETTINGS_IDS.tariffPriceCheckbox}${cost}`}>
+                                <Radio
+                                    value={days}
+                                    key={text}
+                                    className='item-radio'
+                                    data-test-id={`${SETTINGS_IDS.tariffPriceCheckbox}${cost}`}
+                                >
                                     <span className='item-name'>{text}</span>
                                     <span className='item-price'>
                                         {cost.toString().replace('.', ',')}$

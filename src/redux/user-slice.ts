@@ -1,5 +1,5 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { TUserInfo } from '@app_types/user';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { TUserInfo } from 'src/app-types/user';
 
 type TUserState = {
     userData: TUserInfo | null;

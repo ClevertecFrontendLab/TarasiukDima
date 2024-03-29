@@ -1,8 +1,8 @@
-import { memo, useCallback, useState } from 'react';
+import { Fragment, memo, useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Row } from 'antd';
-import { ROUTES_LINKS } from '@constants/index';
 import { FeedbacksAddModals } from '@components/index';
+import { ROUTES_LINKS } from '@constants/index';
+import { Button, Row } from 'antd';
 
 export const SettingsPageReviews = memo(() => {
     const [isOpenModalFeedback, setIsOpenModalFeedback] = useState<boolean>(false);
@@ -12,7 +12,7 @@ export const SettingsPageReviews = memo(() => {
     }, []);
 
     return (
-        <>
+        <Fragment>
             <Row className='settings-page__review-buttons' justify='start' align='stretch'>
                 <Button
                     type='primary'
@@ -31,6 +31,6 @@ export const SettingsPageReviews = memo(() => {
                 openModalFeedback={isOpenModalFeedback}
                 setOpenModalFeedback={setIsOpenModalFeedback}
             />
-        </>
+        </Fragment>
     );
 });

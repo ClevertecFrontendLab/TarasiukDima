@@ -17,6 +17,7 @@
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
         "allowJs": true,
+        "types": ["node", "cypress"],
         "baseUrl": ".",
         "paths": {
             "@public/*": ["./public/*"],
@@ -25,7 +26,7 @@
             "@hooks/*": ["./src/hooks/*"],
             "@pages/*": ["./src/pages/*"],
             "@redux/*": ["./src/redux/*"],
-            "@app_types/*": ["src/app_types/*"],
+            "@app_types/*": ["src/app-types/*"],
             "@assets/*": ["./src/assets/*"],
             "@services/*": ["./src/services/*"],
             "@utils/*": ["./src/utils/*"]

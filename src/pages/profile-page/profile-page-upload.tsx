@@ -1,9 +1,5 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { useAppSelector, useIsMobile } from '@hooks/index';
-import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
-import { Button, Modal, Row, Upload, UploadFile } from 'antd';
-import { checkIsLessFileSize } from '@utils/index';
 import {
     MAX_SIZE_PHOTO_USER_MB,
     MAX_WIDTH_FOR_MOBILE_PX,
@@ -14,10 +10,14 @@ import {
     SERVICE_API_URL,
     STATUS_CODES,
 } from '@constants/index';
+import { useAppSelector, useIsMobile } from '@hooks/index';
 import { filesQueryEndpoints } from '@services/index';
-import { TUserPhotoResponse } from '@app_types/index';
+import { checkIsLessFileSize } from '@utils/index';
+import { Button, Modal, Row, Upload, UploadFile } from 'antd';
 import { RcFile } from 'antd/es/upload/interface';
+import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 import type { UploadRequestOption as RcCustomRequestOptions } from 'rc-upload/lib/interface';
+import { TUserPhotoResponse } from 'src/app-types/index';
 
 type TProfileUploadProps = {
     changeCb: (newSrc: string) => void;
@@ -171,10 +171,12 @@ export const ProfilePageUpload: FC<TProfileUploadProps> = ({ changeCb }) => {
 
             if (!isFileLessNeedSize) {
                 setIsFileSizeError(true);
+
                 return;
             }
 
             const formData = new FormData();
+
             formData.append('file', fileForLoad);
 
             savePhoto(formData);

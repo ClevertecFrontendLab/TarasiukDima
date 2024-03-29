@@ -1,8 +1,8 @@
 import { FC, memo } from 'react';
-import classNames from 'classnames';
 import { Button, Card, Row } from 'antd';
 import Paragraph from 'antd/lib/typography/Paragraph';
-import { TClsAndChildProps, TSimpleFn } from '@app_types/index';
+import classNames from 'classnames';
+import { TClsAndChildProps, TSimpleFn } from 'src/app-types/index';
 
 type TTariffCartItemProps = TClsAndChildProps & {
     name: string;
@@ -19,29 +19,27 @@ export const SettingsPageTariffsListItem: FC<TTariffCartItemProps> = memo(
         clickMoreCb,
         className = '',
         dataTestId = '',
-    }) => {
-        return (
-            <Card
-                bordered={false}
-                className={classNames('tariffs-plans__item', {
-                    [className]: className,
-                })}
-                data-test-id={dataTestId}
-                title={
-                    <Row align='middle' justify='space-between'>
-                        <Paragraph style={{ margin: 0 }}>
-                            <span className='tariffs-plans__item_name'>{name}</span> tariff
-                        </Paragraph>
+    }) => (
+        <Card
+            bordered={false}
+            className={classNames('tariffs-plans__item', {
+                [className]: className,
+            })}
+            data-test-id={dataTestId}
+            title={
+                <Row align='middle' justify='space-between'>
+                    <Paragraph style={{ margin: 0 }}>
+                        <span className='tariffs-plans__item_name'>{name}</span> tariff
+                    </Paragraph>
 
-                        <Button onClick={clickMoreCb} type='link' className='more-btn'>
-                            Подробнее
-                        </Button>
-                    </Row>
-                }
-                cover={<img alt={name} src={imgSrc} />}
-            >
-                {children}
-            </Card>
-        );
-    },
+                    <Button onClick={clickMoreCb} type='link' className='more-btn'>
+                        Подробнее
+                    </Button>
+                </Row>
+            }
+            cover={<img alt={name} src={imgSrc} />}
+        >
+            {children}
+        </Card>
+    ),
 );

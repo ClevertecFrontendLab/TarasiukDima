@@ -51,7 +51,7 @@ export const TRAININGS_IDS = {
 
     modalTraining: 'modal-create-training',
     modalTrainingCloseBtn: 'modal-create-training-button-close',
-    modalTrainingEditBtn: `modal-update-training-edit-button`,
+    modalTrainingEditBtn: 'modal-update-training-edit-button',
 
     modalCreate: 'modal-create-exercise',
     modalCreateSelect: 'modal-create-exercise-select',

@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
-import { useGetPersonalTrainings } from '@hooks/index';
-import { Button } from 'antd';
 import { NAVIGATION_IDS } from '@constants/index';
+import { useGetPersonalTrainings } from '@hooks/index';
 import CalendarIcon from '@public/img/calendar.svg?react';
+import { Button } from 'antd';
 
 export const CalendarLink = () => {
     const { getPersonalTrainings } = useGetPersonalTrainings();

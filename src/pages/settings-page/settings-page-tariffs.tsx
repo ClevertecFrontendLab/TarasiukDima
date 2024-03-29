@@ -1,8 +1,9 @@
-import {  memo, useCallback, useState } from 'react';
-import { SettingsPageTariffsList } from './settings-page-tariffs-list';
-import { SettingsPageTariffsCompare } from './settings-page-tariffs-compare';
+import { Fragment, memo, useCallback, useState } from 'react';
 
-export const SettingsPageTariffs= memo(() => {
+import { SettingsPageTariffsCompare } from './settings-page-tariffs-compare';
+import { SettingsPageTariffsList } from './settings-page-tariffs-list';
+
+export const SettingsPageTariffs = memo(() => {
     const [isShowCompareTariffs, setIsShowCompareTariffs] = useState(false);
 
     const clickMoreCb = useCallback(() => {
@@ -18,7 +19,7 @@ export const SettingsPageTariffs= memo(() => {
     }, []);
 
     return (
-        <>
+        <Fragment>
             <SettingsPageTariffsList
                 activateTariffCb={activateTariffCb}
                 clickMoreCb={clickMoreCb}
@@ -28,6 +29,6 @@ export const SettingsPageTariffs= memo(() => {
                 isShow={isShowCompareTariffs}
                 closeCompareCb={closeCompareCb}
             />
-        </>
+        </Fragment>
     );
 });

@@ -1,17 +1,18 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAppSelector } from '@hooks/typed-react-redux-hooks';
-import { ResultRegistration } from './ResultRegistration';
-import { ResultAuth } from './ResultAuth';
-import { ResultChangePassword } from './ResultChangePassword';
 import { ROUTES_LINKS } from '@constants/index';
-import { TPreviousLocations, getClearLastRoutePath } from '@utils/index';
+import { useAppSelector } from '@hooks/typed-react-redux-hooks';
+import { getClearLastRoutePath, TPreviousLocations } from '@utils/index';
+
+import { ResultAuth } from './result-auth';
+import { ResultChangePassword } from './result-change-password';
+import { ResultRegistration } from './result-registration';
 
 export const ResultPage = () => {
     const { state } = useLocation();
     const { previousLocations } = useAppSelector((state) => state.router);
 
     if (!previousLocations || previousLocations.length === 0) {
-        return <Navigate to={ROUTES_LINKS.home} replace />;
+        return <Navigate to={ROUTES_LINKS.home} replace={true} />;
     }
 
     const previousPath = getClearLastRoutePath(previousLocations as TPreviousLocations[]);
@@ -28,5 +29,5 @@ export const ResultPage = () => {
         return <ResultChangePassword state={state} />;
     }
 
-    return <Navigate to={ROUTES_LINKS.home} replace />;
+    return <Navigate to={ROUTES_LINKS.home} replace={true} />;
 };

@@ -1,7 +1,7 @@
 import { memo } from 'react';
-import classNames from 'classnames';
-import { Row, Spin } from 'antd';
 import { LOADER_ID } from '@constants/index';
+import { Row, Spin } from 'antd';
+import classNames from 'classnames';
 
 import './spinner.scss';
 

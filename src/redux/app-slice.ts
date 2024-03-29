@@ -1,5 +1,5 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { TTraining } from '@app_types/index';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { TTraining } from 'src/app-types/index';
 
 type TAppState = {
     isShowSidebar: boolean;

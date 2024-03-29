@@ -1,8 +1,8 @@
-import { memo } from 'react';
-import { Button, Result } from 'antd';
+import { Fragment, memo } from 'react';
 import { PageContent } from '@components/index';
 import { FEEDBACKS_IDS } from '@constants/index';
-import { TSimpleFn } from '@app_types/common';
+import { Button, Result } from 'antd';
+import { TSimpleFn } from 'src/app-types/common';
 
 export const FeedbacksPageEmpty: React.FC<{ addCommentModalHandler: TSimpleFn }> = memo(
     ({ addCommentModalHandler }) => (
@@ -12,12 +12,12 @@ export const FeedbacksPageEmpty: React.FC<{ addCommentModalHandler: TSimpleFn }>
                 icon={null}
                 title='Оставьте свой отзыв первым'
                 extra={
-                    <>
+                    <Fragment>
                         Вы можете быть первым, кто оставит отзыв об этом фитнесс приложении.
                         <br />
                         Поделитесь своим мнением и опытом с другими пользователями, <br />и помогите
                         им сделать правильный выбор.
-                    </>
+                    </Fragment>
                 }
             />
 

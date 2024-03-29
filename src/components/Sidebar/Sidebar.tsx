@@ -1,13 +1,13 @@
 import { memo, useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
-import { setToken, changeShowSidebar } from '@redux/index';
-import { removeLocalStorageItem } from '@utils/index';
-import { Button, Col } from 'antd';
-import Sider from 'antd/lib/layout/Sider';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { Logo, SiteNavigation } from '@components/index';
 import { NAVIGATION_IDS, TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
+import { useAppDispatch, useAppSelector } from '@hooks/index';
 import ExitIcon from '@public/img/exit.svg?react';
+import { changeShowSidebar, setToken } from '@redux/index';
+import { removeLocalStorageItem } from '@utils/index';
+import { Button, Col } from 'antd';
+import Sider from 'antd/lib/layout/Sider';
 
 import './sidebar.scss';
 
@@ -26,7 +26,7 @@ export const Sidebar = memo(() => {
 
     return (
         <Sider
-            collapsible
+            collapsible={true}
             collapsed={isShowSidebar}
             theme='light'
             collapsedWidth={64}
@@ -41,6 +41,7 @@ export const Sidebar = memo(() => {
             >
                 {isShowSidebar ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </button>
+
             <button
                 onClick={toggleSidebar}
                 className='trigger mobile'

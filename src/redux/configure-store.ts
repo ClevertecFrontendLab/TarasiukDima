@@ -1,19 +1,19 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { createReduxHistoryContext } from 'redux-first-history';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import {
+    authApi,
+    catalogsApi,
+    feedbackApi,
+    filesApi,
+    tariffsApi,
+    trainingApi,
+    userApi,
+} from '@services/index';
 import { createBrowserHistory } from 'history';
 
 import { appReducer } from './app-slice';
 import { authReducer } from './auth-slice';
 import { userReducer } from './user-slice';
-import {
-    userApi,
-    feedbackApi,
-    trainingApi,
-    catalogsApi,
-    authApi,
-    filesApi,
-    tariffsApi,
-} from '@services/index';
 
 const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
     history: createBrowserHistory(),

@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { HeartFilled } from '@ant-design/icons';
-import ProfileIcon from '@public/img/profile.svg?react';
 import { PROFILE_IDS, ROUTES_LINKS } from '@constants/index';
+import ProfileIcon from '@public/img/profile.svg?react';
+
 import { CalendarLink } from './calendar-link';
 
 export const listData = [

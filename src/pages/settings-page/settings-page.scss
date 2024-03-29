@@ -306,7 +306,7 @@
     .ant-result-subtitle span {
         line-height: $lineHeight;
         font-weight: $weightMedium;
-        font-size: 14px;
+        font-size: $fontSizeMin;
     }
 
     .ant-result-extra {
@@ -362,7 +362,7 @@
                 }
 
                 &_title {
-                    width: 56%;
+                    width: 177px;
                 }
 
                 &_tooltip {
@@ -373,7 +373,7 @@
 
         &__review-buttons {
             flex-direction: column;
-            margin-top: 36px;
+            margin-top: $indentBig2;
 
             .page-button {
                 width: 100%;
@@ -423,7 +423,7 @@
 
     .settings-ok-modal {
         .ant-result-success {
-            padding: 12px 0;
+            padding: $indentSmall 0;
         }
     }
 }

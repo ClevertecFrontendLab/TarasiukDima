@@ -1,17 +1,18 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { FC, useCallback, useEffect, useState } from 'react';
-import dayjs, { Dayjs } from 'dayjs';
-import locale from 'antd/es/locale/ru_RU';
-import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
-import generatePicker from 'antd/es/date-picker/generatePicker';
-import { useAppSelector, useGetCurrentDayInfo } from '@hooks/index';
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import { Button, Col, ConfigProvider, Form, Input, Row } from 'antd';
-import Title from 'antd/lib/typography/Title';
-import { ProfilePageUpload } from './profile-page-upload';
-import { validateEmail, validatePassword } from '@utils/index';
 import { DATE_FORMAT_TO_VIEW, ERROR_MESSAGES, PROFILE_IDS } from '@constants/index';
+import { useAppSelector, useGetCurrentDayInfo } from '@hooks/index';
 import DateIcon from '@public/img/dateIcon.svg?react';
-import { TUserInfo, TUserInfoUpdateBody } from '@app_types/index';
+import { validateEmail, validatePassword, visiblePasswordRenderIcon } from '@utils/index';
+import { Button, Col, ConfigProvider, Form, Input, Row } from 'antd';
+import generatePicker from 'antd/es/date-picker/generatePicker';
+import locale from 'antd/es/locale/ru_RU';
+import Title from 'antd/lib/typography/Title';
+import dayjs, { Dayjs } from 'dayjs';
+import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
+import { TUserInfo, TUserInfoUpdateBody } from 'src/app-types/index';
+
+import { ProfilePageUpload } from './profile-page-upload';
 
 const DatePicker = generatePicker<Dayjs>(dayjsGenerateConfig);
 
@@ -106,26 +107,26 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
     const onFinish = useCallback(
         ({ email, firstName, lastName, password1 }: TProfileFormSate) => {
             const updatedData: TUserInfoUpdateBody = {
-                email: email,
+                email,
             };
 
             if (imageUrlForSaveChanged && checkIsNeedAddFormField(imageUrlForSave, 'imgSrc')) {
-                updatedData['imgSrc'] = imageUrlForSave;
+                updatedData.imgSrc = imageUrlForSave;
             }
             if (checkIsNeedAddFormField(firstName, 'firstName')) {
-                updatedData['firstName'] = firstName;
+                updatedData.firstName = firstName;
             }
 
             if (checkIsNeedAddFormField(lastName, 'lastName')) {
-                updatedData['firstName'] = lastName;
+                updatedData.firstName = lastName;
             }
 
             if (birthdayUserChanged) {
-                updatedData['birthday'] = getDateForSave(birthdayUser);
+                updatedData.birthday = getDateForSave(birthdayUser);
             }
 
             if (password1 && validatePassword(password1)) {
-                updatedData['password'] = password1;
+                updatedData.password = password1;
             }
 
             setDisabledSave(true);
@@ -149,15 +150,18 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
         (_: FieldData[], allFields: FieldData[]) => {
             if (isFormErrorsExist()) {
                 setDisabledSave(true);
+
                 return false;
             }
 
             if (imageUrlForSaveChanged || birthdayUserChanged) {
                 setDisabledSave(false);
+
                 return false;
             }
 
             let dataChanged = false;
+
             allFields.forEach((item) => {
                 const nameField = item.name[0] ?? '';
                 const curValue = item.value ?? '';
@@ -169,6 +173,7 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
             });
 
             setDisabledSave(!dataChanged);
+
             return true;
         },
         [userData, birthdayUserChanged, imageUrlForSaveChanged, isFormErrorsExist],
@@ -236,7 +241,7 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
                 <Form.Item
                     name='email'
                     className='profile-form_email'
-                    required
+                    required={true}
                     rules={[
                         {
                             validator: (_, value) =>
@@ -265,6 +270,7 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
                                 if (!value) return Promise.resolve();
 
                                 const isValidPassword = validatePassword(value);
+
                                 return isValidPassword ? Promise.resolve() : Promise.reject();
                             },
                         },
@@ -273,9 +279,7 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
                     <Input.Password
                         autoComplete=''
                         placeholder='Пароль'
-                        iconRender={(visible) =>
-                            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                        }
+                        iconRender={visiblePasswordRenderIcon}
                         data-test-id={PROFILE_IDS.formPassword}
                     />
                 </Form.Item>
@@ -301,9 +305,7 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
                     <Input.Password
                         autoComplete=''
                         placeholder='Повторите пароль'
-                        iconRender={(visible) =>
-                            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                        }
+                        iconRender={visiblePasswordRenderIcon}
                         data-test-id={PROFILE_IDS.formRepeatPassword}
                     />
                 </Form.Item>

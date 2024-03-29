@@ -1,1 +1,0 @@
-export { ModalPage } from './Modal';

@@ -1,15 +1,16 @@
 import { FC, memo, useContext, useMemo } from 'react';
-import { useGetCurrentDayInfo } from '@hooks/index';
-import { Button, Row } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
-import Paragraph from 'antd/lib/typography/Paragraph';
-import { SettingsPageTariffsListItem } from './settings-page-tariffs-list-item';
+import { DATE_SHORT_FORMAT_TO_VIEW, SETTINGS_IDS } from '@constants/index';
+import { useGetCurrentDayInfo } from '@hooks/index';
 import FreeImg from '@public/img/free.jpg';
 import ProImg from '@public/img/pro.jpg';
-import { TSimpleFn } from '@app_types/index';
-import { TSettingsContext } from './types';
-import { DATE_SHORT_FORMAT_TO_VIEW, SETTINGS_IDS } from '@constants/index';
+import { Button, Row } from 'antd';
+import Paragraph from 'antd/lib/typography/Paragraph';
+import { TSimpleFn } from 'src/app-types/index';
+
 import { SettingsContext } from './settings-page-context';
+import { SettingsPageTariffsListItem } from './settings-page-tariffs-list-item';
+import { TSettingsContext } from './types';
 
 type TSettingsPageTariffsListProps = {
     clickMoreCb: TSimpleFn;
@@ -22,8 +23,8 @@ export const SettingsPageTariffsList: FC<TSettingsPageTariffsListProps> = memo(
 
         const { items, tariff } = useContext(SettingsContext) as TSettingsContext;
 
-        const tariffsItems = useMemo(() => {
-            return [
+        const tariffsItems = useMemo(
+            () => [
                 {
                     _id: 'free',
                     name: 'Free',
@@ -66,8 +67,9 @@ export const SettingsPageTariffsList: FC<TSettingsPageTariffsListProps> = memo(
                         children: childrenContent,
                     };
                 }),
-            ];
-        }, [items, tariff, activateTariffCb, getDateNeededFormat]);
+            ],
+            [items, tariff, activateTariffCb, getDateNeededFormat],
+        );
 
         return (
             <Row className='tariffs-plans'>

@@ -1,6 +1,7 @@
-import { useCallback,  useLayoutEffect } from 'react';
-import { useLazyGetUserInfoQuery } from '@services/index';
+import { useCallback, useLayoutEffect } from 'react';
 import { changeUserData } from '@redux/index';
+import { useLazyGetUserInfoQuery } from '@services/index';
+
 import { useAppDispatch } from '.';
 
 export const useGetUserDataInfo = () => {

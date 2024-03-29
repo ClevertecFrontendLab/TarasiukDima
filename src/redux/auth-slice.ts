@@ -1,5 +1,5 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { TOKEN_AUTH_LOCALSTORAGE } from '@constants/index';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getLocalStorageItem } from '@utils/index';
 
 type TUserState = {

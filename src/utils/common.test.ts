@@ -1,4 +1,5 @@
 import { ROUTES_LINKS } from '../constants/index';
+
 import { getClearLastRoutePath, getTrainingBadgeStatusColor } from './common';
 
 describe('getClearLastRoutePath', () => {

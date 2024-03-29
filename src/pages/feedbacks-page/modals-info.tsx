@@ -1,11 +1,11 @@
-import { useCallback } from 'react';
+import { Fragment, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ModalPage } from '@components/index';
+import { FEEDBACKS_IDS, ROUTES_LINKS, STATUS_CODES } from '@constants/index';
 import { useAppDispatch, useAppSelector } from '@hooks/index';
 import { changeShowTokenError } from '@redux/index';
 import { Button, Result, Row } from 'antd';
 import { ResultStatusType } from 'antd/lib/result';
-import { ModalPage } from '@components/index';
-import { FEEDBACKS_IDS, ROUTES_LINKS, STATUS_CODES } from '@constants/index';
 
 type TFeedbacksPageProps = {
     isErrorOpen: boolean;
@@ -34,6 +34,7 @@ export const ModalsInfo: React.FC<TFeedbacksPageProps> = ({
 
     const redirectHomePage = useCallback(() => {
         closeErrorCB();
+
         return navigate(ROUTES_LINKS.home);
     }, [navigate, closeErrorCB]);
 
@@ -42,16 +43,16 @@ export const ModalsInfo: React.FC<TFeedbacksPageProps> = ({
     }, [dispatch]);
 
     return (
-        <>
+        <Fragment>
             <ModalPage variant='error' open={isErrorOpen}>
                 <Result
                     status={STATUS_CODES.serverError as ResultStatusType}
                     title='Что-то пошло не так'
                     subTitle={
-                        <>
+                        <Fragment>
                             Произошла ошибка, <br />
                             попробуйте ещё раз.
-                        </>
+                        </Fragment>
                     }
                     extra={
                         <Button
@@ -69,7 +70,7 @@ export const ModalsInfo: React.FC<TFeedbacksPageProps> = ({
                 variant='info'
                 open={isShowTokenError}
                 onCancel={closeModalTokenError}
-                closable
+                closable={true}
             >
                 <Result status='error' title='Отсутствует токен' />
             </ModalPage>
@@ -94,7 +95,7 @@ export const ModalsInfo: React.FC<TFeedbacksPageProps> = ({
                 variant='info'
                 open={isErrorAddFeedbackOpen}
                 onCancel={closeErrorAddFeedbackCB}
-                closable
+                closable={true}
             >
                 <Result
                     status='error'
@@ -122,6 +123,6 @@ export const ModalsInfo: React.FC<TFeedbacksPageProps> = ({
                     }
                 />
             </ModalPage>
-        </>
+        </Fragment>
     );
 };

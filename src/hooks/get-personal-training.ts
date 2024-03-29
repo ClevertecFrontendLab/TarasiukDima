@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES_LINKS } from '@constants/index';
 import {
+    changePersonalTrainingList,
     changeShowLoader,
     changeShowTrainingListError,
-    changePersonalTrainingList,
 } from '@redux/index';
 import { useLazyGetTrainingQuery } from '@services/index';
-import { ROUTES_LINKS } from '@constants/index';
 
 export const useGetPersonalTrainings = () => {
     const dispatch = useDispatch();

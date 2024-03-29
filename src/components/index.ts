@@ -1,17 +1,17 @@
-import { Logo } from './Logo';
-import { Sidebar } from './Sidebar';
-import { SiteNavigation } from './SiteNavigation';
-import { UserLayout } from './UserLayout';
-import { ResultComponent } from './ResultComponent';
-import { Spinner } from './Spinner';
-import { Breadcrumbs } from './Breadcrumbs';
-import { Feedbacks } from './Feedbacks';
-import { FeedbacksAddModals } from './FeedbacksAddModals';
-import { ModalPage } from './ModalPage';
-import { Rating } from './Rating';
-import { PageLayout, PageHeader, PageContent, PageFooter } from './PageLayout';
-import { RequiredAuth, NotAuth } from './CheckAuth';
-import { SiteRouter } from './SiteRouter';
+import { Breadcrumbs } from './breadcrumbs';
+import { NotAuth, RequiredAuth } from './check-auth';
+import { Feedbacks } from './feedbacks';
+import { FeedbacksAddModals } from './feedbacks-add-modals';
+import { Logo } from './logo';
+import { ModalPage } from './modal-page';
+import { PageContent, PageFooter, PageHeader, PageLayout } from './page-layout';
+import { Rating } from './rating';
+import { ResultComponent } from './result-component';
+import { Sidebar } from './sidebar';
+import { SiteNavigation } from './site-navigation';
+import { SiteRouter } from './site-router';
+import { Spinner } from './spinner';
+import { UserLayout } from './user-layout';
 
 export {
     Logo,

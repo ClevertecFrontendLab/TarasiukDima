@@ -5,9 +5,9 @@ export {
     useChangePasswordMutation,
     useCheckEmailMutation,
     useConfirmEmailMutation,
-} from './authApi';
+} from './auth-api';
 
-export { useGetFeedbackQuery, useAddFeedbackMutation, feedbackApi } from './feedbackApi';
+export { useGetFeedbackQuery, useAddFeedbackMutation, feedbackApi } from './feedback-api';
 
 export {
     trainingApi,
@@ -15,17 +15,17 @@ export {
     useDeleteTrainingMutation,
     useLazyGetTrainingQuery,
     useUpdateTrainingMutation,
-} from './trainingApi';
+} from './training-api';
 
-export { useLazyGetTrainingsListQuery, catalogsApi, useGetTariffsListQuery } from './catalogsApi';
+export { useLazyGetTrainingsListQuery, catalogsApi, useGetTariffsListQuery } from './catalogs-api';
 
-export { useBuyTariffMutation, tariffsApi } from './tariffsApi';
+export { useBuyTariffMutation, tariffsApi } from './tariffs-api';
 
 export {
     useGetUserInfoQuery,
     useLazyGetUserInfoQuery,
     userApi,
     useUpdateUserInfoMutation,
-} from './userApi';
+} from './user-api';
 
-export { useUploadFileMutation, filesQueryEndpoints, filesApi } from './filesApi';
+export { useUploadFileMutation, filesQueryEndpoints, filesApi } from './files-api';

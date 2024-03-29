@@ -1,10 +1,11 @@
-import { memo, useCallback, useContext, useMemo } from 'react';
+import { Fragment, memo, useCallback, useContext, useMemo } from 'react';
+import { SETTINGS_IDS } from '@constants/index';
 import { useAppSelector } from '@hooks/index';
 import { useUpdateUserInfoMutation } from '@services/index';
 import { Col } from 'antd';
-import { SETTINGS_IDS } from '@constants/index';
-import { SettingsPageOptionsItem } from './settings-page-options-item';
+
 import { SettingsContext } from './settings-page-context';
+import { SettingsPageOptionsItem } from './settings-page-options-item';
 import { TSettingsContext } from './types';
 
 export const SettingsPageOptions = memo(() => {
@@ -42,11 +43,10 @@ export const SettingsPageOptions = memo(() => {
             {
                 title: 'Открыт для совместных тренировок',
                 tooltip: (
-                    <>
+                    <Fragment>
                         включеная функция <br />
-                        позволит участвовать <br />
-                        в совместных тренировках
-                    </>
+                        позволит участвовать <br />в совместных тренировках
+                    </Fragment>
                 ),
                 checked: readyForJointTraining,
                 disabled: false || isLoadingUpdateUserData,
@@ -57,11 +57,11 @@ export const SettingsPageOptions = memo(() => {
             {
                 title: 'Уведомления',
                 tooltip: (
-                    <>
+                    <Fragment>
                         включеная функция <br />
                         позволит получать <br />
                         уведомления об активностях
-                    </>
+                    </Fragment>
                 ),
                 checked: sendNotification,
                 disabled: false || isLoadingUpdateUserData,
@@ -72,11 +72,11 @@ export const SettingsPageOptions = memo(() => {
             {
                 title: 'Тёмная тема',
                 tooltip: (
-                    <>
+                    <Fragment>
                         темная тема <br />
                         доступна для <br />
                         PRO tariff
-                    </>
+                    </Fragment>
                 ),
                 checked: false,
                 disabled: !tariff || isLoadingUpdateUserData,

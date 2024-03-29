@@ -1,10 +1,10 @@
-import { memo } from 'react';
-import { Avatar, Comment, List } from 'antd';
-import { getCorrectDateForShow } from '@utils/index';
-import Paragraph from 'antd/lib/typography/Paragraph';
+import { Fragment, memo } from 'react';
 import { UserOutlined } from '@ant-design/icons';
 import { Rating } from '@components/index';
-import { TFeedback } from '@app_types/index';
+import { getCorrectDateForShow } from '@utils/index';
+import { Avatar, Comment, List } from 'antd';
+import Paragraph from 'antd/lib/typography/Paragraph';
+import { TFeedback } from 'src/app-types/index';
 
 import './feedbacks.scss';
 
@@ -26,7 +26,7 @@ export const Feedbacks: React.FC<TFeedbacksProps> = memo(({ feedbacks, isLoading
                     <Comment
                         key={id}
                         avatar={
-                            <>
+                            <Fragment>
                                 <Avatar
                                     className='item__img'
                                     shape='circle'
@@ -36,11 +36,11 @@ export const Feedbacks: React.FC<TFeedbacksProps> = memo(({ feedbacks, isLoading
                                 />
 
                                 <Paragraph className='item__name'>
-                                    {userName.split(' ').map((word, ind) => (
-                                        <Paragraph key={ind}>{word}</Paragraph>
+                                    {userName.split(' ').map((word) => (
+                                        <Paragraph key={word}>{word}</Paragraph>
                                     ))}
                                 </Paragraph>
-                            </>
+                            </Fragment>
                         }
                         content={message}
                         author={<Rating isClickable={false} rating={rating} />}

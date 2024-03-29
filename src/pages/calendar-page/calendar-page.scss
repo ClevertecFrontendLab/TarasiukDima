@@ -130,7 +130,6 @@ div.training-calendar.ant-picker-calendar-full {
     }
 }
 
-
 .cell-content__modal {
     width: 264px !important;
 
@@ -176,7 +175,7 @@ div.training-calendar.ant-picker-calendar-full {
 
 .day-modal {
     .ant-modal-header {
-        padding: $indentMin2 36px 0 $indentSmall;
+        padding: $indentMin2 $indentBig2 0 $indentSmall;
         border-bottom: none;
     }
 
@@ -242,7 +241,7 @@ div.training-calendar.ant-picker-calendar-full {
     }
 
     .save-btn {
-        margin-top: 8px;
+        margin-top: $indentSmallest;
         margin-left: 0 !important;
         border: none;
 

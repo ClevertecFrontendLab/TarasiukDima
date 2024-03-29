@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useGetUserDataInfo, useAppSelector } from '@hooks/index';
 import { PageContent, PageHeader, PageLayout } from '@components/index';
-import { Alert, Modal } from 'antd';
-import { MODALS_STYLE } from '@constants/modals';
-import { useUpdateUserInfoMutation } from '@services/index';
-import { ProfilePageUserContent } from './profile-page-user-content';
 import { PROFILE_IDS } from '@constants/index';
-import { TUserInfoUpdateBody } from '@app_types/index';
+import { MODALS_STYLE } from '@constants/modals';
+import { useAppSelector, useGetUserDataInfo } from '@hooks/index';
+import { useUpdateUserInfoMutation } from '@services/index';
+import { Alert, Modal } from 'antd';
+import { TUserInfoUpdateBody } from 'src/app-types/index';
+
+import { ProfilePageUserContent } from './profile-page-user-content';
 
 import './profile-page.scss';
 
@@ -73,7 +74,7 @@ export const ProfilePage = () => {
             <PageHeader
                 className='profile-page__header'
                 routes={null}
-                showSettingsButton
+                showSettingsButton={true}
                 title='Профиль'
             />
 
@@ -90,8 +91,8 @@ export const ProfilePage = () => {
                             className='profile-alert'
                             message='Данные профиля успешно обновлены'
                             type='success'
-                            showIcon
-                            closable
+                            showIcon={true}
+                            closable={true}
                         />
                     )}
                 </div>

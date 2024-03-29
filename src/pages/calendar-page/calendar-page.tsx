@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useLazyGetTrainingsListQuery } from '@services/index';
 import { CloseOutlined } from '@ant-design/icons';
-import { Modal } from 'antd';
 import { PageContent, PageHeader, PageLayout } from '@components/index';
-import { CalendarTraining } from './calendar-trainings/calendar-trainings';
 import { MODALS_STYLE, ROUTES_LINKS, TRAININGS_IDS } from '@constants/index';
-import { TTrainingVariants } from '@app_types/index';
+import { useLazyGetTrainingsListQuery } from '@services/index';
+import { Modal } from 'antd';
+import { TTrainingVariants } from 'src/app-types/index';
+
+import { CalendarTraining } from './calendar-trainings/calendar-trainings';
 
 import './calendar-page.scss';
 
@@ -29,8 +30,8 @@ const getCommonErrorModalOptions = (
     centered: true,
     closable: true,
     closeIcon: <CloseOutlined data-test-id={closeId} />,
-    okText: okText,
-    className: className,
+    okText,
+    className,
     maskStyle: MODALS_STYLE.maskStyleSmall,
     okButtonProps: {
         className: 'right-btn',
@@ -132,7 +133,11 @@ export const CalendarPage = () => {
 
     return (
         <PageLayout className='calendar-page' isLoading={isTrainingVariantsLoading}>
-            <PageHeader className='calendar-page__header' routes={routes} showSettingsButton />
+            <PageHeader
+                className='calendar-page__header'
+                routes={routes}
+                showSettingsButton={true}
+            />
 
             <PageContent className='calendar-page__content'>
                 <CalendarTraining trainingVariants={training} showErrorModalCb={showErrorModalCb} />
