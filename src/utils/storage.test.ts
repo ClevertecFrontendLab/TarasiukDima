@@ -21,14 +21,12 @@ class LocalStorageMock implements TLocalStorage {
     }
 
     clear = jest.fn(() => {
-        for (const key in this.store) {
+        Object.keys(this.store).forEach((key) => {
             delete this.store[key];
-        }
+        });
     });
 
-    getItem = jest.fn((key: string) => {
-        return this.store[key];
-    });
+    getItem = jest.fn((key: string) => this.store[key]);
 
     setItem = jest.fn((key: string, value: string) => {
         this.store[key] = value;
@@ -91,6 +89,7 @@ describe('Localstorage', () => {
 
     test('test get key from storage', () => {
         let getValue = getLocalStorageItem(localStorageKey);
+
         expect(getValue).toBe('');
 
         setLocalStorageItem(localStorageKey, value);
@@ -146,14 +145,17 @@ describe('Cookie', () => {
 
     test('test get exist cookie key', () => {
         const cookie1 = getCookie(key1);
+
         expect(cookie1).toBe(value1);
 
         const cookie2 = getCookie(key2);
+
         expect(cookie2).toBe(value2);
     });
 
     test('test get not exist cookie key', () => {
-        const cookie = getCookie('');
-        expect(cookie).toBe('');
+        const cookieEmpty = getCookie('');
+
+        expect(cookieEmpty).toBe('');
     });
 });
