@@ -7,3 +7,5 @@ export { useIsMobile } from './is-mobile';
 export { useGetCurrentDayInfo } from './get-current-day-info';
 
 export { useGetSavedTraining } from './get-saved-in-day-training';
+
+export { useGetUserDataInfo } from './get-user-data-info';

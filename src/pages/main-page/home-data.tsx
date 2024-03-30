@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { HeartFilled } from '@ant-design/icons';
+import { PROFILE_IDS, ROUTES_LINKS } from '@constants/index';
 import ProfileIcon from '@public/img/profile.svg?react';
-import { ROUTES_LINKS } from '@constants/index';
+
 import { CalendarLink } from './calendar-link';
 
 export const listData = [
@@ -28,7 +29,11 @@ export const cardsData = [
     {
         title: 'Заполнить профиль',
         link: (
-            <Link className='card-link' to={ROUTES_LINKS.profile}>
+            <Link
+                className='card-link'
+                to={ROUTES_LINKS.profile}
+                data-test-id={PROFILE_IDS.profileLinkOnHomePage}
+            >
                 <ProfileIcon /> Профиль
             </Link>
         ),

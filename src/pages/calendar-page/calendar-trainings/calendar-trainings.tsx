@@ -1,17 +1,19 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { memo, useCallback, useMemo, useState } from 'react';
+import { useAppSelector, useGetCurrentDayInfo, useIsMobile } from '@hooks/index';
+import { compareDates, updatedNeededLengthValue } from '@utils/index';
 import { ConfigProvider } from 'antd';
+import generateCalendar from 'antd/es/calendar/generateCalendar';
+import locale from 'antd/es/locale/ru_RU';
 import { Dayjs } from 'dayjs';
 import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
-import locale from 'antd/es/locale/ru_RU';
-import generateCalendar from 'antd/es/calendar/generateCalendar';
-import { useIsMobile, useGetCurrentDayInfo, useAppSelector } from '@hooks/index';
-import { compareDates, updatedNeededLengthValue } from '@utils/index';
-import { CellModals } from './calendar-cell-modals';
+
 import { CalendarCell } from './calendar-cell';
+import { CellModals } from './calendar-cell-modals';
 import { CalendarTrainingList } from './calendar-trainings-list';
 import {
-    TCalendarTrainingVariants,
     TCalendarTrainingListItem,
+    TCalendarTrainingVariants,
     TChangedTrainingState,
 } from './types';
 
@@ -49,14 +51,14 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
                 data[dateItem][item.name] = item;
             });
 
-            for (const dayKey in changedPersonalTraining) {
-                for (const trainingName in changedPersonalTraining[dayKey]) {
+            Object.keys(changedPersonalTraining).forEach((dayKey) => {
+                Object.keys(changedPersonalTraining[dayKey]).forEach((trainingName) => {
                     if (!data[dayKey]) {
                         data[dayKey] = {};
                     }
                     data[dayKey][trainingName] = changedPersonalTraining[dayKey][trainingName];
-                }
-            }
+                });
+            });
 
             return data;
         }, [personalTraining, getDateNeededFormat, changedPersonalTraining, trainingVariants]);
@@ -83,15 +85,13 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
                 const addedTrainingNames: TCalendarTrainingListItem[] = [];
 
                 if (dataForShow[cellDay]) {
-                    let index = 0;
-                    for (const training in dataForShow[cellDay]) {
+                    Object.keys(dataForShow[cellDay]).forEach((training, index) => {
                         addedTrainingNames.push({
                             name: dataForShow[cellDay][training].name,
-                            index: index,
+                            index,
                             isFinished: dataForShow[cellDay][training].isImplementation,
                         });
-                        index++;
-                    }
+                    });
                 }
 
                 const trainingInDayExist = Boolean(addedTrainingNames.length);
@@ -120,12 +120,14 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
 
                 let withoutModal = false;
                 const clickYear = getDateNeededFormat(date, 'YYYY');
+
                 if (clickYear !== selectedYear) {
                     setSelectedYear(clickYear);
                     withoutModal = true;
                 }
 
                 const clickMonth = getDateNeededFormat(date, 'MM');
+
                 if (clickMonth !== selectedMonth) {
                     setSelectedMonth(clickMonth);
                     withoutModal = true;
@@ -133,6 +135,7 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
 
                 if (isMobile && withoutModal) {
                     setIsCellModalShow(false);
+
                     return;
                 }
 

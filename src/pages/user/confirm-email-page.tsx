@@ -1,22 +1,22 @@
-import { useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import classNames from 'classnames';
-import { setCode } from '@redux/index';
-import { useConfirmEmailMutation } from '@services/userApi';
-import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
-import { TPreviousLocations, getClearLastRoutePath } from '@utils/index';
-import { ResultComponent } from '@components/index';
 import VerificationInput from 'react-verification-input';
+import { ResultComponent } from '@components/index';
+import { ROUTES_LINKS } from '@constants/index';
+import { useAppDispatch, useAppSelector } from '@hooks/index';
+import { setCode } from '@redux/index';
+import { useConfirmEmailMutation } from '@services/index';
+import { getClearLastRoutePath, TPreviousLocations } from '@utils/index';
 import { Row } from 'antd';
 import Paragraph from 'antd/lib/typography/Paragraph';
-import { ROUTES_LINKS } from '@constants/index';
+import classNames from 'classnames';
 
 import './auth.scss';
 
 export const ConfirmEmailPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { email } = useAppSelector((state) => state.user);
+    const { email } = useAppSelector((state) => state.auth);
     const { previousLocations } = useAppSelector((state) => state.router);
     const [statusResult, setStatusResult] = useState<'info' | 'error'>('info');
     const [codeItem, setCodeItem] = useState<string>('');
@@ -79,13 +79,13 @@ export const ConfirmEmailPage = () => {
                 )
             }
             subTitle={
-                <>
+                <Fragment>
                     Мы отправили вам на e-mail <span>{email}</span> <br />
                     шестизначный код. Введите его в поле ниже.
-                </>
+                </Fragment>
             }
             extra={
-                <>
+                <Fragment>
                     <Row
                         className={classNames('verification', {
                             error: statusResult === 'error',
@@ -110,9 +110,10 @@ export const ConfirmEmailPage = () => {
                     </Row>
 
                     <Paragraph>
-                        Не пришло письмо? Проверьте <span className='br'></span>папку Спам.
+                        Не пришло письмо? Проверьте <span className='br' />
+                        папку Спам.
                     </Paragraph>
-                </>
+                </Fragment>
             }
         />
     );

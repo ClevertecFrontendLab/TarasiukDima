@@ -1,12 +1,14 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import dayjs from 'dayjs';
 import { useGetCurrentDayInfo, useGetPersonalTrainings } from '@hooks/index';
 import { useAddTrainingMutation, useUpdateTrainingMutation } from '@services/index';
-import { CellDayModal } from './calendar-cell-day-modal';
-import { CellDayContext } from './calendar-cell-context';
-import { CellTrainingModal } from './calendar-cell-training-modal';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import dayjs from 'dayjs';
+import { TTrainingRequired } from 'src/app-types/index';
+
 import { CellExercisesModal } from './calendar-cell-add-exercises-modal';
-import { TTrainingRequired } from '@app_types/index';
+import { CellDayContext } from './calendar-cell-context';
+import { CellDayModal } from './calendar-cell-day-modal';
+import { CellTrainingModal } from './calendar-cell-training-modal';
 import { TCellModals, TVariantChosenItem } from './types';
 
 export const CellModals: React.FC<TCellModals> = memo(
@@ -81,6 +83,7 @@ export const CellModals: React.FC<TCellModals> = memo(
                 showModalErrorCb();
                 closeModalCb();
             }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [isAddTrainingError, closeModalCb, showModalErrorCb, isUpdateTrainingError]);
 
         useEffect(() => {
@@ -105,6 +108,7 @@ export const CellModals: React.FC<TCellModals> = memo(
                 setChosenVariantTraining(null);
                 setShowModalDay(true);
             }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [isUpdateTrainingSuccess, isAddTrainingSuccess, setChangedPersonalTraining, curDay]);
 
         const saveExercises = useCallback(() => {
@@ -142,6 +146,7 @@ export const CellModals: React.FC<TCellModals> = memo(
                     const newData = {
                         ...prevData,
                     };
+
                     newData[curDay][variant] = prevData[curDay][lastName];
                     newData[curDay][variant].name = variant;
                     delete newData[curDay][lastName];
@@ -186,6 +191,7 @@ export const CellModals: React.FC<TCellModals> = memo(
                     } else if (!prev && variant) {
                         addNewTrainingToChanged(variant);
                     }
+
                     return variant;
                 });
             },
@@ -245,8 +251,8 @@ export const CellModals: React.FC<TCellModals> = memo(
 
         const cellDayContextValue = useMemo(
             () => ({
-                dayChangedInfo: dayChangedInfo,
-                dayFullInfo: dayFullInfo,
+                dayChangedInfo,
+                dayFullInfo,
                 date,
                 curDay,
                 trainingVariants,

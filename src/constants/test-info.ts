@@ -51,7 +51,7 @@ export const TRAININGS_IDS = {
 
     modalTraining: 'modal-create-training',
     modalTrainingCloseBtn: 'modal-create-training-button-close',
-    modalTrainingEditBtn: `modal-update-training-edit-button`,
+    modalTrainingEditBtn: 'modal-update-training-edit-button',
 
     modalCreate: 'modal-create-exercise',
     modalCreateSelect: 'modal-create-exercise-select',
@@ -64,4 +64,36 @@ export const TRAININGS_IDS = {
     modalExerciseApproachInput: 'modal-drawer-right-input-approach',
     modalExerciseWeightInput: 'modal-drawer-right-input-weight',
     modalExerciseQuantityInput: 'modal-drawer-right-input-quantity',
+};
+
+export const PROFILE_IDS = {
+    profileLinkOnHomePage: 'menu-button-profile',
+    formFirstName: 'profile-name',
+    formLastName: 'profile-surname',
+    formAvatar: 'profile-avatar',
+    formEmail: 'profile-email',
+    formBirthday: 'profile-birthday',
+    formPassword: 'profile-password',
+    formRepeatPassword: 'profile-repeat-password',
+    formSubmit: 'profile-submit',
+    formErrorClose: 'big-file-error-close',
+    formAlert: 'alert',
+};
+
+export const SETTINGS_IDS = {
+    headerBtn: 'header-settings',
+    headerBack: 'settings-back',
+    proCard: 'pro-tariff-card',
+    proCardActivate: 'activate-tariff-btn',
+    switchTraining: 'tariff-trainings',
+    switchNotifications: 'tariff-notifications',
+    switchTheme: 'tariff-theme',
+    iconTraining: 'tariff-trainings-icon',
+    iconNotifications: 'tariff-notifications-icon',
+    iconTheme: 'tariff-theme-icon',
+    sidePanel: 'tariff-sider',
+    periodsPrice: 'tariff-cost',
+    tariffPriceCheckbox: 'tariff-',
+    successModal: 'tariff-modal-success',
+    buyButton: 'tariff-submit',
 };

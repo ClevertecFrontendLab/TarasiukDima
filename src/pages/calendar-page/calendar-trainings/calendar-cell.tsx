@@ -1,6 +1,7 @@
 import { memo, useEffect, useRef } from 'react';
-import classNames from 'classnames';
 import { Row } from 'antd';
+import classNames from 'classnames';
+
 import { TCalendarCellContent } from './types';
 
 export const CalendarCell: React.FC<TCalendarCellContent> = memo(

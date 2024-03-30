@@ -6,12 +6,18 @@ export const API_TAGS = {
     feedbacks: 'Feedbacks',
     training: 'Training',
     catalogs: 'Catalogs',
-    users: 'Users',
+    tariffs: 'Tariffs',
+    userTariff: 'UserTariff',
+    user: 'User',
+    auth: 'Auth',
+    files: 'Files',
 };
 
 export const STATUS_CODES = {
     requestError: '400',
+    notAuth: '403',
+    notFound: '404',
+    badRequest: '409',
     maxRequests: '429',
-    not_auth: '403',
     serverError: '500',
 };

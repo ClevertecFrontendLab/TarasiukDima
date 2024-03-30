@@ -1,8 +1,10 @@
 export {
     getClearLastRoutePath,
-    isTwoSameExerciseArrays,
+    isTwoSameExercisesArrays,
     getTrainingBadgeStatusColor,
+    checkIsLessFileSize,
 } from './common';
+
 export type { TPreviousLocations } from './common';
 
 export {
@@ -20,3 +22,5 @@ export {
 } from './storage';
 
 export { validateEmail, validatePassword } from './validators';
+
+export { visiblePasswordRenderIcon } from './view';

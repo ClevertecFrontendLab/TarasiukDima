@@ -1,22 +1,31 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { GooglePlusOutlined } from '@ant-design/icons';
+import { Logo, UserLayout } from '@components/index';
+import {
+    ERROR_MESSAGES,
+    ROUTES_LINKS,
+    SERVICE_API_URL,
+    STATUS_CODES,
+    TOKEN_AUTH_LOCALSTORAGE,
+    USER_IDS,
+} from '@constants/index';
 import { useAppDispatch, useAppSelector } from '@hooks/index';
 import { setEmail, setToken } from '@redux/index';
 import { useCheckEmailMutation, useLoginMutation } from '@services/index';
 import {
-    TPreviousLocations,
     getClearLastRoutePath,
     setLocalStorageItem,
+    TPreviousLocations,
     validateEmail,
     validatePassword,
+    visiblePasswordRenderIcon,
 } from '@utils/index';
 import { Button, Checkbox, Form, Input, Row } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
-import { EyeInvisibleOutlined, EyeTwoTone, GooglePlusOutlined } from '@ant-design/icons';
-import { UserLayout, Logo } from '@components/index';
-import { AuthNavButtons } from './AuthNavButtons';
-import { ROUTES_LINKS, SERVICE_API_URL, TOKEN_AUTH_LOCALSTORAGE, USER_IDS } from '@constants/index';
-import { TServerErrorResponse } from '@app_types/responses';
+import { TServerErrorResponse } from 'src/app-types/responses';
+
+import { AuthNavButtons } from './auth-nav-buttons';
 
 import './auth.scss';
 
@@ -30,7 +39,7 @@ export const AuthPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { previousLocations } = useAppSelector((state) => state.router);
-    const { email } = useAppSelector((state) => state.user);
+    const { email } = useAppSelector((state) => state.auth);
 
     const [
         loginUser,
@@ -62,8 +71,13 @@ export const AuthPage = () => {
         if (isErrorCheckEmail && emailErrorData) {
             const { status, data } = emailErrorData as TServerErrorResponse;
 
-            if (data && data.message === 'Email не найден' && status.toString() === '404') {
+            if (
+                data &&
+                data.message === 'Email не найден' &&
+                status.toString() === STATUS_CODES.notAuth
+            ) {
                 navigate(ROUTES_LINKS.resultErrorNoUser, { state: { variantError: 'no-user' } });
+
                 return;
             }
 
@@ -113,6 +127,7 @@ export const AuthPage = () => {
     const forgotPasswordHandler = useCallback(() => {
         if (!curEmail || isEmailError) {
             setIsEmailError(true);
+
             return;
         }
 
@@ -148,13 +163,15 @@ export const AuthPage = () => {
         (values: TFormFields) => {
             let errorExist = false;
 
-            const email = values.email || '';
-            if (!validateEmail(email)) {
+            const emailUser = values.email || '';
+
+            if (!validateEmail(emailUser)) {
                 setIsEmailError(true);
                 errorExist = true;
             }
 
             const password = values.password || '';
+
             if (!validatePassword(password)) {
                 setIsPasswordError(true);
                 errorExist = true;
@@ -164,8 +181,8 @@ export const AuthPage = () => {
                 return;
             }
 
-            dispatch(setEmail(email));
-            loginUser({ email, password });
+            dispatch(setEmail(emailUser));
+            loginUser({ email: emailUser, password });
         },
         [dispatch, loginUser],
     );
@@ -198,15 +215,14 @@ export const AuthPage = () => {
 
                 <Form.Item
                     validateStatus={isPasswordError ? 'error' : 'success'}
-                    extra='Пароль не менее 8 символов, с заглавной буквой и цифрой'
+                    extra={ERROR_MESSAGES.password1Error}
                     name='password'
                 >
                     <Input.Password
+                        autoComplete=''
                         placeholder='Пароль'
                         onChange={passwordChangeHandler}
-                        iconRender={(visible) =>
-                            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                        }
+                        iconRender={visiblePasswordRenderIcon}
                         data-test-id={USER_IDS.loginPassword}
                     />
                 </Form.Item>

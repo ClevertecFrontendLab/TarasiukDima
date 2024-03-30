@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Dayjs } from 'dayjs';
 import {
     TClsAndChildProps,
@@ -6,13 +7,13 @@ import {
     TTrainingExercise,
     TTrainingRequired,
     TTrainingVariants,
-} from '@app_types/index';
+} from 'src/app-types/index';
 
 export type TTrainingEditButtonCb = (trainingName: string, isFinished?: boolean) => void;
 
 export type TCalendarTrainingVariants = {
     trainingVariants: TTrainingVariants;
-    showErrorModalCb: TSimpleFn,
+    showErrorModalCb: TSimpleFn;
 };
 
 export type TCellDayContext = {
@@ -36,7 +37,7 @@ export type TCellModals = {
     dayChangedInfo: TTrainingDayData;
     dayFullInfo: TTrainingDayData;
     isShow: boolean;
-    showModalErrorCb: TSimpleFn,
+    showModalErrorCb: TSimpleFn;
 
     closeModalCb: () => void;
     setChangedPersonalTraining: TChangedTrainingCb;

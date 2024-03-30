@@ -1,14 +1,18 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
-import { useChangePasswordMutation } from '@services/userApi';
+import { UserLayout } from '@components/index';
+import { ERROR_MESSAGES, ROUTES_LINKS, USER_IDS } from '@constants/index';
+import { useAppDispatch, useAppSelector } from '@hooks/index';
 import { setPassword } from '@redux/index';
-import { TPreviousLocations, getClearLastRoutePath, validatePassword } from '@utils/index';
+import { useChangePasswordMutation } from '@services/index';
+import {
+    getClearLastRoutePath,
+    TPreviousLocations,
+    validatePassword,
+    visiblePasswordRenderIcon,
+} from '@utils/index';
 import { Button, Form, Input } from 'antd';
 import Title from 'antd/lib/typography/Title';
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import { UserLayout } from '@components/index';
-import { ROUTES_LINKS, USER_IDS } from '@constants/index';
 
 import './auth.scss';
 
@@ -20,7 +24,7 @@ type TFormFields = {
 export const ChangePasswordPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { password } = useAppSelector((state) => state.user);
+    const { password } = useAppSelector((state) => state.auth);
     const { previousLocations } = useAppSelector((state) => state.router);
 
     const [isPasswordError, setIsPasswordError] = useState<boolean>(false);
@@ -39,6 +43,7 @@ export const ChangePasswordPage = () => {
     useEffect(() => {
         if (!previousLocations || previousLocations.length === 0) {
             navigate(ROUTES_LINKS.auth);
+
             return;
         }
 
@@ -104,14 +109,16 @@ export const ChangePasswordPage = () => {
     const onSubmit = (values: TFormFields) => {
         let errorExist = false;
 
-        const password = values.password || '';
-        if (!validatePassword(password)) {
+        const password1 = values.password || '';
+
+        if (!validatePassword(password1)) {
             setIsPasswordError(true);
             errorExist = true;
         }
 
         const password2 = values.password2 || '';
-        if (!password2 || password !== password2) {
+
+        if (!password2 || password1 !== password2) {
             setIsPasswordRepeatError(true);
             errorExist = true;
         }
@@ -120,7 +127,7 @@ export const ChangePasswordPage = () => {
             return;
         }
 
-        changePasswordUser({ password });
+        changePasswordUser({ password: password1 });
     };
 
     return (
@@ -134,35 +141,33 @@ export const ChangePasswordPage = () => {
                 onFinish={onSubmit}
                 autoComplete='on'
                 size='large'
-                noValidate
+                noValidate={true}
             >
                 <Form.Item
                     validateStatus={isPasswordError ? 'error' : 'success'}
-                    extra='Пароль не менее 8 символов, с заглавной буквой и цифрой'
+                    extra={ERROR_MESSAGES.password1Error}
                     name='password'
                     className='password-item'
                 >
                     <Input.Password
+                        autoComplete=''
                         placeholder='Пароль'
                         onChange={passwordChangeHandler}
-                        iconRender={(visible) =>
-                            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                        }
+                        iconRender={visiblePasswordRenderIcon}
                         data-test-id={USER_IDS.changePassword}
                     />
                 </Form.Item>
 
                 <Form.Item
                     validateStatus={isPasswordRepeatError ? 'error' : 'success'}
-                    extra='Пароли не совпадают'
+                    extra={ERROR_MESSAGES.password2Error}
                     name='password2'
                 >
                     <Input.Password
+                        autoComplete=''
                         onChange={passwordRepeatChangeHandler}
                         placeholder='Повторите пароль'
-                        iconRender={(visible) =>
-                            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                        }
+                        iconRender={visiblePasswordRenderIcon}
                         data-test-id={USER_IDS.changePassword2}
                     />
                 </Form.Item>

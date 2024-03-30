@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "lint:css": "stylelint ./src/**/*.{css,scss,less}",
     "lint:scripts": "eslint ./ ./src/ --ext .js,.jsx,.ts,.tsx",
@@ -27,6 +27,8 @@
     "@ant-design/icons": "^4.8.1",
     "@reduxjs/toolkit": "^2.0.1",
     "antd": "^4.24.15",
+    "axios": "^1.6.8",
+    "classnames": "^2.5.1",
     "history": "^5.3.0",
     "normalize.css": "^8.0.1",
     "react": "^18.2.0",
@@ -46,7 +48,6 @@
     "@typescript-eslint/parser": "^5.46.1",
     "@vitejs/plugin-react": "^4.2.1",
     "arui-presets-lint": "^6.1.0",
-    "classnames": "^2.5.1",
     "cypress": "^12.7.0",
     "eslint": "^8.29.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -78,6 +79,27 @@
     "typescript-plugin-css-modules": "^5.0.2",
     "vite": "^5.0.6",
     "vite-plugin-svgr": "^4.2.0"
+  },
+  "commitlint": {
+    "extends": [
+      "./node_modules/arui-presets-lint/commitlint"
+    ],
+    "rules": {
+      "subject-case": [
+        2,
+        "never",
+        [
+          "start-case",
+          "pascal-case",
+          "upper-case"
+        ]
+      ],
+      "header-max-length": [
+        2,
+        "always",
+        120
+      ]
+    }
   },
   "prettier": "arui-presets-lint/prettier",
   "lint-staged": {

@@ -1,0 +1,27 @@
+@import "@assets/scss/variables";
+@import "@assets/scss/mixins";
+
+body .user-layout {
+    position: relative;
+    z-index: 1;
+    background-image: url("/public/img/user-bg.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+
+    &__wrapper {
+        min-height: 100vh;
+        padding: 90px $indentMin2;
+        justify-content: center;
+    }
+
+    &__content {
+        background-color: $white;
+    }
+}
+
+@include mobile() {
+    body .user-layout__wrapper {
+        align-items: stretch;
+    }
+}

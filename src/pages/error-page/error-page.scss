@@ -1,0 +1,38 @@
+@import "@assets/scss/variables";
+@import "@assets/scss/mixins";
+
+.error-page__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding: $indentMid;
+    background-color: $white;
+
+    .ant-result {
+        padding: 0;
+    }
+
+    .ant-result-title {
+        font-weight: $weightMedium;
+        line-height: $lineHeight;
+    }
+
+    .ant-result-subtitle {
+        color: $grey;
+    }
+
+    a.error-page__content_button {
+        margin: 0 auto;
+        padding: 9px $indentMin2;
+        color: $white;
+        background-color: $primary;
+    }
+}
+
+@include mobile() {
+    .error-page .page-layout__content {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}

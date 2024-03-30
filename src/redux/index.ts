@@ -1,4 +1,6 @@
-export { changeIsAuth, setToken, setPassword, setEmail, setCode, userReducer } from './user-slice';
+export { changeUserData, userReducer } from './user-slice';
+
+export { changeIsAuth, setToken, setPassword, setEmail, setCode, authReducer } from './auth-slice';
 
 export {
     changeShowSidebar,

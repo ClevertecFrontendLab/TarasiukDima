@@ -130,16 +130,6 @@ div.training-calendar.ant-picker-calendar-full {
     }
 }
 
-.modal-page {
-    .ant-modal-confirm-title {
-        color: $black;
-    }
-
-    .ant-modal-confirm-content {
-        color: $grey;
-    }
-}
-
 .cell-content__modal {
     width: 264px !important;
 
@@ -185,7 +175,7 @@ div.training-calendar.ant-picker-calendar-full {
 
 .day-modal {
     .ant-modal-header {
-        padding: $indentMin2 36px 0 $indentSmall;
+        padding: $indentMin2 $indentBig2 0 $indentSmall;
         border-bottom: none;
     }
 
@@ -195,8 +185,8 @@ div.training-calendar.ant-picker-calendar-full {
     }
 
     .ant-modal-close-x {
-        width: 16px;
-        height: 16px;
+        width: $sizeIcon;
+        height: $sizeIcon;
         line-height: $lineHeightSmall;
     }
 
@@ -251,7 +241,7 @@ div.training-calendar.ant-picker-calendar-full {
     }
 
     .save-btn {
-        margin-top: 8px;
+        margin-top: $indentSmallest;
         margin-left: 0 !important;
         border: none;
 
@@ -266,23 +256,7 @@ div.training-calendar.ant-picker-calendar-full {
 }
 
 .exercises-modal {
-    .ant-drawer-content-wrapper {
-        width: 408px !important;
-    }
-
-    .ant-drawer-mask {
-        background: transparent;
-    }
-
-    .ant-drawer-close {
-        order: 2;
-        margin-right: 0;
-    }
-
     .ant-drawer-title {
-        font-size: 20px;
-        color: $black;
-
         .anticon {
             width: $indentSmall;
             height: $indentSmall;
@@ -294,14 +268,11 @@ div.training-calendar.ant-picker-calendar-full {
         }
     }
 
-    .ant-drawer-header {
-        border-bottom: none;
-    }
-
     .ant-drawer-body {
         display: flex;
         flex-direction: column;
-        padding: 0 $indentBig $indentBig;
+        padding-top: 0;
+        padding-bottom: $indentBig;
     }
 
     .exercises-modal__var-info {
@@ -494,11 +465,6 @@ div.training-calendar.ant-picker-calendar-full {
         }
     }
 
-    .ant-modal.modal-page,
-    .ant-modal.calendar-error-modal {
-        max-width: calc(100vw - 32px);
-    }
-
     .error-modal.calendar-error-modal {
         .ant-result-subtitle span {
             display: block;
@@ -513,21 +479,7 @@ div.training-calendar.ant-picker-calendar-full {
 
     .exercises-modal {
         .ant-drawer-content-wrapper {
-            width: 100% !important;
             margin-top: 85px;
-            border-radius: $borderRadiusLarge $borderRadiusLarge 0 0;
-            overflow: hidden;
-        }
-
-        .ant-drawer-header {
-            padding-top: $indentMid;
-            padding-left: $indentMin2;
-            padding-right: $indentMin2;
-        }
-
-        .ant-drawer-body {
-            padding-left: $indentMin2;
-            padding-right: $indentMin2;
         }
     }
 }

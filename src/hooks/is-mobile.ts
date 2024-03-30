@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export const useIsMobile = () => {
+export const useIsMobile = (minWidth = 768) => {
     const [width, setWidth] = useState(window.innerWidth);
 
     const changeWindowSize = () => {
@@ -15,5 +15,5 @@ export const useIsMobile = () => {
         };
     }, []);
 
-    return width <= 768;
+    return width <= minWidth;
 };

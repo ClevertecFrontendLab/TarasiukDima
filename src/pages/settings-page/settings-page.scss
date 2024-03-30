@@ -1,0 +1,429 @@
+@import "@assets/scss/variables";
+@import "@assets/scss/mixins";
+
+.settings-page {
+    .settings-page__header-button {
+        height: auto;
+        padding-left: 0;
+        padding-right: 0;
+        border: none;
+        font-weight: $weightMedium;
+        font-size: $fontSizeSmallTitle;
+        background: transparent;
+
+        .btn-text {
+            margin-left: $indentMin2;
+        }
+    }
+
+    .settings-page__content_title {
+        margin-top: 0;
+        margin-bottom: $indentMin2;
+        font-size: $fontSizeTextBig;
+        font-weight: $weightMedium;
+    }
+
+    .tariffs-plans {
+        gap: 25px;
+
+        &__item {
+            display: flex;
+            flex-direction: column;
+            border-radius: $borderRadius;
+            width: 240px;
+            box-shadow: $shadowItem;
+            background: $white;
+        }
+
+        .ant-card-body {
+            @include dflex(center, center);
+
+            flex-grow: 1;
+        }
+
+        .tariffs-plans__item_name {
+            text-transform: uppercase;
+        }
+
+        .tariffs-plans__item_text {
+            margin: 0;
+            font-weight: $weightMedium;
+            text-align: center;
+            color: $blueDark2;
+        }
+
+        .text-date {
+            display: block;
+        }
+
+        .more-btn {
+            padding: 0;
+            color: $primary;
+        }
+
+        .button-page {
+            margin: 0 auto;
+        }
+    }
+
+    .settings-block {
+        width: 505px;
+        margin-top: $indentLargeMin;
+
+        &__option {
+            width: 100%;
+
+            &.disabled {
+                .settings-block__option_title {
+                    color: $grey;
+                }
+            }
+
+            & ~ .settings-block__option {
+                margin-top: $indentMidSmall;
+            }
+
+            &_title {
+                margin: 0;
+                font-size: $fontSizeMin;
+                font-weight: $weightBold;
+            }
+
+            &_tooltip {
+                margin-left: 4px;
+                color: $grey;
+
+                svg {
+                    width: $sizeIcon;
+                    height: $sizeIcon;
+                }
+            }
+
+            &_switch {
+                margin-left: auto;
+            }
+            .ant-switch-checked {
+                background-color: $primary;
+            }
+        }
+    }
+
+    &__review-buttons {
+        margin-top: 96px;
+
+        .page-button {
+            padding: $indentSmallest $indentMin1;
+        }
+    }
+
+    .all-button {
+        height: auto;
+        border: none;
+        margin-left: $indentSmallest;
+        color: $primary;
+    }
+}
+
+.tariffs-compare {
+    .ant-drawer-content-wrapper {
+        border-radius: $borderRadiusXMedium 0 0 $borderRadiusXMedium;
+        overflow: hidden;
+    }
+
+    .tariffs-compare__title {
+        margin-bottom: $indentMid;
+        padding-top: $indentMin2;
+        padding-bottom: $indentMin2;
+        font-weight: $weightMedium;
+        font-size: $indentMin2;
+        text-align: center;
+        border: none;
+        background: $primaryLight;
+
+        span {
+            text-transform: uppercase;
+        }
+    }
+
+    .ant-alert-message {
+        color: $blueDark2;
+    }
+
+    .tariffs-compare__table {
+        padding-top: $indentMid;
+
+        .ant-table-cell {
+            background-color: $white;
+            border: none;
+
+            &:before {
+                display: none;
+            }
+
+            &:not(:first-child) {
+                min-width: 70px;
+                text-align: center;
+            }
+
+            &:last-child {
+                border-left: $indentSmall2 solid $white;
+                border-radius: 0;
+            }
+        }
+
+        .row-title {
+            position: relative;
+            text-transform: uppercase;
+            padding-right: 0;
+            color: $blueLoading;
+
+            .anticon {
+                position: absolute;
+                top: 50%;
+                right: -5px;
+                color: $green;
+                transform: translateY(-50%);
+            }
+        }
+    }
+
+    .ant-table-thead .ant-table-cell {
+        font-size: $fontSizeMin;
+        padding-top: 2px !important;
+        padding-bottom: 2px !important;
+
+        &:nth-child(2) {
+            background-color: $lightDividers;
+        }
+
+        &:nth-child(3) {
+            background-color: $primaryLight;
+        }
+    }
+
+    .ant-table-tbody {
+        .icon-not,
+        .icon-ok {
+            svg {
+                width: $sizeIcon;
+                height: $sizeIcon;
+            }
+        }
+
+        .icon-not {
+            color: $lightGrey;
+        }
+
+        .tariffs-compare__table_row {
+            &:nth-child(1) .ant-table-cell {
+                padding-top: $indentMid;
+            }
+
+            .ant-table-cell {
+                padding-top: $indentSmallest;
+                padding-bottom: $indentSmallest;
+            }
+        }
+    }
+
+    .tariffs-compare__order {
+        margin-top: 80px;
+
+        &_title {
+            margin-bottom: $indentMid;
+            font-weight: $weightBold;
+            font-size: $fontSizeMin;
+        }
+
+        &_periods {
+            width: 100%;
+            line-height: $lineHeight;
+            font-size: $fontSizeMin;
+
+            .item-name {
+                flex-grow: 1;
+                width: 177px;
+            }
+
+            .item-price {
+                font-weight: $weightMedium;
+            }
+        }
+
+        .ant-radio-wrapper {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+
+            span:nth-child(2) {
+                display: flex;
+                flex-grow: 1;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0;
+            }
+        }
+
+        .item-radio {
+            width: 100%;
+
+            & ~ .item-radio {
+                margin-top: 22px;
+            }
+
+            .ant-radio {
+                flex-shrink: 0;
+                order: 2;
+                margin-left: $indentLargeMid;
+                margin-right: $indentMin2;
+            }
+
+            .ant-radio-inner {
+                margin: 0 auto;
+            }
+        }
+
+        .ant-radio-checked .ant-radio-inner {
+            border-color: $primary;
+
+            &:after {
+                background-color: $primary;
+            }
+        }
+    }
+}
+
+.settings-ok-modal {
+    .ant-result-icon .anticon svg {
+        fill: $primary;
+    }
+
+    .ant-result-title {
+        line-height: $lineHeight;
+        font-weight: $weightMedium;
+    }
+
+    .ant-result-subtitle span {
+        line-height: $lineHeight;
+        font-weight: $weightMedium;
+        font-size: $fontSizeMin;
+    }
+
+    .ant-result-extra {
+        color: $grey;
+    }
+
+    .ant-result-info {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+.text-item {
+    display: block;
+}
+
+@include mobile() {
+    .settings-page {
+        .page-layout__content {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .settings-page__header-button {
+            font-size: $fontSizeMin;
+        }
+
+        .settings-page__content_title {
+            font-size: $fontSizeSmallTitle;
+        }
+
+        .tariffs-plans {
+            flex-direction: column;
+            gap: 0;
+
+            &__item {
+                width: 100%;
+                margin-bottom: $indentSmall;
+            }
+
+            .ant-card-body {
+                padding: $indentSmall;
+            }
+        }
+
+        .settings-block {
+            width: 100%;
+            margin-top: $indentSmallest;
+
+            &__option {
+                & ~ .settings-block__option {
+                    margin-top: $indentMid;
+                }
+
+                &_title {
+                    width: 177px;
+                }
+
+                &_tooltip {
+                    align-self: flex-start;
+                }
+            }
+        }
+
+        &__review-buttons {
+            flex-direction: column;
+            margin-top: $indentBig2;
+
+            .page-button {
+                width: 100%;
+                padding: $indentSmallest $indentMin1;
+                text-align: center;
+            }
+        }
+
+        .all-button {
+            margin-top: $indentMin2;
+            margin-left: 0;
+        }
+    }
+
+    .drawer-site.tariffs-compare .ant-drawer-content-wrapper {
+        border-radius: $borderRadiusXMedium;
+    }
+
+    .tariffs-compare {
+        .tariffs-compare__table {
+            padding-top: 0;
+        }
+
+        .ant-table-tbody {
+            .tariffs-compare__table_row {
+                .ant-table-cell {
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+            }
+        }
+
+        .tariffs-compare__order {
+            margin-top: $indentMid;
+
+            &_title {
+                margin-bottom: 19px;
+            }
+
+            .item-radio {
+                & ~ .item-radio {
+                    margin-top: $indentMidSmall;
+                }
+            }
+        }
+    }
+
+    .settings-ok-modal {
+        .ant-result-success {
+            padding: $indentSmall 0;
+        }
+    }
+}

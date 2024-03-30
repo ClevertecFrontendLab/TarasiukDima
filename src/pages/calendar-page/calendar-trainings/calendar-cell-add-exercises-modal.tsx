@@ -1,10 +1,11 @@
-import { memo, useCallback, useContext, useMemo, useState } from 'react';
-import { useGetCurrentDayInfo, useGetSavedTraining } from '@hooks/index';
-import { getTrainingBadgeStatusColor, isTwoSameExerciseArrays } from '@utils/index';
-import { DATE_FORMAT_TO_VIEW, TRAININGS_IDS } from '@constants/index';
+import { Fragment, memo, useCallback, useContext, useMemo, useState } from 'react';
 import { CloseOutlined, EditOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { DATE_FORMAT_TO_VIEW, TRAININGS_IDS } from '@constants/index';
+import { useGetCurrentDayInfo, useGetSavedTraining } from '@hooks/index';
+import { getTrainingBadgeStatusColor, isTwoSameExercisesArrays } from '@utils/index';
 import { Badge, Button, Drawer, Row } from 'antd';
 import Paragraph from 'antd/lib/typography/Paragraph';
+
 import { CellAddNewExercises } from './calendar-cell-add-exercises-form';
 import { CellDayContext } from './calendar-cell-context';
 import {
@@ -46,6 +47,7 @@ export const CellExercisesModal: React.FC<TCellAddNewExercisesProps> = memo(
             const dataToShow =
                 dayChangedInfo[chosenVariantTraining as string] ??
                 dayFullInfo[chosenVariantTraining as string];
+
             if (dataToShow?.exercises) {
                 const newState = [...(dataToShow?.exercises || [])];
 
@@ -78,10 +80,12 @@ export const CellExercisesModal: React.FC<TCellAddNewExercisesProps> = memo(
         const changeExercisesInfoCB = useCallback((ind: number, excInfo: TExerciseNewInfo) => {
             setExercises((prev) => {
                 const newExercises = [...prev];
+
                 newExercises[ind] = {
                     ...excInfo,
                     isImplementation: newExercises[ind].isImplementation,
                 };
+
                 return newExercises;
             });
         }, []);
@@ -98,11 +102,11 @@ export const CellExercisesModal: React.FC<TCellAddNewExercisesProps> = memo(
             const newExercises = exercises.filter((item) => item.name);
 
             if (!savedItem || !changedItem || exercises.length !== changedItem.exercises.length) {
-                if (changedItem && isTwoSameExerciseArrays(newExercises, changedItem.exercises)) {
+                if (changedItem && isTwoSameExercisesArrays(newExercises, changedItem.exercises)) {
                     return;
                 }
 
-                if (!changedItem && isTwoSameExerciseArrays(newExercises, savedItem.exercises)) {
+                if (!changedItem && isTwoSameExercisesArrays(newExercises, savedItem.exercises)) {
                     return;
                 }
 
@@ -153,17 +157,17 @@ export const CellExercisesModal: React.FC<TCellAddNewExercisesProps> = memo(
 
         return (
             <Drawer
-                destroyOnClose
+                destroyOnClose={true}
                 data-test-id={TRAININGS_IDS.modalExercise}
                 closeIcon={<CloseOutlined data-test-id={TRAININGS_IDS.modalExerciseCloseBtn} />}
-                className='exercises-modal'
+                className='drawer-site exercises-modal'
                 title={
-                    <>
+                    <Fragment>
                         {isEdit ? <EditOutlined /> : <PlusOutlined />}
                         <span className='exercises-title'>
                             {isEdit ? 'Редактирование' : 'Добавление упражнений'}
                         </span>
-                    </>
+                    </Fragment>
                 }
                 placement='right'
                 onClose={closeExercisesModal}
@@ -184,6 +188,7 @@ export const CellExercisesModal: React.FC<TCellAddNewExercisesProps> = memo(
                     ({ name, approaches, weight, replays, isChecked = false }, index: number) => (
                         <CellAddNewExercises
                             isFinished={isFinishedItem}
+                            // eslint-disable-next-line react/no-array-index-key
                             key={index + dayToView}
                             keyItem={index}
                             testIdIndex={index}

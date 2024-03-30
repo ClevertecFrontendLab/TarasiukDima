@@ -1,15 +1,16 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { GooglePlusOutlined } from '@ant-design/icons';
+import { Logo, UserLayout } from '@components/index';
+import { ERROR_MESSAGES, ROUTES_LINKS, USER_IDS } from '@constants/index';
 import { useAppDispatch, useAppSelector } from '@hooks/index';
 import { setEmail, setPassword } from '@redux/index';
 import { useRegistrationMutation } from '@services/index';
+import { validateEmail, validatePassword, visiblePasswordRenderIcon } from '@utils/index';
 import { Button, Form, Input } from 'antd';
-import { validateEmail, validatePassword } from '@utils/index';
-import { EyeInvisibleOutlined, EyeTwoTone, GooglePlusOutlined } from '@ant-design/icons';
-import { UserLayout, Logo } from '@components/index';
-import { AuthNavButtons } from './AuthNavButtons';
-import { ROUTES_LINKS, USER_IDS } from '@constants/index';
-import { TServerErrorResponse } from '@app_types/responses';
+import { TServerErrorResponse } from 'src/app-types/responses';
+
+import { AuthNavButtons } from './auth-nav-buttons';
 
 import './auth.scss';
 
@@ -22,7 +23,7 @@ type TFormFields = {
 export const RegistrationPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { email, password } = useAppSelector((state) => state.user);
+    const { email, password } = useAppSelector((state) => state.auth);
     const { previousLocations } = useAppSelector((state) => state.router);
 
     const [curPassword, setCurPassword] = useState<string>('');
@@ -83,6 +84,7 @@ export const RegistrationPage = () => {
     const emailChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
         const value = event?.target?.value || '';
         const isValidEmail = validateEmail(value);
+
         setIsEmailError(!isValidEmail);
     }, []);
 
@@ -100,6 +102,7 @@ export const RegistrationPage = () => {
     const passwordRepeatChangeHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback(
         (event) => {
             const value = event?.target?.value || '';
+
             setIsPasswordRepeatError(curPassword !== value);
         },
         [curPassword],
@@ -107,20 +110,23 @@ export const RegistrationPage = () => {
 
     const onSubmit = (values: TFormFields) => {
         let errorExist = false;
-        const email = values.email || '';
-        if (!validateEmail(email)) {
+        const emailUser = values.email || '';
+
+        if (!validateEmail(emailUser)) {
             errorExist = true;
             setIsEmailError(true);
         }
 
-        const password = values.password || '';
-        if (!validatePassword(password)) {
+        const password1 = values.password || '';
+
+        if (!validatePassword(password1)) {
             errorExist = true;
             setIsPasswordError(true);
         }
 
         const password2 = values.password2 || '';
-        if (!password2 || password !== password2) {
+
+        if (!password2 || password1 !== password2) {
             errorExist = true;
             setIsPasswordRepeatError(true);
         }
@@ -129,12 +135,12 @@ export const RegistrationPage = () => {
             return;
         }
 
-        dispatch(setEmail(email));
-        dispatch(setPassword(password));
+        dispatch(setEmail(emailUser));
+        dispatch(setPassword(password1));
 
         registrationUser({
-            email,
-            password,
+            email: emailUser,
+            password: password1,
         });
     };
 
@@ -150,7 +156,7 @@ export const RegistrationPage = () => {
                 onFinish={onSubmit}
                 autoComplete='on'
                 size='large'
-                noValidate
+                noValidate={true}
             >
                 <Form.Item
                     validateStatus={isEmailError ? 'error' : 'success'}
@@ -167,31 +173,29 @@ export const RegistrationPage = () => {
 
                 <Form.Item
                     validateStatus={isPasswordError ? 'error' : 'success'}
-                    extra='Пароль не менее 8 символов, с заглавной буквой и цифрой'
+                    extra={ERROR_MESSAGES.password1Error}
                     name='password'
                     className='password-item'
                 >
                     <Input.Password
+                        autoComplete=''
                         placeholder='Пароль'
                         onChange={passwordChangeHandler}
-                        iconRender={(visible) =>
-                            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                        }
+                        iconRender={visiblePasswordRenderIcon}
                         data-test-id={USER_IDS.registrationPassword}
                     />
                 </Form.Item>
 
                 <Form.Item
                     validateStatus={isPasswordRepeatError ? 'error' : 'success'}
-                    extra='Пароли не совпадают'
+                    extra={ERROR_MESSAGES.password2Error}
                     name='password2'
                 >
                     <Input.Password
+                        autoComplete=''
                         onChange={passwordRepeatChangeHandler}
                         placeholder='Повторите пароль'
-                        iconRender={(visible) =>
-                            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                        }
+                        iconRender={visiblePasswordRenderIcon}
                         data-test-id={USER_IDS.registrationPassword2}
                     />
                 </Form.Item>

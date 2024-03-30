@@ -1,8 +1,9 @@
 import { memo } from 'react';
 import { EditFilled, EditOutlined } from '@ant-design/icons';
-import { Badge, Button, List, Row } from 'antd';
-import { getTrainingBadgeStatusColor } from '@utils/index';
 import { TRAININGS_IDS } from '@constants/index';
+import { getTrainingBadgeStatusColor } from '@utils/index';
+import { Badge, Button, List, Row } from 'antd';
+
 import { TCalendarTrainingListProps } from './types';
 
 export const CalendarTrainingList: React.FC<TCalendarTrainingListProps> = memo(
@@ -24,7 +25,9 @@ export const CalendarTrainingList: React.FC<TCalendarTrainingListProps> = memo(
                                 className='edit-training'
                                 data-test-id={TRAININGS_IDS.modalTrainingEditBtn + index}
                                 onClick={() => {
-                                    editButtonCb && editButtonCb(name, isFinished);
+                                    if (editButtonCb) {
+                                        editButtonCb(name, isFinished);
+                                    }
                                 }}
                                 aria-label={`Редактировать тренировку - '${name}'`}
                                 disabled={isFinished}

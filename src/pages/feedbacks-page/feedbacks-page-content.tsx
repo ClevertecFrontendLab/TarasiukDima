@@ -1,9 +1,9 @@
-import { memo, useCallback, useMemo, useState } from 'react';
-import { sortArrayByDate } from '@utils/index';
-import { Button, Row } from 'antd';
+import { Fragment, memo, useCallback, useMemo, useState } from 'react';
 import { Feedbacks, PageContent, PageFooter } from '@components/index';
 import { COUNT_FEEDBACKS_TO_SHOW, FEEDBACKS_IDS } from '@constants/index';
-import { TSimpleFn, TFeedback } from '@app_types/index';
+import { sortArrayByDate } from '@utils/index';
+import { Button, Row } from 'antd';
+import { TFeedback, TSimpleFn } from 'src/app-types/index';
 
 type TFeedbacksPageContent = {
     addCommentModalHandler: TSimpleFn;
@@ -17,17 +17,17 @@ export const FeedbacksPageContent: React.FC<TFeedbacksPageContent> = memo(
         );
 
         const showAllFeedbacksHandler = useCallback(() => {
-            setCountItemsToShow((prev) => {
-                return prev ? null : COUNT_FEEDBACKS_TO_SHOW;
-            });
+            setCountItemsToShow((prev) => (prev ? null : COUNT_FEEDBACKS_TO_SHOW));
         }, []);
 
         const feedbacksList = useMemo(() => {
             const sortedList = sortArrayByDate<TFeedback, 'createdAt'>(feedbacks, 'createdAt');
+
             return countItemsToShow ? sortedList.slice(0, countItemsToShow) : sortedList;
         }, [countItemsToShow, feedbacks]);
+
         return (
-            <>
+            <Fragment>
                 <PageContent className='feedbacks__content'>
                     <Feedbacks feedbacks={feedbacksList} />
                 </PageContent>
@@ -55,7 +55,7 @@ export const FeedbacksPageContent: React.FC<TFeedbacksPageContent> = memo(
                         )}
                     </Row>
                 </PageFooter>
-            </>
+            </Fragment>
         );
     },
 );

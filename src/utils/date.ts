@@ -9,9 +9,8 @@ export const compareDates = (time1: string, time2: string): number => {
     return -1;
 };
 
-export const updatedNeededLengthValue = (val: string | number, minLength = 2, padValue = '0') => {
-    return val.toString().padStart(minLength, padValue);
-};
+export const updatedNeededLengthValue = (val: string | number, minLength = 2, padValue = '0') =>
+    val.toString().padStart(minLength, padValue);
 
 export const sortArrayByDate = <T, K extends keyof T>(items: T[], key: K): T[] => {
     const sortedItems = items.toSorted((a: T, b: T) =>
