@@ -35,6 +35,7 @@ export const Sidebar = memo(() => {
             trigger={null}
         >
             <button
+                type='button'
                 onClick={toggleSidebar}
                 className='trigger big'
                 data-test-id={NAVIGATION_IDS.sidebarTriggerScreen}
@@ -43,6 +44,7 @@ export const Sidebar = memo(() => {
             </button>
 
             <button
+                type='button'
                 onClick={toggleSidebar}
                 className='trigger mobile'
                 data-test-id={NAVIGATION_IDS.sidebarTriggerMobile}
