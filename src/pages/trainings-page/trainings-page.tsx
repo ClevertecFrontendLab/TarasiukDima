@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import { TCalendarTrainingsLogic } from '@app-types/index';
 import { PageContent, PageHeader, PageLayout } from '@components/index';
-import { ROUTES_LINKS } from '@constants/index';
+import { MY_TRAININGS_IDS, ROUTES_LINKS } from '@constants/index';
 import { useGetChangedTrainingsState, useGetTrainingsNames } from '@hooks/index';
-import { Tabs } from 'antd';
+import { Alert, Tabs } from 'antd';
 import type { Tab } from 'rc-tabs/lib/interface';
 
 import { MyTrainings } from './my-trainings/my-trainings';
@@ -160,6 +160,21 @@ export const TrainingsPage = () => {
                             className='trainings-page__tabs'
                         />
                     </TrainingsContext.Provider>
+
+                    {(isAddTrainingSuccess || isUpdateTrainingSuccess) && (
+                        <Alert
+                            data-test-id={MY_TRAININGS_IDS.addNewSuccessAlert}
+                            className='training-alert'
+                            message={
+                                isAddTrainingSuccess
+                                    ? 'Новая тренировка успешно добавлена'
+                                    : 'Тренировка успешно обновлена'
+                            }
+                            type='success'
+                            showIcon={true}
+                            closable={true}
+                        />
+                    )}
                 </div>
             </PageContent>
         </PageLayout>

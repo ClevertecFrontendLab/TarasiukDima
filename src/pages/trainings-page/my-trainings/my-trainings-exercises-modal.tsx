@@ -254,6 +254,7 @@ export const MyTrainingsExercisesModal: React.FC<TMyTrainingsExercisesModalProps
 
         return (
             <AddExercisesModal
+                className="my-trainings__exercises"
                 closeAddExercisesCb={closeExercisesModal}
                 dayToView={trainingDayToShow}
                 initialExercises={initialExercises}
@@ -325,7 +326,7 @@ export const MyTrainingsExercisesModal: React.FC<TMyTrainingsExercisesModalProps
                     </Col>
                 }
                 footer={
-                    <Button type='primary' disabled={disabledSaveBtn} onClick={saveExercisesCb}>
+                    <Button type='primary' disabled={disabledSaveBtn} onClick={saveExercisesCb} className='save-bnt'>
                         Сохранить
                     </Button>
                 }

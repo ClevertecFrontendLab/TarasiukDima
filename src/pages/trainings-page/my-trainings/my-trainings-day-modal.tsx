@@ -9,7 +9,6 @@ import {
 import { EmptyIcon } from '@components/epmty-icon';
 import { TrainingList } from '@components/index';
 import { DEFAULT_TRAINING_NAME_VARIANT, TRAININGS_IDS } from '@constants/index';
-import { useIsMobile } from '@hooks/index';
 import { Button, Modal, Row, Select } from 'antd';
 
 import { TrainingsContext } from '../trainings-context';
@@ -33,7 +32,6 @@ export const TrainingDayModal: FC<TTrainingDayModalProps> = memo(
         closeCb,
         showAddExercisesCb,
     }) => {
-        const isMobile = useIsMobile();
         const { chosenVariantTraining, trainingDayChangedInfo, trainingDayFullInfo } = useContext(
             TrainingsContext,
         ) as TTrainingsContent;
@@ -64,7 +62,6 @@ export const TrainingDayModal: FC<TTrainingDayModalProps> = memo(
 
             return items;
         }, [chosenVariantTraining, trainingDayChangedInfo, trainingDayFullInfo]);
-
 
         const variantsTrainingForChoose = useMemo(() => {
             const addedTrainingNames = Object.keys(trainingDayFullInfo);
@@ -97,8 +94,8 @@ export const TrainingDayModal: FC<TTrainingDayModalProps> = memo(
                 className='cell-content__modal add-new-modal'
                 open={isShow}
                 closable={false}
-                getContainer={isMobile ? false : refEl}
-                centered={!!isMobile}
+                getContainer={refEl}
+                centered={false}
                 onCancel={closeCb}
                 title={
                     <Row
@@ -128,11 +125,7 @@ export const TrainingDayModal: FC<TTrainingDayModalProps> = memo(
                     </Row>
                 }
                 footer={
-                    <Button
-                        type='default'
-                        className='add-training'
-                        onClick={showAddExercisesCb}
-                    >
+                    <Button type='default' className='add-training' onClick={showAddExercisesCb}>
                         Добавить упражнения
                     </Button>
                 }

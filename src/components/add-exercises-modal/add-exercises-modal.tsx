@@ -5,6 +5,7 @@ import { TRAININGS_IDS } from '@constants/index';
 import { getEmptyTrainingStateItem } from '@utils/index';
 import { Button, Drawer, Row } from 'antd';
 import Paragraph from 'antd/lib/typography/Paragraph';
+import classNames from 'classnames';
 
 import { AddExercisesModalItem } from './add-exercises-modal-item';
 
@@ -22,6 +23,7 @@ type TAddExercisesModalProps = {
     isFutureDay: boolean;
     isShowTextLastEdit?: boolean;
     dayToView: string;
+    className?: string;
     closeAddExercisesCb: (exercises: TTrainingExerciseItem[]) => void;
     updateExercisesInfoCb?: (exercises: TTrainingExerciseItem[]) => void;
 };
@@ -40,6 +42,7 @@ export const AddExercisesModal: React.FC<TAddExercisesModalProps> = memo(
         isShowTextLastEdit = true,
         closeAddExercisesCb,
         updateExercisesInfoCb,
+        className = '',
         footer = null,
     }) => {
         const [exercises, setExercises] = useState<TTrainingExerciseItem[]>(initialExercises);
@@ -101,7 +104,9 @@ export const AddExercisesModal: React.FC<TAddExercisesModalProps> = memo(
                 destroyOnClose={true}
                 data-test-id={TRAININGS_IDS.modalExercise}
                 closeIcon={<CloseOutlined data-test-id={TRAININGS_IDS.modalExerciseCloseBtn} />}
-                className='drawer-site add-exercises-modal'
+                className={classNames('drawer-site add-exercises-modal', {
+                    [className]: className,
+                })}
                 title={
                     <Fragment>
                         {isEditExercises ? <EditOutlined /> : <PlusOutlined />}

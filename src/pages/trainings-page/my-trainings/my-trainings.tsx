@@ -15,7 +15,7 @@ import { TTrainingNameChosenIVariant } from '@app-types/index';
 import { COUNT_TRAINING_ITEMS_PER_PAGE, MY_TRAININGS_IDS } from '@constants/index';
 import { useAppSelector, useDayInfo } from '@hooks/index';
 import { getTrainingPeriodText } from '@utils/index';
-import { Alert, Button, Table } from 'antd';
+import { Button, Table } from 'antd';
 import { TablePaginationConfig } from 'antd/es/table';
 import { ColumnsType, FilterValue, SorterResult } from 'antd/lib/table/interface';
 import Paragraph from 'antd/lib/typography/Paragraph';
@@ -59,8 +59,6 @@ export const MyTrainings: FC<{
         changeChosenNameTrainingCb,
         trainingsDataForShow,
         changeIsEditTraining,
-        isAddTrainingSuccess,
-        isUpdateTrainingSuccess,
         isUpdateTrainingError,
         isAddTrainingError,
         selectedDay,
@@ -94,21 +92,6 @@ export const MyTrainings: FC<{
         }
     }, [isUpdateTrainingError, showErrorTrainingsNamesModalCb]);
 
-    const columns: ColumnsType<TableDataType> = [
-        {
-            title: 'Тип тренировки',
-            dataIndex: 'type',
-        },
-        {
-            title: 'Периодичность',
-            dataIndex: 'frequency',
-            sorter: (a, b) => a.frequencyNumber - b.frequencyNumber,
-        },
-        {
-            title: '',
-            dataIndex: 'edit',
-        },
-    ];
 
     const handleTableChange = (
         pagination: TablePaginationConfig,
@@ -177,6 +160,23 @@ export const MyTrainings: FC<{
         },
         [getDateNeededFormat],
     );
+
+    const columns: ColumnsType<TableDataType> = [
+        {
+            title: 'Тип тренировки',
+            dataIndex: 'type',
+        },
+        {
+            title: 'Периодичность',
+            dataIndex: 'frequency',
+            sorter: (a, b) => a.frequencyNumber - b.frequencyNumber,
+        },
+        {
+            title: '',
+            dataIndex: 'edit',
+            width: 25,
+        },
+    ];
 
     const tableDataSource = useMemo(() => {
         const items: TableDataType[] = [];
@@ -268,21 +268,6 @@ export const MyTrainings: FC<{
                     trainingVariants={trainingVariants}
                     closeCb={closeDayModalCb}
                     showAddExercisesCb={addExercisesCb}
-                />
-            )}
-
-            {(isAddTrainingSuccess || isUpdateTrainingSuccess) && (
-                <Alert
-                    data-test-id={MY_TRAININGS_IDS.addNewSuccessAlert}
-                    className='training-alert'
-                    message={
-                        isAddTrainingSuccess
-                            ? 'Новая тренировка успешно добавлена'
-                            : 'Тренировка успешно обновлена'
-                    }
-                    type='success'
-                    showIcon={true}
-                    closable={true}
                 />
             )}
         </div>
