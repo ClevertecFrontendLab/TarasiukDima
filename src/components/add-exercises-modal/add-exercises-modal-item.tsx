@@ -1,17 +1,24 @@
-import { memo, useCallback, useContext } from 'react';
+import { memo, useCallback } from 'react';
+import { TExerciseInfo, TExerciseNewInfo } from '@app-types/index';
 import { TRAININGS_IDS } from '@constants/index';
 import { Checkbox, Form, Input, InputNumber, Row } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 
-import { CellDayContext } from './calendar-cell-context';
-import {
-    TCellDayContext,
-    TCellNewExercisesFormProps,
-    TExerciseInfo,
-    TExerciseNewInfo,
-} from './types';
+type TAddExercisesItemProps = {
+    name?: string;
+    weight?: number;
+    approaches?: number;
+    replays?: number;
+    keyItem: number;
+    testIdIndex: number;
+    isChecked?: boolean;
+    isFinished?: boolean;
+    isEdit?: boolean;
 
-export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
+    changeExercisesInfoCB: (ind: number, excInfo: TExerciseNewInfo) => void;
+};
+
+export const AddExercisesModalItem: React.FC<TAddExercisesItemProps> = memo(
     ({
         changeExercisesInfoCB,
         keyItem,
@@ -22,9 +29,8 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
         replays = 1,
         isChecked = false,
         isFinished = false,
+        isEdit = false,
     }) => {
-        const { isEdit } = useContext(CellDayContext) as TCellDayContext;
-
         const updateData = useCallback(
             (key: keyof TExerciseInfo, val: unknown) => {
                 if (isFinished) return;
@@ -104,7 +110,7 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
             ) : null;
 
         return (
-            <Row align='stretch' className='exercise-fields' justify='space-between'>
+            <Row align='stretch' className='add-exercises-modal__fields' justify='space-between'>
                 <Input
                     disabled={isFinished}
                     data-test-id={TRAININGS_IDS.modalExerciseNameInput + testIdIndex}
@@ -112,10 +118,14 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
                     placeholder='Упражнение'
                     value={name}
                     onChange={changeName}
-                    className='exercise-fields__name'
+                    className='add-exercises-modal__fields_name'
                 />
 
-                <Form.Item colon={false} label='Подходы' className='exercise-fields__approaches'>
+                <Form.Item
+                    colon={false}
+                    label='Подходы'
+                    className='add-exercises-modal__fields_approaches'
+                >
                     <InputNumber
                         disabled={isFinished}
                         data-test-id={TRAININGS_IDS.modalExerciseApproachInput + testIdIndex}
@@ -128,7 +138,11 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
                     />
                 </Form.Item>
 
-                <Form.Item colon={false} label='Вес, кг' className='exercise-fields__weight'>
+                <Form.Item
+                    colon={false}
+                    label='Вес, кг'
+                    className='add-exercises-modal__fields_weight'
+                >
                     <InputNumber
                         disabled={isFinished}
                         data-test-id={TRAININGS_IDS.modalExerciseWeightInput + testIdIndex}
@@ -142,7 +156,11 @@ export const CellAddNewExercises: React.FC<TCellNewExercisesFormProps> = memo(
 
                 <span className='multiply'>x</span>
 
-                <Form.Item colon={false} label='Количество' className='exercise-fields__replays'>
+                <Form.Item
+                    colon={false}
+                    label='Количество'
+                    className='add-exercises-modal__fields_replays'
+                >
                     <InputNumber
                         disabled={isFinished}
                         data-test-id={TRAININGS_IDS.modalExerciseQuantityInput + testIdIndex}

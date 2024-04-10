@@ -1,7 +1,7 @@
 import { FC, memo, useContext, useMemo } from 'react';
 import { CheckOutlined } from '@ant-design/icons';
 import { DATE_SHORT_FORMAT_TO_VIEW, SETTINGS_IDS } from '@constants/index';
-import { useGetCurrentDayInfo } from '@hooks/index';
+import { useDayInfo } from '@hooks/index';
 import FreeImg from '@public/img/free.jpg';
 import ProImg from '@public/img/pro.jpg';
 import { Button, Row } from 'antd';
@@ -19,7 +19,7 @@ type TSettingsPageTariffsListProps = {
 
 export const SettingsPageTariffsList: FC<TSettingsPageTariffsListProps> = memo(
     ({ clickMoreCb, activateTariffCb }) => {
-        const { getDateNeededFormat } = useGetCurrentDayInfo();
+        const { getDateNeededFormat } = useDayInfo();
 
         const { items, tariff } = useContext(SettingsContext) as TSettingsContext;
 

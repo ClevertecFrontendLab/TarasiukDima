@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 import { Location } from 'react-router-dom';
 import { HeartFilled, TrophyFilled } from '@ant-design/icons';
 import { ROUTES_LINKS } from '@constants/index';
@@ -17,41 +17,45 @@ type TSiteNavigationProps = {
     className?: string;
 };
 
-const links: MenuProps['items'] = [
-    {
-        label: 'Календарь',
-        icon: <CalendarIcon />,
-        key: ROUTES_LINKS.calendar,
-    },
-    {
-        label: <SiteNavigationLink link={ROUTES_LINKS.training} title='Тренировки' />,
-        icon: <HeartFilled />,
-        key: ROUTES_LINKS.training,
-    },
-    {
-        label: <SiteNavigationLink link={ROUTES_LINKS.progress} title='Достижения' />,
-        icon: <TrophyFilled />,
-        key: ROUTES_LINKS.progress,
-    },
-    {
-        label: <SiteNavigationLink link={ROUTES_LINKS.profile} title='Профиль' />,
-        icon: <ProfileIcon />,
-        key: ROUTES_LINKS.profile,
-    },
-];
-
 export const SiteNavigation: React.FC<TSiteNavigationProps> = memo(
     ({ inlineCollapsed = true, className = '' }) => {
         const { location } = useAppSelector((state) => state.router);
         const { getPersonalTrainings } = useGetPersonalTrainings();
 
-        const menuClick = useCallback(
-            (menuInfo: { key: string }) => {
-                if (menuInfo.key === ROUTES_LINKS.calendar) {
-                    getPersonalTrainings(true);
-                }
-            },
-            [getPersonalTrainings],
+        const calendarCb = useCallback(() => {
+            getPersonalTrainings(true, ROUTES_LINKS.calendar);
+        }, [getPersonalTrainings]);
+
+        const trainingCb = useCallback(() => {
+            getPersonalTrainings(true, ROUTES_LINKS.trainings);
+        }, [getPersonalTrainings]);
+
+        const links: MenuProps['items'] = useMemo(
+            () => [
+                {
+                    label: 'Календарь',
+                    icon: <CalendarIcon />,
+                    key: ROUTES_LINKS.calendar,
+                    onClick: calendarCb,
+                },
+                {
+                    label: 'Тренировки',
+                    icon: <HeartFilled />,
+                    key: ROUTES_LINKS.trainings,
+                    onClick: trainingCb,
+                },
+                {
+                    label: <SiteNavigationLink link={ROUTES_LINKS.progress} title='Достижения' />,
+                    icon: <TrophyFilled />,
+                    key: ROUTES_LINKS.progress,
+                },
+                {
+                    label: <SiteNavigationLink link={ROUTES_LINKS.profile} title='Профиль' />,
+                    icon: <ProfileIcon />,
+                    key: ROUTES_LINKS.profile,
+                },
+            ],
+            [calendarCb, trainingCb],
         );
 
         return (
@@ -59,7 +63,6 @@ export const SiteNavigation: React.FC<TSiteNavigationProps> = memo(
                 inlineCollapsed={inlineCollapsed}
                 mode='inline'
                 items={links}
-                onClick={menuClick}
                 selectedKeys={[(location as Location).pathname]}
                 className={classNames('navigation', {
                     [className]: className,

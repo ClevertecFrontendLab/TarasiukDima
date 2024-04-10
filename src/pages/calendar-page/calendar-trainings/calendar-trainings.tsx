@@ -1,73 +1,56 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { memo, useCallback, useMemo, useState } from 'react';
-import { useAppSelector, useGetCurrentDayInfo, useIsMobile } from '@hooks/index';
-import { compareDates, updatedNeededLengthValue } from '@utils/index';
-import { ConfigProvider } from 'antd';
-import generateCalendar from 'antd/es/calendar/generateCalendar';
-import locale from 'antd/es/locale/ru_RU';
+import { memo, useCallback, useState } from 'react';
+import { TTrainingListViewItem } from '@app-types/index';
+import { CalendarTrainings, TrainingList } from '@components/index';
+import { useDayInfo, useGetChangedTrainingsState, useIsMobile } from '@hooks/index';
+import { updatedNeededLengthValue } from '@utils/index';
 import { Dayjs } from 'dayjs';
-import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
 
 import { CalendarCell } from './calendar-cell';
 import { CellModals } from './calendar-cell-modals';
-import { CalendarTrainingList } from './calendar-trainings-list';
-import {
-    TCalendarTrainingListItem,
-    TCalendarTrainingVariants,
-    TChangedTrainingState,
-} from './types';
-
-const Calendar = generateCalendar<Dayjs>(dayjsGenerateConfig);
+import { TCalendarTrainingVariants } from './types';
 
 export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
     ({ trainingVariants, showErrorModalCb }) => {
         const isMobile = useIsMobile();
-        const { personalTraining } = useAppSelector((state) => state.app);
-        const { currentMonth, currentYear, getDateNeededFormat, currentDate } =
-            useGetCurrentDayInfo();
+        const { currentMonth, currentYear, getDateNeededFormat } = useDayInfo();
+        const {
+            isFutureDay,
+            isEdit,
+            changeIsEditTraining,
+            selectedDay,
+            changeSelectCurrentDay,
+            saveTrainingExercises,
+            trainingsDataForShow,
+            trainingDayFullInfo,
+            trainingDayChangedInfo,
+            trainingDaySavedData,
+            chosenVariantTraining,
+            changeChosenNameTrainingCb,
+            trainingDayToShow,
+            updateChangedTrainingInfoExercises,
+            editTrainingButtonCB,
+
+            isUpdateTrainingError,
+            isUpdateTrainingSuccess,
+            isUpdateTrainingLoading,
+            isAddTrainingError,
+            isAddTrainingSuccess,
+            isAddTrainingLoading,
+        } = useGetChangedTrainingsState(trainingVariants);
 
         const [cellItems, setCellItems] = useState<{
             [key: string]: React.MutableRefObject<HTMLDivElement | null>;
         }>({});
-
-        const [changedPersonalTraining, setChangedPersonalTraining] =
-            useState<TChangedTrainingState>({});
-
-        const [selectedDay, setSelectedDay] = useState(currentDate);
         const [selectedMonth, setSelectedMonth] = useState(updatedNeededLengthValue(currentMonth));
         const [selectedYear, setSelectedYear] = useState(updatedNeededLengthValue(currentYear));
-
-        const dataForShow = useMemo(() => {
-            const data: TChangedTrainingState = {};
-            const arrayWithData = trainingVariants.length ? personalTraining : [];
-
-            arrayWithData.forEach((item) => {
-                const dateItem = getDateNeededFormat(item.date);
-
-                if (!data[dateItem]) {
-                    data[dateItem] = {};
-                }
-
-                data[dateItem][item.name] = item;
-            });
-
-            Object.keys(changedPersonalTraining).forEach((dayKey) => {
-                Object.keys(changedPersonalTraining[dayKey]).forEach((trainingName) => {
-                    if (!data[dayKey]) {
-                        data[dayKey] = {};
-                    }
-                    data[dayKey][trainingName] = changedPersonalTraining[dayKey][trainingName];
-                });
-            });
-
-            return data;
-        }, [personalTraining, getDateNeededFormat, changedPersonalTraining, trainingVariants]);
-
         const [isCellModalShow, setIsCellModalShow] = useState(false);
 
         const hideCellModal = useCallback(() => {
             setIsCellModalShow(false);
-        }, []);
+            changeChosenNameTrainingCb(null);
+            changeIsEditTraining(false);
+        }, [changeIsEditTraining, changeChosenNameTrainingCb]);
 
         const addRefCellItem = useCallback(
             (date: string, cell: React.MutableRefObject<HTMLDivElement | null>) => {
@@ -82,14 +65,14 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
         const dateCellRender = useCallback(
             (date: Dayjs) => {
                 const cellDay = getDateNeededFormat(date.toString());
-                const addedTrainingNames: TCalendarTrainingListItem[] = [];
+                const addedTrainingNames: TTrainingListViewItem[] = [];
 
-                if (dataForShow[cellDay]) {
-                    Object.keys(dataForShow[cellDay]).forEach((training, index) => {
+                if (trainingsDataForShow[cellDay]) {
+                    Object.keys(trainingsDataForShow[cellDay]).forEach((training, index) => {
                         addedTrainingNames.push({
-                            name: dataForShow[cellDay][training].name,
+                            name: trainingsDataForShow[cellDay][training].name,
                             index,
-                            isFinished: dataForShow[cellDay][training].isImplementation,
+                            isFinished: trainingsDataForShow[cellDay][training].isImplementation,
                         });
                     });
                 }
@@ -103,7 +86,7 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
                         className={isMobile && trainingInDayExist ? 'is-mobile' : ''}
                     >
                         {!isMobile && trainingInDayExist && (
-                            <CalendarTrainingList
+                            <TrainingList
                                 items={addedTrainingNames}
                                 className='cell-content__training'
                             />
@@ -111,12 +94,12 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
                     </CalendarCell>
                 );
             },
-            [getDateNeededFormat, addRefCellItem, dataForShow, isMobile],
+            [getDateNeededFormat, addRefCellItem, trainingsDataForShow, isMobile],
         );
 
         const onSelect = useCallback(
             (date: Dayjs) => {
-                setSelectedDay(getDateNeededFormat(date));
+                changeSelectCurrentDay(date);
 
                 let withoutModal = false;
                 const clickYear = getDateNeededFormat(date, 'YYYY');
@@ -141,33 +124,46 @@ export const CalendarTraining: React.FC<TCalendarTrainingVariants> = memo(
 
                 setIsCellModalShow(true);
             },
-            [selectedMonth, selectedYear, isMobile, getDateNeededFormat],
+            [selectedMonth, changeSelectCurrentDay, selectedYear, isMobile, getDateNeededFormat],
         );
 
         return (
-            <ConfigProvider locale={locale}>
-                <Calendar
-                    fullscreen={!isMobile}
-                    onSelect={onSelect}
-                    dateCellRender={dateCellRender}
-                    className='training-calendar'
-                />
-
-                {Boolean(trainingVariants.length) && isCellModalShow && (
-                    <CellModals
-                        isShow={isCellModalShow}
-                        curRef={cellItems[selectedDay]}
-                        curDay={selectedDay}
-                        trainingVariants={trainingVariants}
-                        isFutureDay={compareDates(currentDate, selectedDay) === 1}
-                        dayChangedInfo={changedPersonalTraining[selectedDay]}
-                        dayFullInfo={dataForShow[selectedDay]}
-                        setChangedPersonalTraining={setChangedPersonalTraining}
-                        closeModalCb={hideCellModal}
-                        showModalErrorCb={showErrorModalCb}
-                    />
-                )}
-            </ConfigProvider>
+            <CalendarTrainings
+                fullscreen={!isMobile}
+                onSelect={onSelect}
+                dateCellRender={dateCellRender}
+                className='training-calendar'
+                subContent={
+                    Boolean(trainingVariants.length) && isCellModalShow ? (
+                        <CellModals
+                            isEdit={isEdit}
+                            changeIsEditTraining={changeIsEditTraining}
+                            saveTrainingExercises={saveTrainingExercises}
+                            changeChosenNameTrainingCb={changeChosenNameTrainingCb}
+                            isShow={isCellModalShow}
+                            curRef={cellItems[selectedDay]}
+                            curDay={selectedDay}
+                            trainingVariants={trainingVariants}
+                            isFutureDay={isFutureDay}
+                            dayChangedInfo={trainingDayChangedInfo}
+                            dayFullInfo={trainingDayFullInfo}
+                            trainingDaySavedData={trainingDaySavedData}
+                            closeModalCb={hideCellModal}
+                            chosenVariantTraining={chosenVariantTraining}
+                            showModalErrorCb={showErrorModalCb}
+                            trainingDayToShow={trainingDayToShow}
+                            updateChangedTrainingInfoExercises={updateChangedTrainingInfoExercises}
+                            editTrainingButtonCB={editTrainingButtonCB}
+                            isUpdateTrainingError={isUpdateTrainingError}
+                            isUpdateTrainingSuccess={isUpdateTrainingSuccess}
+                            isUpdateTrainingLoading={isUpdateTrainingLoading}
+                            isAddTrainingError={isAddTrainingError}
+                            isAddTrainingSuccess={isAddTrainingSuccess}
+                            isAddTrainingLoading={isAddTrainingLoading}
+                        />
+                    ) : null
+                }
+            />
         );
     },
 );

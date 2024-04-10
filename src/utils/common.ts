@@ -1,4 +1,4 @@
-import { TExerciseNewInfo } from '@pages/calendar-page/calendar-trainings/types';
+import { TExerciseNewInfo } from '@app-types/index';
 
 export type TPreviousLocations = {
     location: { pathname: string };
@@ -55,3 +55,11 @@ export const isTwoSameExercisesArrays = (arr1: TExerciseNewInfo[], arr2: TExerci
 
 export const checkIsLessFileSize = (sizeBytes: number, maxSizeMb: number) =>
     sizeBytes / 1024 / 1024 < maxSizeMb;
+
+export const deepCopyObject = (obj: unknown, defaultValue: unknown) => {
+    try {
+        return JSON.parse(JSON.stringify(obj));
+    } catch (error) {
+        return defaultValue;
+    }
+};

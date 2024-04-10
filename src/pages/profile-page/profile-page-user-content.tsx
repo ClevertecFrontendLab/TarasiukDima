@@ -1,20 +1,15 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { FC, useCallback, useEffect, useState } from 'react';
+import { AppDatePicker } from '@components/app-day-picker';
 import { DATE_FORMAT_TO_VIEW, ERROR_MESSAGES, PROFILE_IDS } from '@constants/index';
-import { useAppSelector, useGetCurrentDayInfo } from '@hooks/index';
-import DateIcon from '@public/img/dateIcon.svg?react';
+import { useAppSelector, useDayInfo } from '@hooks/index';
 import { validateEmail, validatePassword, visiblePasswordRenderIcon } from '@utils/index';
-import { Button, Col, ConfigProvider, Form, Input, Row } from 'antd';
-import generatePicker from 'antd/es/date-picker/generatePicker';
-import locale from 'antd/es/locale/ru_RU';
+import { Button, Col, Form, Input, Row } from 'antd';
 import Title from 'antd/lib/typography/Title';
-import dayjs, { Dayjs } from 'dayjs';
-import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
+import { Dayjs } from 'dayjs';
 import { TUserInfo, TUserInfoUpdateBody } from 'src/app-types/index';
 
 import { ProfilePageUpload } from './profile-page-upload';
-
-const DatePicker = generatePicker<Dayjs>(dayjsGenerateConfig);
 
 interface FieldData {
     name: string[];
@@ -41,7 +36,7 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
     updateUserInfoCb,
 }) => {
     const { userData } = useAppSelector((state) => state.user);
-    const { getDateForSave } = useGetCurrentDayInfo();
+    const { getDateForSave, getDayJsItem } = useDayInfo();
 
     const [form] = Form.useForm<TProfileFormSate>();
 
@@ -49,7 +44,7 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
     const [imageUrlForSave, setImageUrlForSave] = useState<string>('');
     const [imageUrlForSaveChanged, setImageUrlForSaveChanged] = useState<boolean>(false);
     const [birthdayUser, setBirthdayUser] = useState<Dayjs | null>(
-        userData?.birthday ? dayjs(userData.birthday) : null,
+        userData?.birthday ? getDayJsItem(userData.birthday) : null,
     );
     const [birthdayUserChanged, setBirthdayUserChanged] = useState<boolean>(false);
 
@@ -57,11 +52,14 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
         if (userData) {
             form.setFieldValue('firstName', userData?.firstName ?? '');
             form.setFieldValue('lastName', userData?.lastName ?? '');
-            form.setFieldValue('birthday', userData?.birthday ? dayjs(userData.birthday) : null);
+            form.setFieldValue(
+                'birthday',
+                userData?.birthday ? getDayJsItem(userData.birthday) : null,
+            );
             form.setFieldValue('email', userData?.email ?? '');
             form.validateFields(['email']);
         }
-    }, [userData, form]);
+    }, [userData, getDayJsItem, form]);
 
     const isFormErrorsExist = useCallback(() => {
         const formErrors = form.getFieldsError(['email', 'password1', 'password2']);
@@ -81,7 +79,7 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
     );
 
     const currentBirthDay = userData?.birthday
-        ? dayjs(userData.birthday).format(DATE_FORMAT_TO_VIEW)
+        ? getDayJsItem(userData.birthday).format(DATE_FORMAT_TO_VIEW)
         : null;
     const birthdayChangeHandler = useCallback(
         (value: Dayjs | null) => {
@@ -217,18 +215,14 @@ export const ProfilePageUserContent: FC<TProfilePageUserContentProps> = ({
                             />
                         </Form.Item>
 
-                        <ConfigProvider locale={locale}>
-                            <DatePicker
-                                name='birthday'
-                                placeholder='Дата рождения'
-                                value={birthdayUser}
-                                format={DATE_FORMAT_TO_VIEW}
-                                suffixIcon={<DateIcon />}
-                                onChange={birthdayChangeHandler}
-                                style={{ width: '100%', height: 40 }}
-                                data-test-id={PROFILE_IDS.formBirthday}
-                            />
-                        </ConfigProvider>
+                        <AppDatePicker
+                            name='birthday'
+                            placeholder='Дата рождения'
+                            value={birthdayUser}
+                            onChange={birthdayChangeHandler}
+                            style={{ width: '100%', height: 40 }}
+                            data-test-id={PROFILE_IDS.formBirthday}
+                        />
                     </Col>
                 </Row>
             </Col>

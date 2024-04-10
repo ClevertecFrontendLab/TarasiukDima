@@ -5,6 +5,7 @@ export {
     MAX_SIZE_PHOTO_USER_MB,
     DEFAULT_TRAINING_NAME_VARIANT,
     ERROR_MESSAGES,
+    COUNT_TRAINING_ITEMS_PER_PAGE,
 } from './common';
 
 export { ROUTES_LINKS } from './navigation';
@@ -25,4 +26,5 @@ export {
     USER_IDS,
     PROFILE_IDS,
     SETTINGS_IDS,
+    MY_TRAININGS_IDS,
 } from './test-info';

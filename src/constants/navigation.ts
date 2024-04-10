@@ -1,7 +1,7 @@
 export const ROUTES_LINKS = {
     home: '/main',
     calendar: '/calendar',
-    training: '/training',
+    trainings: '/training',
     progress: '/progress',
     feedbacks: '/feedbacks',
     settings: '/settings',

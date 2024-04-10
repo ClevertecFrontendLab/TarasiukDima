@@ -1,0 +1,102 @@
+@import "@assets/scss/variables";
+@import "@assets/scss/mixins";
+
+.trainings-page {
+    .trainings-page__tabs {
+        .ant-tabs-nav {
+            margin-bottom: 32px;
+        }
+    }
+
+    .ant-tabs-nav-list {
+        width: 100%;
+        justify-content: space-between;
+        padding: 12px 12px 0 12px;
+
+        .ant-tabs-tab {
+            padding: 0 !important;
+            font-weight: $weightMedium;
+
+            &.ant-tabs-tab-active .ant-tabs-tab-btn {
+                color: $primary;
+            }
+        }
+
+        .ant-tabs-tab-btn {
+            font-size: 24px;
+        }
+
+        .ant-tabs-ink-bar {
+            background: $primary;
+        }
+    }
+    .my-trainings {
+        &__empty {
+            padding-top: 204px;
+            padding-bottom: 76px;
+            font-weight: $weightMedium;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .ant-table table {
+            border-spacing: 10px 0;
+        }
+        &__table {
+            width: 100%;
+            max-width: 555px;
+            margin-bottom: 50px;
+
+            .ant-table-tbody > tr > td,
+            .ant-table-thead > tr > th,
+            .ant-table tfoot > tr > td,
+            .ant-table tfoot > tr > th {
+                padding: 6px;
+            }
+        }
+    }
+}
+
+.add-exercises-modal {
+    .add-new__header {
+        &_variant {
+            width: 100%;
+            margin-bottom: 24px;
+
+            .ant-select {
+                width: 100%;
+            }
+        }
+    }
+    .add-new__header_conditions {
+        width: 100%;
+    }
+
+    .add-new__daypicker {
+        width: 48%;
+        margin-right: 10px;
+    }
+
+    .add-new__periods {
+        width: fit-content;
+
+        span {
+            font-weight: bold;
+        }
+    }
+
+    .add-new__period_variant {
+        width: 48%;
+
+        .ant-select {
+            margin-top: 16px;
+            width: 100%;
+        }
+    }
+}
+
+@include tablet() {
+}
+
+@include mobile() {
+}

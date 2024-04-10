@@ -22,7 +22,7 @@ export default defineConfig(({ command }) => ({
             '@hooks': path.resolve(__dirname, 'src/hooks'),
             '@pages': path.resolve(__dirname, 'src/pages'),
             '@redux': path.resolve(__dirname, 'src/redux'),
-            '@app_types': path.resolve(__dirname, 'src/app_types'),
+            '@app-types': path.resolve(__dirname, 'src/app-types'),
             '@utils': path.resolve(__dirname, 'src/utils'),
             '@assets': path.resolve(__dirname, 'src/assets'),
             '@services': path.resolve(__dirname, 'src/services'),

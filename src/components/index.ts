@@ -1,5 +1,9 @@
+import { AddExercisesModal } from './add-exercises-modal';
+import { AppDatePicker } from './app-day-picker';
 import { Breadcrumbs } from './breadcrumbs';
+import { CalendarTrainings } from './calendar-trainings';
 import { NotAuth, RequiredAuth } from './check-auth';
+import { EmptyIcon } from './epmty-icon';
 import { Feedbacks } from './feedbacks';
 import { FeedbacksAddModals } from './feedbacks-add-modals';
 import { Logo } from './logo';
@@ -11,10 +15,15 @@ import { Sidebar } from './sidebar';
 import { SiteNavigation } from './site-navigation';
 import { SiteRouter } from './site-router';
 import { Spinner } from './spinner';
+import { TrainingList } from './training-list';
 import { UserLayout } from './user-layout';
 
 export {
+    TrainingList,
+    AddExercisesModal,
+    AppDatePicker,
     Logo,
+    EmptyIcon,
     Sidebar,
     SiteNavigation,
     UserLayout,
@@ -32,4 +41,5 @@ export {
     ModalPage,
     Rating,
     SiteRouter,
+    CalendarTrainings,
 };

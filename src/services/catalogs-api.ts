@@ -32,9 +32,9 @@ export const catalogsApi = createApi({
                 result
                     ? [
                           ...result.map(({ key }) => ({ type: API_TAGS.catalogs, id: key })),
-                          { type: API_TAGS.catalogs, id: 'LIST' },
+                          { type: API_TAGS.training, id: 'LIST' },
                       ]
-                    : [{ type: API_TAGS.catalogs, id: 'LIST' }],
+                    : [{ type: API_TAGS.training, id: 'LIST' }],
         }),
         getTariffsList: builder.query<TTariffItem[], null>({
             query: () => ({

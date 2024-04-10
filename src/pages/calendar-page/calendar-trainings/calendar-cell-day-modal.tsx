@@ -1,20 +1,18 @@
-import { Fragment, memo, useContext, useMemo } from 'react';
+import { memo, useContext, useMemo } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
-import { DATE_FORMAT_TO_VIEW, TRAININGS_IDS } from '@constants/index';
-import { useGetCurrentDayInfo, useIsMobile } from '@hooks/index';
+import { TTrainingListViewItem } from '@app-types/index';
+import { EmptyIcon, TrainingList } from '@components/index';
+import { TRAININGS_IDS } from '@constants/index';
+import { useIsMobile } from '@hooks/index';
 import { Button, Modal } from 'antd';
-import Paragraph from 'antd/lib/typography/Paragraph';
 
 import { CellDayContext } from './calendar-cell-context';
-import { CalendarTrainingList } from './calendar-trainings-list';
-import { EmptyIcon } from './empty';
-import { TCalendarTrainingListItem, TCellDayContext, TCellDayModalProps } from './types';
+import { TCellDayContext, TCellDayModalProps } from './types';
 
 export const CellDayModal: React.FC<TCellDayModalProps> = memo(
     ({ isShow, refEl, closeCb, addNewTrainingCb, editTrainingCb }) => {
         const isMobile = useIsMobile();
-        const { getDateNeededFormat } = useGetCurrentDayInfo();
-        const { date, dayFullInfo, isFutureDay, trainingVariants } = useContext(
+        const { trainingDayToShow, dayFullInfo, isFutureDay, trainingVariants } = useContext(
             CellDayContext,
         ) as TCellDayContext;
 
@@ -23,8 +21,8 @@ export const CellDayModal: React.FC<TCellDayModalProps> = memo(
         const isEmptyDay = !Boolean(addedTrainingNames.length);
         const addNewDisabled =
             !isFutureDay || trainingVariants.length === addedTrainingNames.length;
-        const trainingItems: TCalendarTrainingListItem[] = useMemo(() => {
-            const items: TCalendarTrainingListItem[] = [];
+        const trainingItems: TTrainingListViewItem[] = useMemo(() => {
+            const items: TTrainingListViewItem[] = [];
 
             Object.keys(dayFullInfo).forEach((key, index) => {
                 items.push({
@@ -48,7 +46,7 @@ export const CellDayModal: React.FC<TCellDayModalProps> = memo(
                 getContainer={isMobile ? false : refEl}
                 centered={!!isMobile}
                 onCancel={closeCb}
-                title={`Тренировки на ${getDateNeededFormat(date, DATE_FORMAT_TO_VIEW)}`}
+                title={`Тренировки на ${trainingDayToShow}`}
                 maskStyle={{
                     backgroundColor: 'transparent',
                 }}
@@ -65,12 +63,9 @@ export const CellDayModal: React.FC<TCellDayModalProps> = memo(
                 }
             >
                 {isEmptyDay ? (
-                    <Fragment>
-                        <Paragraph className='modal-no-text'>Нет активных тренировок</Paragraph>
-                        <EmptyIcon />
-                    </Fragment>
+                    <EmptyIcon classNameText='modal-no-text' text='Нет активных тренировок' />
                 ) : (
-                    <CalendarTrainingList
+                    <TrainingList
                         items={trainingItems}
                         editButtonCb={editTrainingCb}
                         needButtonEdit={true}

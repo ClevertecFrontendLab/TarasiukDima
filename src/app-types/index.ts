@@ -14,9 +14,19 @@ export type {
 export type {
     TTrainingParameters,
     TTrainingExercise,
+    TExerciseInfo,
     TTrainingRequired,
     TTrainingBody,
     TTraining,
+    TTrainingExerciseItem,
+    TExerciseNewInfo,
+    TTrainingNameChosenIVariant,
+    TChangedTrainingItem,
+    TChangedTrainingState,
+    TTrainingDayData,
+    TCalendarTrainingsLogic,
+    TTrainingEditButtonCb,
+    TTrainingListViewItem,
 } from './training';
 
 export type { TTrainingListItem, TTrainingVariants } from './catalogs';

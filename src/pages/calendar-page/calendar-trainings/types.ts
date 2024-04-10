@@ -1,64 +1,59 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Dayjs } from 'dayjs';
 import {
     TClsAndChildProps,
+    TExerciseNewInfo,
     TSimpleFn,
-    TTraining,
-    TTrainingExercise,
-    TTrainingRequired,
+    TTrainingDayData,
+    TTrainingEditButtonCb,
+    TTrainingExerciseItem,
+    TTrainingNameChosenIVariant,
     TTrainingVariants,
-} from 'src/app-types/index';
-
-export type TTrainingEditButtonCb = (trainingName: string, isFinished?: boolean) => void;
+} from '@app-types/index';
 
 export type TCalendarTrainingVariants = {
     trainingVariants: TTrainingVariants;
     showErrorModalCb: TSimpleFn;
 };
 
-export type TCellDayContext = {
+type TCellModalsData = {
     dayChangedInfo: TTrainingDayData;
     dayFullInfo: TTrainingDayData;
-    date: Dayjs;
     curDay: string;
+    trainingDayToShow: string;
     trainingVariants: TTrainingVariants;
     isFutureDay: boolean;
     isEdit: boolean;
-    isFinishedItem: boolean;
-    chosenVariantTraining: TVariantChosenItem;
-    changeTrainingVariantCb: (variant: TVariantChosenItem) => void;
+    chosenVariantTraining: TTrainingNameChosenIVariant;
+    trainingDaySavedData: TTrainingDayData;
 };
 
-export type TCellModals = {
-    curRef: React.MutableRefObject<HTMLDivElement | null> | null;
-    curDay: string;
-    trainingVariants: TTrainingVariants;
-    isFutureDay: boolean;
-    dayChangedInfo: TTrainingDayData;
-    dayFullInfo: TTrainingDayData;
-    isShow: boolean;
-    showModalErrorCb: TSimpleFn;
+export type TCellDayContext = TCellModalsData & {
+    isFinishedItem: boolean;
+    changeTrainingVariantCb: (variant: TTrainingNameChosenIVariant) => void;
+};
 
+export type TCellModals = TCellModalsData & {
+    curRef: React.MutableRefObject<HTMLDivElement | null> | null;
+    isShow: boolean;
+
+    isUpdateTrainingError: boolean;
+    isUpdateTrainingSuccess: boolean;
+    isUpdateTrainingLoading: boolean;
+    isAddTrainingError: boolean;
+    isAddTrainingSuccess: boolean;
+    isAddTrainingLoading: boolean;
+
+    showModalErrorCb: TSimpleFn;
+    saveTrainingExercises: TSimpleFn;
     closeModalCb: () => void;
-    setChangedPersonalTraining: TChangedTrainingCb;
+    changeIsEditTraining: (isEdit: boolean) => void;
+    changeChosenNameTrainingCb: (variant: TTrainingNameChosenIVariant) => void;
+    updateChangedTrainingInfoExercises: (exercises: TTrainingExerciseItem[]) => void;
+    editTrainingButtonCB: (variant: TTrainingNameChosenIVariant) => void;
 };
 
 export type TCalendarCellContent = TClsAndChildProps & {
     addRefItemCB: (date: string, cell: React.MutableRefObject<HTMLDivElement | null>) => void;
     date: string;
-};
-
-export type TCalendarTrainingListItem = {
-    name: string;
-    index: number;
-    isFinished?: boolean;
-};
-
-export type TCalendarTrainingListProps = {
-    items: TCalendarTrainingListItem[];
-    className?: string;
-    needButtonEdit?: boolean;
-    editButtonCb?: TTrainingEditButtonCb;
 };
 
 export type TCellTrainingModalProps = {
@@ -85,7 +80,7 @@ export type TCellAddNewExercisesProps = {
     isShow: boolean;
     isEditExercises: boolean;
     closeAddExercises: TSimpleFn;
-    setChangedPersonalTraining: TChangedTrainingCb;
+    updateChangedTrainingInfoExercises: (exercises: TTrainingExerciseItem[]) => void;
 };
 
 export type TCellNewExercisesFormProps = {
@@ -100,29 +95,3 @@ export type TCellNewExercisesFormProps = {
 
     changeExercisesInfoCB: (ind: number, excInfo: TExerciseNewInfo) => void;
 };
-
-export type TTrainingExerciseItem = TTrainingExercise & {
-    isChecked?: boolean;
-};
-export type TExerciseNewInfo = Omit<TTrainingExerciseItem, 'isImplementation'>;
-
-export type TExerciseInfo = Omit<TTrainingExercise, 'isImplementation'> & {
-    isChecked: boolean;
-};
-
-export type TChangedItem = TTraining & {
-    isChanged?: boolean;
-};
-export type TChangedTrainingState = {
-    [key: string]: {
-        [key: string]: TChangedItem;
-    };
-};
-
-export type TTrainingDayData = {
-    [key: string]: TChangedItem;
-};
-
-export type TChangedTrainingCb = React.Dispatch<React.SetStateAction<TChangedTrainingState>>;
-
-export type TVariantChosenItem = keyof TTrainingRequired | null;

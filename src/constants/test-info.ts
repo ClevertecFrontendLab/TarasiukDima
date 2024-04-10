@@ -4,6 +4,8 @@ export const NAVIGATION_IDS = {
 
     homeSeeReviewsBtn: 'see-reviews',
     sidebarCalendarBtn: 'menu-button-calendar',
+    menuButtonTraining: 'menu-button-training',
+    profileLinkOnHomePage: 'menu-button-profile',
 };
 
 export const LOADER_ID = 'loader';
@@ -67,7 +69,6 @@ export const TRAININGS_IDS = {
 };
 
 export const PROFILE_IDS = {
-    profileLinkOnHomePage: 'menu-button-profile',
     formFirstName: 'profile-name',
     formLastName: 'profile-surname',
     formAvatar: 'profile-avatar',
@@ -96,4 +97,20 @@ export const SETTINGS_IDS = {
     tariffPriceCheckbox: 'tariff-',
     successModal: 'tariff-modal-success',
     buyButton: 'tariff-submit',
+};
+
+export const MY_TRAININGS_IDS = {
+    table: 'my-trainings-table',
+    editTableItemBtn: 'update-my-training-table-icon',
+    addTrainingBtn: 'create-new-training-button',
+    addNewSuccessAlert: 'create-training-success-alert',
+
+    sidebarBtn: 'notification-about-joint-training',
+    joinInfoCard: 'joint-training-review-card',
+    joinPartnerCardItem: 'joint-training-cards',
+    datePicker: 'modal-drawer-right-date-picker',
+    periodsCheckbox: 'modal-drawer-right-checkbox-period',
+    periodsSelect: 'modal-drawer-right-select-period',
+    searchInput: 'search-input',
+    partnerModal: 'partner-modal',
 };

@@ -3,6 +3,7 @@ export {
     isTwoSameExercisesArrays,
     getTrainingBadgeStatusColor,
     checkIsLessFileSize,
+    deepCopyObject,
 } from './common';
 
 export type { TPreviousLocations } from './common';
@@ -24,3 +25,5 @@ export {
 export { validateEmail, validatePassword } from './validators';
 
 export { visiblePasswordRenderIcon } from './view';
+
+export { getEmptyTrainingStateItem, getTrainingPeriodText } from './trainings';

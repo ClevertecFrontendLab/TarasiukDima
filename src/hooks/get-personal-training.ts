@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useLayoutEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { ROUTES_LINKS } from '@constants/index';
 import {
     changePersonalTrainingList,
     changeShowLoader,
@@ -9,39 +8,54 @@ import {
 } from '@redux/index';
 import { useLazyGetTrainingQuery } from '@services/index';
 
-export const useGetPersonalTrainings = () => {
+export const useGetPersonalTrainings = (navigateOnSuccessLoadPage: string | null = null) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [needLoader, setNeedLoader] = useState(false);
+    const [routeOnSuccessRedirect, setRouteOnSuccessRedirect] = useState(navigateOnSuccessLoadPage);
 
-    const [getPersonalTrainingsTrigger, { isError, isSuccess, currentData, isLoading }] =
+    const [getPersonalTrainingsTrigger, { isError, isSuccess, data, isLoading }] =
         useLazyGetTrainingQuery();
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (needLoader && isLoading) {
             dispatch(changeShowLoader(true));
         }
     }, [isLoading, dispatch, needLoader]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (isError) {
             dispatch(changeShowTrainingListError(true));
             dispatch(changeShowLoader(false));
         }
     }, [isError, dispatch]);
 
-    useEffect(() => {
-        if (isSuccess && currentData) {
-            dispatch(changePersonalTrainingList(currentData));
+    useLayoutEffect(() => {
+        if (isSuccess && data) {
+            dispatch(changePersonalTrainingList(data));
             dispatch(changeShowLoader(false));
-            navigate(ROUTES_LINKS.calendar);
+
+            if (routeOnSuccessRedirect) {
+                navigate(routeOnSuccessRedirect);
+            }
         }
-    }, [isSuccess, currentData, dispatch, navigate]);
+    }, [isSuccess, routeOnSuccessRedirect, data, dispatch, navigate]);
 
-    const getPersonalTrainings = (withLoader = false) => {
-        setNeedLoader(withLoader);
-        getPersonalTrainingsTrigger(null);
-    };
+    const getPersonalTrainings = useCallback(
+        (withLoader = false, routeOnSuccess = '') => {
+            if (routeOnSuccess) {
+                setRouteOnSuccessRedirect(routeOnSuccess);
+            }
 
-    return { getPersonalTrainings };
+            setNeedLoader(withLoader);
+            getPersonalTrainingsTrigger(null);
+        },
+        [getPersonalTrainingsTrigger],
+    );
+
+    const changePageOnSuccessGetTrainings = useCallback((newPage: string) => {
+        setRouteOnSuccessRedirect(newPage);
+    }, []);
+
+    return { getPersonalTrainings, changePageOnSuccessGetTrainings };
 };

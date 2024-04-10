@@ -1,7 +1,7 @@
 import { FC, Fragment, memo, useCallback, useContext, useState } from 'react';
 import { CheckCircleFilled, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { DATE_SHORT_FORMAT_TO_VIEW, SETTINGS_IDS } from '@constants/index';
-import { useGetCurrentDayInfo } from '@hooks/index';
+import { useDayInfo } from '@hooks/index';
 import { Alert, Button, Col, Drawer, Radio, RadioChangeEvent, Row, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import Paragraph from 'antd/lib/typography/Paragraph';
@@ -26,7 +26,7 @@ export const SettingsPageTariffsCompare: FC<TSettingsPageTariffsCompareProps> = 
     ({ isShow, closeCompareCb }) => {
         const { items, tariff, buyPlaneCb } = useContext(SettingsContext) as TSettingsContext;
 
-        const { getDateNeededFormat } = useGetCurrentDayInfo();
+        const { getDateNeededFormat } = useDayInfo();
 
         const [chosenPeriodDays, setChosenPeriodDays] = useState<number | null>(null);
         const paymentPeriodDisabled = !chosenPeriodDays;

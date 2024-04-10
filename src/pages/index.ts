@@ -13,3 +13,5 @@ export { ProfilePage } from './profile-page';
 export { SettingsPage } from './settings-page';
 
 export { NotFoundPage } from './error-page';
+
+export { TrainingsPage } from './trainings-page';

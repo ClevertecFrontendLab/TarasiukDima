@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
 
-import { useAppSelector, useGetCurrentDayInfo } from '.';
+import { useAppSelector, useDayInfo } from '.';
 
 export const useGetSavedTraining = () => {
     const { personalTraining } = useAppSelector((state) => state.app);
-    const { getDateNeededFormat } = useGetCurrentDayInfo();
+
+    const { getDateNeededFormat } = useDayInfo();
 
     const getSavedTrainingByDay = useCallback(
         (dayForSearch: string) =>

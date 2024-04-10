@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import { HeartFilled } from '@ant-design/icons';
-import { PROFILE_IDS, ROUTES_LINKS } from '@constants/index';
+import { NAVIGATION_IDS, ROUTES_LINKS } from '@constants/index';
+import CalendarIcon from '@public/img/calendar.svg?react';
 import ProfileIcon from '@public/img/profile.svg?react';
 
-import { CalendarLink } from './calendar-link';
+import { LinkWithLoadPersonalData } from './link-with-load-personal-data';
 
 export const listData = [
     'планировать свои тренировки на календаре, выбирая тип и уровень нагрузки;',
@@ -16,23 +17,33 @@ export const cardsData = [
     {
         title: 'Расписать тренировки',
         link: (
-            <Link className='card-link' to={ROUTES_LINKS.training}>
+            <LinkWithLoadPersonalData
+                goodLoadRoute={ROUTES_LINKS.trainings}
+                testId={NAVIGATION_IDS.menuButtonTraining}
+            >
                 <HeartFilled /> Тренировки
-            </Link>
+            </LinkWithLoadPersonalData>
         ),
     },
     {
         title: 'Назначить календарь',
-        link: <CalendarLink />,
+        link: (
+            <LinkWithLoadPersonalData
+                goodLoadRoute={ROUTES_LINKS.calendar}
+                testId={NAVIGATION_IDS.sidebarCalendarBtn}
+            >
+                <CalendarIcon />
+                <span className='card-link__name'>Календарь</span>
+            </LinkWithLoadPersonalData>
+        ),
     },
-
     {
         title: 'Заполнить профиль',
         link: (
             <Link
                 className='card-link'
                 to={ROUTES_LINKS.profile}
-                data-test-id={PROFILE_IDS.profileLinkOnHomePage}
+                data-test-id={NAVIGATION_IDS.profileLinkOnHomePage}
             >
                 <ProfileIcon /> Профиль
             </Link>

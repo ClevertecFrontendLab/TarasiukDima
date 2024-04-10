@@ -14,6 +14,7 @@ import {
     RegistrationPage,
     ResultPage,
     SettingsPage,
+    TrainingsPage,
 } from '@pages/index';
 import { history } from '@redux/index';
 
@@ -81,6 +82,15 @@ export const SiteRouter = () => (
                 element={
                     <RequiredAuth redirect={ROUTES_LINKS.home}>
                         <SettingsPage />
+                    </RequiredAuth>
+                }
+            />
+
+            <Route
+                path={ROUTES_LINKS.trainings}
+                element={
+                    <RequiredAuth redirect={ROUTES_LINKS.auth}>
+                        <TrainingsPage />
                     </RequiredAuth>
                 }
             />

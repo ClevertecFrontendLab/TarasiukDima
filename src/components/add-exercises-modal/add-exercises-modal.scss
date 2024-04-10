@@ -1,0 +1,134 @@
+@import "@assets/scss/variables";
+
+.add-exercises-modal {
+    .ant-drawer-title {
+        .anticon {
+            width: $indentSmall;
+            height: $indentSmall;
+            margin-right: $indentSmall;
+        }
+
+        svg {
+            fill: currentColor;
+        }
+    }
+
+    .ant-drawer-body {
+        display: flex;
+        flex-direction: column;
+        padding-top: 0;
+        padding-bottom: $indentBig;
+    }
+
+    .add-exercises-modal__var-info {
+        font-size: $fontSizeMin;
+        font-weight: $weightMedium;
+
+        &_badge .ant-badge-status-text {
+            color: $grey;
+        }
+
+        &_date {
+            margin-bottom: 0;
+            color: $grey;
+        }
+    }
+
+    .buttons-wrapper {
+        flex-shrink: 0;
+        border-radius: 0 0 $borderRadiusBig $borderRadiusBig;
+        overflow: hidden;
+    }
+
+    .remove,
+    .add-more {
+        flex-grow: 1;
+        width: 50%;
+        height: auto;
+        margin-top: $indentMid;
+        padding: $indentSmallest 13px;
+        text-align: left;
+        color: $primary;
+        background: $lightWhite;
+    }
+
+    .add-more {
+        color: $primary;
+    }
+
+    .remove {
+        color: $black;
+    }
+
+    .last-chance-edit {
+        margin-top: auto;
+        line-height: $lineHeight;
+        font-size: $fontSizeSmaller;
+        text-align: center;
+        color: $grey;
+    }
+
+    .add-exercises-modal__fields {
+        padding-top: $indentMid;
+
+        .ant-input-number {
+            width: 100%;
+        }
+
+        input {
+            color: $black;
+            height: 24px;
+
+            &::placeholder {
+                color: $lightGrey;
+            }
+
+            &:disabled {
+                background: $white;
+            }
+        }
+
+        &_name {
+            width: 100%;
+            line-height: $lineHeight;
+            margin-bottom: $indentSmallest;
+        }
+
+        &_weight,
+        &_replays,
+        &_approaches {
+            margin-bottom: 0;
+        }
+
+        &_approaches {
+            width: 120px;
+            margin-right: auto;
+        }
+
+        .multiply {
+            flex-shrink: 0;
+            align-self: flex-end;
+            margin: 0 2px 5px;
+            font-size: $fontSizeSmall;
+            color: $lightGrey;
+        }
+
+        .ant-form-item-label {
+            width: 100%;
+            margin-bottom: 6px;
+            padding: 1px $indentSmallest;
+            text-align: left;
+            background-color: $lightDividers;
+
+            label {
+                height: auto;
+                font-size: $fontSizeSmaller;
+            }
+        }
+
+        &_weight,
+        &_replays {
+            width: 90px;
+        }
+    }
+}
