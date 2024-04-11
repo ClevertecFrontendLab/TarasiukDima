@@ -90,7 +90,6 @@ export type TCalendarTrainingsLogic = {
     saveChangedTrainingLastState: TSimpleFn;
 };
 
-
 export type TTrainingEditButtonCb = (trainingName: string, isFinished?: boolean) => void;
 
 export type TTrainingListViewItem = {
@@ -98,3 +97,54 @@ export type TTrainingListViewItem = {
     index: number;
     isFinished?: boolean;
 };
+
+export type TTrainingPalItem = {
+    id: string;
+    name: string;
+    trainingType: string;
+    imageSrc: null | string;
+    avgWeightInWeek: number;
+    inviteId: string;
+    status: string;
+};
+
+export type TTrainingBodyAddInvite = {
+    to: string;
+    trainingId: string;
+};
+
+export type TTrainingInviteStatus = 'accepted' | 'pending' | 'rejected';
+
+export type TTrainingInviteItem = {
+    _id: string;
+    from: {
+        _id: string;
+        firstName: null | string;
+        lastName: null | string;
+        imageSrc: null | string;
+    };
+    training: TTraining;
+    status: TTrainingInviteStatus;
+    createdAt: string;
+};
+
+export type TTrainingInviteItemAddResponse = TTrainingInviteItem & {
+    to: {
+        _id: string;
+        firstName: null | string;
+        lastName: null | string;
+        imageSrc: null | string;
+    };
+};
+
+export type TTrainingInviteItemAnswerBody = {
+    id: string;
+    status: TTrainingInviteStatus;
+};
+
+export type TTrainingUserItem = {
+    id: string;
+    name: string;
+};
+
+

@@ -113,4 +113,5 @@ export const MY_TRAININGS_IDS = {
     periodsSelect: 'modal-drawer-right-select-period',
     searchInput: 'search-input',
     partnerModal: 'partner-modal',
+    badgeItem: '',
 };

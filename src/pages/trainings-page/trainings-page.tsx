@@ -1,13 +1,13 @@
-import { useMemo } from 'react';
+import { Fragment, useMemo } from 'react';
 import { TCalendarTrainingsLogic } from '@app-types/index';
-import { PageContent, PageHeader, PageLayout } from '@components/index';
+import { PageContent, PageHeader, PageLayout, TrainingInvitesBadge } from '@components/index';
 import { MY_TRAININGS_IDS, ROUTES_LINKS } from '@constants/index';
 import { useGetChangedTrainingsState, useGetTrainingsNames } from '@hooks/index';
 import { Alert, Tabs } from 'antd';
 import type { Tab } from 'rc-tabs/lib/interface';
 
 import { MyTrainings } from './my-trainings/my-trainings';
-import { JoinTrainings } from './join-trainings';
+import { JoinTrainings } from './join-trainings/join-trainings';
 import { Marathons } from './marathons';
 import { TrainingsContext } from './trainings-context';
 
@@ -71,7 +71,11 @@ export const TrainingsPage = () => {
                 ),
             },
             {
-                label: 'Совместные тренировки',
+                label: (
+                    <Fragment>
+                        Совместные тренировки <TrainingInvitesBadge />
+                    </Fragment>
+                ),
                 key: '2',
                 children: <JoinTrainings />,
             },

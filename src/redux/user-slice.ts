@@ -1,11 +1,13 @@
+import { TTrainingInviteItem, TUserInfo } from '@app-types/index';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TUserInfo } from 'src/app-types/user';
 
 type TUserState = {
     userData: TUserInfo | null;
+    invites: TTrainingInviteItem[];
 };
 const appStateInit: TUserState = {
     userData: null,
+    invites: [],
 };
 
 const userSlice = createSlice({
@@ -15,11 +17,14 @@ const userSlice = createSlice({
         changeUserData: (state, { payload }: PayloadAction<TUserInfo | null>) => {
             state.userData = payload;
         },
+        changeInvites: (state, { payload }: PayloadAction<TTrainingInviteItem[]>) => {
+            state.invites = payload;
+        },
     },
 });
 
 const { actions, reducer } = userSlice;
 
-export const { changeUserData } = actions;
+export const { changeUserData, changeInvites } = actions;
 
 export { reducer as userReducer };

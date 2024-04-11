@@ -6,6 +6,7 @@ export {
     DEFAULT_TRAINING_NAME_VARIANT,
     ERROR_MESSAGES,
     COUNT_TRAINING_ITEMS_PER_PAGE,
+    COUNT_INVITES_TO_SHOW_DEFAULT,
 } from './common';
 
 export { ROUTES_LINKS } from './navigation';

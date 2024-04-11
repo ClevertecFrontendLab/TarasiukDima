@@ -5,6 +5,7 @@ import {
     catalogsApi,
     feedbackApi,
     filesApi,
+    invitesApi,
     tariffsApi,
     trainingApi,
     userApi,
@@ -33,6 +34,7 @@ export const store = configureStore({
         [authApi.reducerPath]: authApi.reducer,
         [filesApi.reducerPath]: filesApi.reducer,
         [tariffsApi.reducerPath]: tariffsApi.reducer,
+        [invitesApi.reducerPath]: invitesApi.reducer,
     }),
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(
@@ -44,6 +46,7 @@ export const store = configureStore({
             authApi.middleware,
             filesApi.middleware,
             tariffsApi.middleware,
+            invitesApi.middleware,
         ),
 });
 

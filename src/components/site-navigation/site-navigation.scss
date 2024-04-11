@@ -6,6 +6,11 @@ ul.navigation {
     font-size: $fontSizeMin;
     color: $black;
 
+    &.ant-menu-inline-collapsed > .ant-menu-item .ant-menu-item-icon,
+    &.ant-menu-inline-collapsed > .ant-menu-item .anticon {
+        line-height: 1;
+    }
+
     li.ant-menu-item {
         display: flex;
         align-items: center;

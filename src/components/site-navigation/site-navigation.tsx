@@ -1,12 +1,14 @@
 import { memo, useCallback, useMemo } from 'react';
 import { Location } from 'react-router-dom';
 import { HeartFilled, TrophyFilled } from '@ant-design/icons';
-import { ROUTES_LINKS } from '@constants/index';
+import { MY_TRAININGS_IDS, ROUTES_LINKS } from '@constants/index';
 import { useAppSelector, useGetPersonalTrainings } from '@hooks/index';
 import CalendarIcon from '@public/img/calendar.svg?react';
 import ProfileIcon from '@public/img/profile.svg?react';
 import { Menu, MenuProps } from 'antd';
 import classNames from 'classnames';
+
+import { TrainingInvitesBadge } from '..';
 
 import { SiteNavigationLink } from './site-navigation-link';
 
@@ -40,7 +42,15 @@ export const SiteNavigation: React.FC<TSiteNavigationProps> = memo(
                 },
                 {
                     label: 'Тренировки',
-                    icon: <HeartFilled />,
+                    icon: (
+                        <TrainingInvitesBadge
+                            className='anticon'
+                            dataTestId={MY_TRAININGS_IDS.badgeItem}
+                            size='small'
+                        >
+                            <HeartFilled />
+                        </TrainingInvitesBadge>
+                    ),
                     key: ROUTES_LINKS.trainings,
                     onClick: trainingCb,
                 },

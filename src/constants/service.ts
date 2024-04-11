@@ -11,6 +11,10 @@ export const API_TAGS = {
     user: 'User',
     auth: 'Auth',
     files: 'Files',
+    invite: 'Invite',
+    pals: 'Pals',
+    userTraining: 'UserTraining',
+    userTrainingList: 'UserTrainingList',
 };
 
 export const STATUS_CODES = {

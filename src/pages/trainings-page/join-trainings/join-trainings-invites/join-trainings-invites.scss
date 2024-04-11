@@ -1,0 +1,207 @@
+@import "@assets/scss/variables";
+@import "@assets/scss/mixins";
+
+.invites-list {
+    margin-bottom: 24px;
+    padding: 16px 24px;
+    border-radius: 2px;
+    background-color: $uploadBgWhite;
+
+    .invites-list__title {
+        margin-bottom: 16px;
+        color: $grey;
+    }
+
+    .invites-list__item {
+        border-radius: 2px 16px 16px 16px;
+        border: none;
+        box-shadow: $shadowLighter;
+        background-color: $white;
+
+        & ~ .invites-list__item {
+            margin-top: 8px;
+        }
+
+        .ant-card-body {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 22px 20px;
+        }
+
+        &_user {
+            flex-shrink: 0;
+            width: 174px;
+        }
+
+        &_details {
+            position: relative;
+            flex-grow: 1;
+            margin-left: 8px;
+            margin-right: 8px;
+        }
+
+        &_buttons {
+            flex-shrink: 0;
+            width: 190px;
+        }
+
+        .item__img {
+            display: block;
+            margin: 0 auto 12px;
+        }
+
+        .item__name {
+            text-align: center;
+            line-height: $lineHeight;
+
+            .ant-typography {
+                margin-bottom: 0;
+            }
+        }
+
+        .item__date {
+            font-size: 12px;
+            color: $lightGrey;
+        }
+
+        .item__text {
+            margin-top: 8px;
+            margin-bottom: 8px;
+            font-size: 16px;
+            line-height: $lineHeight;
+            color: $blueDark;
+            font-weight: $weightBold;
+        }
+
+        .show-exercises {
+            padding-left: 0;
+            border: none;
+            color: $primary;
+        }
+
+        .item__button {
+            width: 100%;
+            height: auto;
+            font-size: 14px;
+            line-height: $lineHeight;
+            text-align: center;
+            padding: 11px 16px;
+        }
+
+        .agree-button {
+            color: $white;
+            background: $primary;
+        }
+
+        .reject-button {
+            margin-top: 16px;
+            background: $white;
+        }
+    }
+
+    .invites-list__show-more {
+        margin-top: 16px;
+        padding-left: 0;
+        color: $primary;
+        background: transparent;
+
+        &.active {
+            .anticon {
+                transform: rotate(180deg);
+            }
+        }
+    }
+
+    .modal-container {
+        position: relative;
+    }
+
+    .ant-modal-root {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 312px;
+    }
+
+    .ant-modal-wrap {
+        position: absolute;
+        bottom: initial;
+        right: initial;
+        overflow: initial;
+    }
+
+    .invite-training-modal {
+        top: 0;
+        width: 312px !important;
+        margin: 0;
+
+        &__row {
+            line-height: $lineHeight;
+            margin-bottom: 8px;
+        }
+
+        .ant-typography {
+            margin-bottom: 0;
+        }
+
+        .modal-date,
+        .modal-period {
+            font-size: 16px;
+            color: $black;
+        }
+
+        .modal-period {
+            font-weight: $weightMedium;
+        }
+
+        .modal-replays,
+        .modal-exercise {
+            font-size: 14px;
+        }
+
+        .modal-exercise {
+            color: $grey;
+        }
+        .modal-replays {
+            color: $primary;
+        }
+    }
+}
+
+@include tablet() {
+    .invites-list {
+        padding: 12px;
+
+        .invites-list__item {
+            .ant-card-body {
+                display: block;
+                padding: 20px 12px;
+            }
+
+            &_user {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 100%;
+            }
+
+            &_details {
+                margin: 16px 0;
+            }
+
+            &_buttons {
+                width: 100%;
+            }
+
+            .item__img {
+                margin: 0 16px 0 0;
+            }
+
+            .item__name {
+                text-align: left;
+                margin: 0;
+            }
+        }
+    }
+}

@@ -27,6 +27,13 @@ export type {
     TCalendarTrainingsLogic,
     TTrainingEditButtonCb,
     TTrainingListViewItem,
+    TTrainingPalItem,
+    TTrainingBodyAddInvite,
+    TTrainingInviteItemAnswerBody,
+    TTrainingInviteItem,
+    TTrainingInviteStatus,
+    TTrainingInviteItemAddResponse,
+    TTrainingUserItem,
 } from './training';
 
 export type { TTrainingListItem, TTrainingVariants } from './catalogs';

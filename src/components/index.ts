@@ -15,11 +15,13 @@ import { Sidebar } from './sidebar';
 import { SiteNavigation } from './site-navigation';
 import { SiteRouter } from './site-router';
 import { Spinner } from './spinner';
+import { TrainingInvitesBadge } from './training-invites-badge';
 import { TrainingList } from './training-list';
 import { UserLayout } from './user-layout';
 
 export {
     TrainingList,
+    TrainingInvitesBadge,
     AddExercisesModal,
     AppDatePicker,
     Logo,

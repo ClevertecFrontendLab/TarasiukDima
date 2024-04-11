@@ -1,11 +1,14 @@
+import { TTariffItem, TTrainingInviteStatus, TTrainingPalItem, TTrainingUserItem, TTrainingVariants } from '@app-types/index';
 import { API_TAGS, SERVICE_API_URL } from '@constants/index';
 import { RootState } from '@redux/index';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { TTariffItem, TTrainingVariants } from 'src/app-types/index';
 
 const catalogQueryEndpoints = {
     trainingList: 'training-list',
     tariffsList: 'tariff-list',
+    trainingPals: 'training-pals',
+    joinUserList: 'user-joint-training-list',
+    userList: 'user-list',
 };
 
 export const catalogsApi = createApi({
@@ -48,7 +51,57 @@ export const catalogsApi = createApi({
                       ]
                     : [{ type: API_TAGS.tariffs, id: 'LIST' }],
         }),
+        getTrainingPals: builder.query<TTrainingPalItem[], null>({
+            query: () => ({
+                url: catalogQueryEndpoints.trainingPals,
+            }),
+            providesTags: (result) =>
+                result
+                    ? [
+                          ...result.map(({ id }) => ({ type: API_TAGS.pals, id })),
+                          { type: API_TAGS.pals, id: 'LIST' },
+                      ]
+                    : [{ type: API_TAGS.pals, id: 'LIST' }],
+        }),
+        getJoinUserList: builder.query<TTrainingPalItem[], {trainingType?: TTrainingVariants, trainingStatus: TTrainingInviteStatus}>({
+            query: ({trainingType, trainingStatus}) => {
+                let queryString = '';
+
+                if (trainingType) {
+                    queryString = `?trainingType=${trainingType}`;
+                }
+
+                if (trainingStatus) {
+                    queryString += queryString.length ? '&' : '?';
+                    queryString += `status=${trainingStatus}`;
+                }
+
+                return ({
+                    url:catalogQueryEndpoints.joinUserList + queryString,
+                })
+            },
+            providesTags: (result) =>
+                result
+                    ? [
+                          ...result.map(({ id }) => ({ type: API_TAGS.userTraining, id })),
+                          { type: API_TAGS.userTraining, id: 'LIST' },
+                      ]
+                    : [{ type: API_TAGS.userTraining, id: 'LIST' }],
+        }),
+        getUserList: builder.query< TTrainingUserItem[], null>({
+            query: () => ({
+                url: catalogQueryEndpoints.userList,
+            }),
+            providesTags: (result) =>
+                result
+                    ? [
+                          ...result.map(({ id }) => ({ type: API_TAGS.userTrainingList, id })),
+                          { type: API_TAGS.userTrainingList, id: 'LIST' },
+                      ]
+                    : [{ type: API_TAGS.userTrainingList, id: 'LIST' }],
+        }),
     }),
 });
 
-export const { useLazyGetTrainingsListQuery, useGetTariffsListQuery } = catalogsApi;
+export const { useLazyGetTrainingsListQuery, useGetTariffsListQuery, useGetTrainingPalsQuery } =
+    catalogsApi;

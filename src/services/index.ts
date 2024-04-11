@@ -17,7 +17,12 @@ export {
     useUpdateTrainingMutation,
 } from './training-api';
 
-export { useLazyGetTrainingsListQuery, catalogsApi, useGetTariffsListQuery } from './catalogs-api';
+export {
+    useLazyGetTrainingsListQuery,
+    catalogsApi,
+    useGetTariffsListQuery,
+    useGetTrainingPalsQuery,
+} from './catalogs-api';
 
 export { useBuyTariffMutation, tariffsApi } from './tariffs-api';
 
@@ -29,3 +34,11 @@ export {
 } from './user-api';
 
 export { useUploadFileMutation, filesQueryEndpoints, filesApi } from './files-api';
+
+export {
+    useAddInviteMutation,
+    useGetInvitesListQuery,
+    useUpdateInviteMutation,
+    useRemoveInviteMutation,
+    invitesApi,
+} from './invites-api';
